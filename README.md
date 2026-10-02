@@ -10,7 +10,30 @@ confidence estimate, shows where individual detectors disagree, and explains whi
 > review, not to replace it. This project is independently implemented; it is not affiliated with, certified
 > by, or claimed to be as accurate as any commercial academic-integrity product.
 
-<!-- RESULTS-SUMMARY -->
+## Measured results (honest summary)
+
+All numbers come from `python evaluate.py` on held-out data
+([full report](reports/evaluation/en/EVALUATION_REPORT.md)); they describe this model on 2023-era generators and
+the listed corpora only.
+
+| What | Result |
+|---|---|
+| Held-out test (3,526 docs, grouped split) | ROC-AUC **0.972**, accuracy 0.907, FPR 9.2 %, FNR 9.4 %, ECE 0.012 |
+| Conservative operating point (threshold 0.81, set for 1 % FPR on calibration data) | test FPR 1.8 %, recall 78.8 % |
+| Baselines on the same features | LightGBM 0.971, HGB 0.970, SVM 0.962, MLP 0.962, RF 0.951, LogReg 0.930 (ROC-AUC) |
+| **Unseen generator family** (leave-one-out) | Flan-T5 0.991 · LLaMA 1.000 · Cohere 0.953 · OpenAI 0.947 · Dolly 0.876 · Claude 0.846 · **BLOOMZ 0.563 (near chance)** |
+| **Unseen domain** (leave-one-out) | ROC-AUC 0.84-0.97; FPR up to **64 %** (student essays) and 33 % (arXiv) when a domain is new |
+| Sentence level (end-to-end, 15,751 sentences) | ROC-AUC 0.864, accuracy 0.784 |
+| AI-share estimate on spliced documents | mean absolute error 18 points; 5-way category exact 54 %, within one category 94 % |
+| Style-transition detection | precision 0.73 but recall **0.10**; false alarm on 20 % of single-author documents |
+| Confidence score | **not validated**: High-confidence documents were *less* accurate (0.76) than Medium (0.90) - treat it as descriptive only |
+| Length evidence (derived, AUC + FPR criteria) | insufficient < 75 words · low 75-150 · moderate 150-300 · more reliable >= 300 |
+| False positives at 0.5, unseen human groups | TOEFL 10-11 %, ETS 9 %, PELIC 19 %, Lang-8 4 %, US 8th-grade 2 %, BAWE 2 %, legal 13 %, **CS224N graduate abstracts 44 %** |
+
+The non-native false-positive rates above are after the pre-registered false-positive experiment; the baseline
+model flagged 44-52 % of TOEFL/ETS/PELIC essays ([details](reports/evaluation/en/fp_optimization_results.md)).
+Dyslexic writers, post-2023 models, translation and Greek were **not tested**.
+
 
 ## What you get
 

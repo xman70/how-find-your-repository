@@ -1,0 +1,2913 @@
+{
+  "meta": {
+    "title": "Example: ai essay (example dataset, CC BY 3.0)",
+    "date": "2026-10-02 23:46:24",
+    "word_count": 434,
+    "character_count": 3108,
+    "app_version": "1.0.0",
+    "device": "cpu",
+    "language": "en",
+    "language_confidence": 0.678,
+    "sentence_count": 23,
+    "paragraph_count": 6,
+    "processing_seconds": 0.53
+  },
+  "disclaimer": "AI-text detection is probabilistic. The results should not be used as sole evidence for academic misconduct, disciplinary action, or authorship determination. The detector is designed to assist human review, not to replace it.",
+  "limitations": [
+    "AI-text detection is probabilistic and produces both false positives (human text flagged) and false negatives (AI text missed).",
+    "Probabilities are calibrated on held-out data with equal numbers of human and AI documents (a 50% prior). The share of AI text in your context changes how a given score should be read.",
+    "Performance drops on text from AI models, domains, languages and writing populations that differ from the training data; see the evaluation report for measured cross-model and cross-domain results.",
+    "Paraphrasing, translation, heavy human editing and short texts reduce detection reliability.",
+    "Formulaic genres (legal, scientific, technical) and highly polished human writing can resemble AI-generated text statistically.",
+    "Spelling or grammar mistakes, dialect, nationality and writing ability are never used as evidence of AI authorship, but non-native writing can still differ statistically from the training data; check the false-positive audit in the evaluation report.",
+    "Sentence-level scores use a 5-sentence context window and are less reliable than document-level scores.",
+    "Detected style transitions indicate a statistical change in writing characteristics, not a change of author."
+  ],
+  "privacy": "Privacy mode: Local processing. No text leaves this computer.",
+  "warnings": [],
+  "status": "ok",
+  "result": {
+    "ai_associated_share": 1.0,
+    "human_associated_share": 0.0,
+    "uncertain_share": 0.0,
+    "document_probability": 0.995,
+    "estimated_ai_share": 0.9956552130590315,
+    "confidence": 0.9721736706891233,
+    "confidence_level": "High",
+    "confidence_components": {
+      "length_reliability": 0.9855512884927716,
+      "detector_agreement": 0.9714230403861204,
+      "feature_coverage": 1.0,
+      "committee_stability": 0.9927742135166129
+    },
+    "evidence_level": "reliable",
+    "evidence_text": "More reliable statistical analysis (text length)",
+    "hybrid": {
+      "code": 3,
+      "label": "AI-generated",
+      "rationale": "Almost all of the text shows AI-associated patterns.",
+      "estimated_ai_share": 0.9956552130590315
+    },
+    "interpretation": "Based on the characteristics measured by this model, the text contains patterns that are strongly associated with AI-generated writing. This is a statistical estimate, not a determination of authorship.",
+    "bands": {
+      "t_high": 0.7324200911316123,
+      "t_low": 0.17890216875612688
+    },
+    "share_definition": "Shares are fractions of words in sentences whose calibrated sentence probability is >= 0.73 (AI-associated), <= 0.18 (human-associated) or in between (uncertain/mixed)."
+  },
+  "detectors": [
+    {
+      "name": "statistical",
+      "label": "Statistical model (gradient boosting, all features)",
+      "probability": 0.995,
+      "confidence": 0.9999999999999996,
+      "error_estimate": 1.1102230246251565e-16,
+      "weight": 0.6472750639755831,
+      "validation_brier": 0.09879022786198874,
+      "validation_auc": 0.9383245944898072,
+      "n_features": 121
+    },
+    {
+      "name": "neural",
+      "label": "Neural network (MLP, all features)",
+      "probability": 0.9740674785184251,
+      "confidence": 0.9999999999999996,
+      "error_estimate": 1.1102230246251565e-16,
+      "weight": 0.35272493602441696,
+      "validation_brier": 0.11184326317510584,
+      "validation_auc": 0.9205734450340497,
+      "n_features": 121
+    },
+    {
+      "name": "perplexity",
+      "label": "Perplexity model",
+      "probability": 0.6032773264311152,
+      "confidence": 0.9822128002680865,
+      "error_estimate": 0.0044467999329783495,
+      "weight": 0.0,
+      "validation_brier": 0.22915636129416878,
+      "validation_auc": 0.6693323156365389,
+      "n_features": 8
+    },
+    {
+      "name": "burstiness",
+      "label": "Burstiness model",
+      "probability": 0.6352025680027462,
+      "confidence": 0.9759575429505798,
+      "error_estimate": 0.006010614262355054,
+      "weight": 0.0,
+      "validation_brier": 0.21797387367896884,
+      "validation_auc": 0.7131496417500245,
+      "n_features": 11
+    },
+    {
+      "name": "stylometric",
+      "label": "Stylometric model",
+      "probability": 0.9116308621436432,
+      "confidence": 0.9895365357110625,
+      "error_estimate": 0.002615866072234379,
+      "weight": 0.0,
+      "validation_brier": 0.1806455724632289,
+      "validation_auc": 0.8044171809913181,
+      "n_features": 44
+    },
+    {
+      "name": "vocabulary",
+      "label": "Vocabulary model",
+      "probability": 0.8066345282580513,
+      "confidence": 0.9929084676415731,
+      "error_estimate": 0.0017728830896067017,
+      "weight": 0.0,
+      "validation_brier": 0.1903893905806836,
+      "validation_auc": 0.781375147780224,
+      "n_features": 12
+    },
+    {
+      "name": "syntax",
+      "label": "Syntax model",
+      "probability": 0.632320614225258,
+      "confidence": 0.9721022100489373,
+      "error_estimate": 0.00697444748776569,
+      "weight": 0.0,
+      "validation_brier": 0.2090191249253117,
+      "validation_auc": 0.7353438564348619,
+      "n_features": 11
+    },
+    {
+      "name": "semantic",
+      "label": "Semantic model",
+      "probability": 0.6967936588062501,
+      "confidence": 0.9855594350462203,
+      "error_estimate": 0.0036101412384449273,
+      "weight": 0.0,
+      "validation_brier": 0.21661062198345943,
+      "validation_auc": 0.709640263571688,
+      "n_features": 9
+    },
+    {
+      "name": "repetition",
+      "label": "Repetition & transitions model",
+      "probability": 0.8773470753885539,
+      "confidence": 0.9716588516325736,
+      "error_estimate": 0.007085287091856606,
+      "weight": 0.0,
+      "validation_brier": 0.2013033020695863,
+      "validation_auc": 0.7532871966777124,
+      "n_features": 22
+    }
+  ],
+  "disagreement": {
+    "std": 0.14565133735875763,
+    "range": 0.3917226735688848,
+    "most_ai": "Statistical model (gradient boosting, all features)",
+    "most_human": "Perplexity model",
+    "note": "The detectors partly disagree."
+  },
+  "ensemble_weights": {
+    "perplexity": 0.0,
+    "burstiness": 0.0,
+    "stylometric": 0.0,
+    "vocabulary": 0.0,
+    "syntax": 0.0,
+    "semantic": 0.0,
+    "repetition": 0.0,
+    "statistical": 0.6472750639755831,
+    "neural": 0.35272493602441696
+  },
+  "sentences": [
+    {
+      "index": 0,
+      "number": 1,
+      "text": "One of the most helpful tools for clinical office assistants is Call",
+      "start": 0,
+      "end": 68,
+      "paragraph": 0,
+      "words": 12,
+      "probability": 0.7324200911316123,
+      "band": "ai",
+      "level": "elevated indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "voc_mtld",
+            "family": "vocabulary",
+            "label": "vocabulary diversity (MTLD)",
+            "contribution": 0.5078,
+            "value": 157.50000000000006,
+            "human_percentile": 95.3,
+            "text": "higher lexical diversity"
+          },
+          {
+            "feature": "sty_article_frac",
+            "family": "stylometric",
+            "label": "article usage",
+            "contribution": 0.4853,
+            "value": 0.02666666666666667,
+            "human_percentile": 4.5,
+            "text": "fewer articles"
+          },
+          {
+            "feature": "sty_word_len_mean",
+            "family": "stylometric",
+            "label": "average word length",
+            "contribution": 0.4368,
+            "value": 5.653333333333333,
+            "human_percentile": 93.6,
+            "text": "longer words"
+          },
+          {
+            "feature": "sty_pos_aux_frac",
+            "family": "stylometric",
+            "label": "auxiliary-verb share",
+            "contribution": 0.3745,
+            "value": 0.02666666666666667,
+            "human_percentile": 16.0,
+            "text": "few auxiliary verbs"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "rep_bigram",
+            "family": "repetition",
+            "label": "repeated word pairs",
+            "contribution": -0.3071,
+            "value": 0.02702702702702703,
+            "human_percentile": 20.2,
+            "text": "few repeated word pairs"
+          },
+          {
+            "feature": "sty_pos_noun_frac",
+            "family": "stylometric",
+            "label": "noun share",
+            "contribution": -0.2543,
+            "value": 0.29333333333333333,
+            "human_percentile": 85.5,
+            "text": "more nouns (nominal, information-dense style)"
+          }
+        ]
+      },
+      "explanation": "Factors contributing to the elevated score:\n• higher lexical diversity\n• fewer articles\n• longer words\n• few auxiliary verbs\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5802,
+        "burstiness": 0.4019,
+        "stylometric": 0.6263,
+        "vocabulary": 0.6346,
+        "syntax": 0.3717,
+        "semantic": 0.4385,
+        "repetition": 0.457,
+        "statistical": 0.6751,
+        "neural": 0.6772
+      }
+    },
+    {
+      "index": 1,
+      "number": 2,
+      "text": "Please.",
+      "start": 69,
+      "end": 76,
+      "paragraph": 0,
+      "words": 1,
+      "probability": 0.7324200911316123,
+      "band": "ai",
+      "level": "elevated indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "voc_mtld",
+            "family": "vocabulary",
+            "label": "vocabulary diversity (MTLD)",
+            "contribution": 0.5078,
+            "value": 157.50000000000006,
+            "human_percentile": 95.3,
+            "text": "higher lexical diversity"
+          },
+          {
+            "feature": "sty_article_frac",
+            "family": "stylometric",
+            "label": "article usage",
+            "contribution": 0.4853,
+            "value": 0.02666666666666667,
+            "human_percentile": 4.5,
+            "text": "fewer articles"
+          },
+          {
+            "feature": "sty_word_len_mean",
+            "family": "stylometric",
+            "label": "average word length",
+            "contribution": 0.4368,
+            "value": 5.653333333333333,
+            "human_percentile": 93.6,
+            "text": "longer words"
+          },
+          {
+            "feature": "sty_pos_aux_frac",
+            "family": "stylometric",
+            "label": "auxiliary-verb share",
+            "contribution": 0.3745,
+            "value": 0.02666666666666667,
+            "human_percentile": 16.0,
+            "text": "few auxiliary verbs"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "rep_bigram",
+            "family": "repetition",
+            "label": "repeated word pairs",
+            "contribution": -0.3071,
+            "value": 0.02702702702702703,
+            "human_percentile": 20.2,
+            "text": "few repeated word pairs"
+          },
+          {
+            "feature": "sty_pos_noun_frac",
+            "family": "stylometric",
+            "label": "noun share",
+            "contribution": -0.2543,
+            "value": 0.29333333333333333,
+            "human_percentile": 85.5,
+            "text": "more nouns (nominal, information-dense style)"
+          }
+        ]
+      },
+      "explanation": "Factors contributing to the elevated score:\n• higher lexical diversity\n• fewer articles\n• longer words\n• few auxiliary verbs\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5802,
+        "burstiness": 0.4019,
+        "stylometric": 0.6263,
+        "vocabulary": 0.6346,
+        "syntax": 0.3717,
+        "semantic": 0.4385,
+        "repetition": 0.457,
+        "statistical": 0.6751,
+        "neural": 0.6772
+      }
+    },
+    {
+      "index": 2,
+      "number": 3,
+      "text": "This tool allows them to easily manage incoming calls, log communication details, and track follow-ups.",
+      "start": 77,
+      "end": 180,
+      "paragraph": 0,
+      "words": 16,
+      "probability": 0.7324200911316123,
+      "band": "ai",
+      "level": "elevated indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "voc_mtld",
+            "family": "vocabulary",
+            "label": "vocabulary diversity (MTLD)",
+            "contribution": 0.5078,
+            "value": 157.50000000000006,
+            "human_percentile": 95.3,
+            "text": "higher lexical diversity"
+          },
+          {
+            "feature": "sty_article_frac",
+            "family": "stylometric",
+            "label": "article usage",
+            "contribution": 0.4853,
+            "value": 0.02666666666666667,
+            "human_percentile": 4.5,
+            "text": "fewer articles"
+          },
+          {
+            "feature": "sty_word_len_mean",
+            "family": "stylometric",
+            "label": "average word length",
+            "contribution": 0.4368,
+            "value": 5.653333333333333,
+            "human_percentile": 93.6,
+            "text": "longer words"
+          },
+          {
+            "feature": "sty_pos_aux_frac",
+            "family": "stylometric",
+            "label": "auxiliary-verb share",
+            "contribution": 0.3745,
+            "value": 0.02666666666666667,
+            "human_percentile": 16.0,
+            "text": "few auxiliary verbs"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "rep_bigram",
+            "family": "repetition",
+            "label": "repeated word pairs",
+            "contribution": -0.3071,
+            "value": 0.02702702702702703,
+            "human_percentile": 20.2,
+            "text": "few repeated word pairs"
+          },
+          {
+            "feature": "sty_pos_noun_frac",
+            "family": "stylometric",
+            "label": "noun share",
+            "contribution": -0.2543,
+            "value": 0.29333333333333333,
+            "human_percentile": 85.5,
+            "text": "more nouns (nominal, information-dense style)"
+          }
+        ]
+      },
+      "explanation": "Factors contributing to the elevated score:\n• higher lexical diversity\n• fewer articles\n• longer words\n• few auxiliary verbs\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5802,
+        "burstiness": 0.4019,
+        "stylometric": 0.6263,
+        "vocabulary": 0.6346,
+        "syntax": 0.3717,
+        "semantic": 0.4385,
+        "repetition": 0.457,
+        "statistical": 0.6751,
+        "neural": 0.6772
+      }
+    },
+    {
+      "index": 3,
+      "number": 4,
+      "text": "With its user-friendly interface and intuitive functionalities, Call Please ensures that no important phone calls are missed, providing prompt and efficient communication with patients and other stakeholders.",
+      "start": 181,
+      "end": 389,
+      "paragraph": 0,
+      "words": 28,
+      "probability": 0.8802408762486097,
+      "band": "ai",
+      "level": "very high model indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "sty_word_len_mean",
+            "family": "stylometric",
+            "label": "average word length",
+            "contribution": 0.596,
+            "value": 5.87012987012987,
+            "human_percentile": 95.2,
+            "text": "longer words"
+          },
+          {
+            "feature": "sty_article_frac",
+            "family": "stylometric",
+            "label": "article usage",
+            "contribution": 0.4157,
+            "value": 0.012987012987012988,
+            "human_percentile": 2.2,
+            "text": "fewer articles"
+          },
+          {
+            "feature": "voc_mattr",
+            "family": "vocabulary",
+            "label": "vocabulary diversity (MATTR)",
+            "contribution": 0.3493,
+            "value": 0.9107142857142857,
+            "human_percentile": 96.2,
+            "text": "higher lexical diversity"
+          },
+          {
+            "feature": "ppl_sent_min",
+            "family": "perplexity",
+            "label": "lowest sentence perplexity",
+            "contribution": 0.3351,
+            "value": 11.468033758194105,
+            "human_percentile": 92.6,
+            "text": "no extremely predictable sentences"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "sty_cconj_frac",
+            "family": "stylometric",
+            "label": "coordinating conjunctions",
+            "contribution": -0.3512,
+            "value": 0.07792207792207792,
+            "human_percentile": 95.3,
+            "text": "many coordinating conjunctions"
+          },
+          {
+            "feature": "sty_pos_noun_frac",
+            "family": "stylometric",
+            "label": "noun share",
+            "contribution": -0.3237,
+            "value": 0.3246753246753247,
+            "human_percentile": 94.1,
+            "text": "more nouns (nominal, information-dense style)"
+          }
+        ]
+      },
+      "explanation": "Factors contributing to the elevated score:\n• longer words\n• fewer articles\n• higher lexical diversity\n• no extremely predictable sentences\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.6613,
+        "burstiness": 0.4595,
+        "stylometric": 0.6784,
+        "vocabulary": 0.6247,
+        "syntax": 0.3554,
+        "semantic": 0.4151,
+        "repetition": 0.4976,
+        "statistical": 0.8348,
+        "neural": 0.6291
+      }
+    },
+    {
+      "index": 4,
+      "number": 5,
+      "text": "This not only saves time but also improves the overall service quality by preventing any delays or miscommunication.",
+      "start": 390,
+      "end": 506,
+      "paragraph": 0,
+      "words": 18,
+      "probability": 0.9520488294471228,
+      "band": "ai",
+      "level": "very high model indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "sty_word_len_mean",
+            "family": "stylometric",
+            "label": "average word length",
+            "contribution": 0.4127,
+            "value": 5.684782608695652,
+            "human_percentile": 94.4,
+            "text": "longer words"
+          },
+          {
+            "feature": "voc_zipf_std",
+            "family": "vocabulary",
+            "label": "variation in word commonness",
+            "contribution": 0.3169,
+            "value": 0.7629657520410761,
+            "human_percentile": 23.1,
+            "text": "uniform word commonness"
+          },
+          {
+            "feature": "ppl_token_median",
+            "family": "perplexity",
+            "label": "median word predictability",
+            "contribution": 0.3161,
+            "value": 12.889081008162966,
+            "human_percentile": 90.4,
+            "text": "predominantly less predictable words"
+          },
+          {
+            "feature": "voc_mtld",
+            "family": "vocabulary",
+            "label": "vocabulary diversity (MTLD)",
+            "contribution": 0.3094,
+            "value": 157.99466666666672,
+            "human_percentile": 95.3,
+            "text": "higher lexical diversity"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "tra_initial_frac",
+            "family": "repetition",
+            "label": "sentence-initial transitions",
+            "contribution": -0.304,
+            "value": 0.0,
+            "human_percentile": 20.0,
+            "text": "transitions placed mid-sentence"
+          },
+          {
+            "feature": "sty_pos_noun_frac",
+            "family": "stylometric",
+            "label": "noun share",
+            "contribution": -0.2327,
+            "value": 0.31521739130434784,
+            "human_percentile": 91.9,
+            "text": "more nouns (nominal, information-dense style)"
+          }
+        ]
+      },
+      "explanation": "Factors contributing to the elevated score:\n• longer words\n• uniform word commonness\n• predominantly less predictable words\n• higher lexical diversity\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.6386,
+        "burstiness": 0.6185,
+        "stylometric": 0.7736,
+        "vocabulary": 0.7104,
+        "syntax": 0.5288,
+        "semantic": 0.4562,
+        "repetition": 0.5062,
+        "statistical": 0.9241,
+        "neural": 0.6647
+      }
+    },
+    {
+      "index": 5,
+      "number": 6,
+      "text": "Evernote is another valuable time management tool that clinical office assistants can benefit from.",
+      "start": 507,
+      "end": 606,
+      "paragraph": 1,
+      "words": 14,
+      "probability": 0.98055029778441,
+      "band": "ai",
+      "level": "very high model indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "sty_article_frac",
+            "family": "stylometric",
+            "label": "article usage",
+            "contribution": 0.6826,
+            "value": 0.020618556701030927,
+            "human_percentile": 3.5,
+            "text": "fewer articles"
+          },
+          {
+            "feature": "sty_word_len_mean",
+            "family": "stylometric",
+            "label": "average word length",
+            "contribution": 0.5408,
+            "value": 5.835051546391752,
+            "human_percentile": 95.1,
+            "text": "longer words"
+          },
+          {
+            "feature": "voc_mtld",
+            "family": "vocabulary",
+            "label": "vocabulary diversity (MTLD)",
+            "contribution": 0.444,
+            "value": 164.65750000000006,
+            "human_percentile": 95.4,
+            "text": "higher lexical diversity"
+          },
+          {
+            "feature": "tra_exemplifying_rate",
+            "family": "repetition",
+            "label": "exemplifying transitions (for example)",
+            "contribution": 0.4238,
+            "value": 0.2,
+            "human_percentile": 90.0,
+            "text": "many signposted examples"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "sty_pos_noun_frac",
+            "family": "stylometric",
+            "label": "noun share",
+            "contribution": -0.3841,
+            "value": 0.31958762886597936,
+            "human_percentile": 92.9,
+            "text": "more nouns (nominal, information-dense style)"
+          },
+          {
+            "feature": "sty_pos_propn_frac",
+            "family": "stylometric",
+            "label": "proper-noun share",
+            "contribution": -0.228,
+            "value": 0.010309278350515464,
+            "human_percentile": 25.0,
+            "text": "few names and proper nouns"
+          }
+        ]
+      },
+      "explanation": "Factors contributing to the elevated score:\n• fewer articles\n• longer words\n• higher lexical diversity\n• many signposted examples\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5682,
+        "burstiness": 0.6442,
+        "stylometric": 0.7695,
+        "vocabulary": 0.6498,
+        "syntax": 0.6074,
+        "semantic": 0.5549,
+        "repetition": 0.5883,
+        "statistical": 0.9593,
+        "neural": 0.8246
+      }
+    },
+    {
+      "index": 6,
+      "number": 7,
+      "text": "It is a note-taking application that allows users to create, organize, and share digital notes.",
+      "start": 607,
+      "end": 702,
+      "paragraph": 1,
+      "words": 16,
+      "probability": 0.9906333019057483,
+      "band": "ai",
+      "level": "very high model indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "sty_word_len_mean",
+            "family": "stylometric",
+            "label": "average word length",
+            "contribution": 0.5093,
+            "value": 5.791666666666667,
+            "human_percentile": 95.1,
+            "text": "longer words"
+          },
+          {
+            "feature": "tra_exemplifying_rate",
+            "family": "repetition",
+            "label": "exemplifying transitions (for example)",
+            "contribution": 0.3656,
+            "value": 0.2,
+            "human_percentile": 90.0,
+            "text": "many signposted examples"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.365,
+            "value": 0.0,
+            "human_percentile": 35.0,
+            "text": "few numbers and figures"
+          },
+          {
+            "feature": "voc_mattr",
+            "family": "vocabulary",
+            "label": "vocabulary diversity (MATTR)",
+            "contribution": 0.2708,
+            "value": 0.88,
+            "human_percentile": 94.4,
+            "text": "higher lexical diversity"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "sty_pos_noun_frac",
+            "family": "stylometric",
+            "label": "noun share",
+            "contribution": -0.3152,
+            "value": 0.34375,
+            "human_percentile": 95.2,
+            "text": "more nouns (nominal, information-dense style)"
+          },
+          {
+            "feature": "tra_initial_frac",
+            "family": "repetition",
+            "label": "sentence-initial transitions",
+            "contribution": -0.2392,
+            "value": 0.0,
+            "human_percentile": 20.0,
+            "text": "transitions placed mid-sentence"
+          }
+        ]
+      },
+      "explanation": "Factors contributing to the elevated score:\n• longer words\n• many signposted examples\n• few numbers and figures\n• higher lexical diversity\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.6054,
+        "burstiness": 0.6821,
+        "stylometric": 0.7844,
+        "vocabulary": 0.6037,
+        "syntax": 0.6515,
+        "semantic": 0.524,
+        "repetition": 0.6643,
+        "statistical": 0.9683,
+        "neural": 0.7969
+      }
+    },
+    {
+      "index": 7,
+      "number": 8,
+      "text": "Clinical office assistants can use Evernote to keep track of important information such as patient records, medical history, and appointment schedules.",
+      "start": 703,
+      "end": 854,
+      "paragraph": 1,
+      "words": 21,
+      "probability": 0.970380274814349,
+      "band": "ai",
+      "level": "very high model indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "sem_local_gain",
+            "family": "semantic",
+            "label": "local coherence",
+            "contribution": 0.5799,
+            "value": -0.14998729691051849,
+            "human_percentile": 4.3,
+            "text": "weak local coherence"
+          },
+          {
+            "feature": "bur_sent_len_cv",
+            "family": "burstiness",
+            "label": "relative sentence-length variation",
+            "contribution": 0.4302,
+            "value": 0.2319014820454019,
+            "human_percentile": 16.0,
+            "text": "low relative variation in sentence length"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.3835,
+            "value": 0.0,
+            "human_percentile": 35.0,
+            "text": "few numbers and figures"
+          },
+          {
+            "feature": "tra_exemplifying_rate",
+            "family": "repetition",
+            "label": "exemplifying transitions (for example)",
+            "contribution": 0.3493,
+            "value": 0.2,
+            "human_percentile": 90.0,
+            "text": "many signposted examples"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "sty_pos_noun_frac",
+            "family": "stylometric",
+            "label": "noun share",
+            "contribution": -0.5034,
+            "value": 0.3711340206185567,
+            "human_percentile": 95.7,
+            "text": "more nouns (nominal, information-dense style)"
+          },
+          {
+            "feature": "sty_pos_adj_frac",
+            "family": "stylometric",
+            "label": "adjective share",
+            "contribution": -0.2389,
+            "value": 0.14432989690721648,
+            "human_percentile": 92.5,
+            "text": "many adjectives"
+          }
+        ]
+      },
+      "explanation": "Factors contributing to the elevated score:\n• weak local coherence\n• low relative variation in sentence length\n• few numbers and figures\n• many signposted examples\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.6636,
+        "burstiness": 0.6834,
+        "stylometric": 0.7663,
+        "vocabulary": 0.7458,
+        "syntax": 0.6459,
+        "semantic": 0.7,
+        "repetition": 0.5513,
+        "statistical": 0.9528,
+        "neural": 0.8327
+      }
+    },
+    {
+      "index": 8,
+      "number": 9,
+      "text": "This tool enhances productivity by providing easy access to essential data, eliminating the need for manual searching through paper documents, and improving the efficiency of information retrieval.",
+      "start": 855,
+      "end": 1052,
+      "paragraph": 1,
+      "words": 27,
+      "probability": 0.9906333019057483,
+      "band": "ai",
+      "level": "very high model indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.4579,
+            "value": 8.333333333333334,
+            "human_percentile": 88.9,
+            "text": "many commas"
+          },
+          {
+            "feature": "sty_word_len_mean",
+            "family": "stylometric",
+            "label": "average word length",
+            "contribution": 0.3488,
+            "value": 5.708333333333333,
+            "human_percentile": 94.9,
+            "text": "longer words"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.3363,
+            "value": 0.0,
+            "human_percentile": 35.0,
+            "text": "few numbers and figures"
+          },
+          {
+            "feature": "ppl_sent_min",
+            "family": "perplexity",
+            "label": "lowest sentence perplexity",
+            "contribution": 0.3232,
+            "value": 10.825296632178448,
+            "human_percentile": 81.0,
+            "text": "no extremely predictable sentences"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_type_entropy",
+            "family": "stylometric",
+            "label": "punctuation variety",
+            "contribution": -0.1785,
+            "value": 0.2893610509517873,
+            "human_percentile": 16.3,
+            "text": "narrow punctuation repertoire"
+          },
+          {
+            "feature": "sem_topic_jump_rate",
+            "family": "semantic",
+            "label": "topic jumps",
+            "contribution": -0.1577,
+            "value": 0.0,
+            "human_percentile": 5.0,
+            "text": "few topic jumps"
+          }
+        ]
+      },
+      "explanation": "Factors contributing to the elevated score:\n• many commas\n• longer words\n• few numbers and figures\n• no extremely predictable sentences\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.6697,
+        "burstiness": 0.6696,
+        "stylometric": 0.8257,
+        "vocabulary": 0.6181,
+        "syntax": 0.7285,
+        "semantic": 0.4181,
+        "repetition": 0.5355,
+        "statistical": 0.9711,
+        "neural": 0.77
+      }
+    },
+    {
+      "index": 9,
+      "number": 10,
+      "text": "Todoist is a popular task management tool that can significantly improve the time management skills of clinical office assistants.",
+      "start": 1053,
+      "end": 1183,
+      "paragraph": 2,
+      "words": 19,
+      "probability": 0.995,
+      "band": "ai",
+      "level": "very high model indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.3961,
+            "value": 0.0,
+            "human_percentile": 35.0,
+            "text": "few numbers and figures"
+          },
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.373,
+            "value": 7.407407407407407,
+            "human_percentile": 83.6,
+            "text": "many commas"
+          },
+          {
+            "feature": "bur_vocab_std",
+            "family": "burstiness",
+            "label": "vocabulary variation between sentences",
+            "contribution": 0.3242,
+            "value": 0.02847246133662525,
+            "human_percentile": 8.6,
+            "text": "uniform vocabulary density across sentences"
+          },
+          {
+            "feature": "bur_sent_len_cv",
+            "family": "burstiness",
+            "label": "relative sentence-length variation",
+            "contribution": 0.2981,
+            "value": 0.2545875386086578,
+            "human_percentile": 20.7,
+            "text": "low relative variation in sentence length"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "voc_lexical_density",
+            "family": "vocabulary",
+            "label": "lexical density",
+            "contribution": -0.2265,
+            "value": 0.6574074074074074,
+            "human_percentile": 94.0,
+            "text": "more content words"
+          },
+          {
+            "feature": "sty_pos_propn_frac",
+            "family": "stylometric",
+            "label": "proper-noun share",
+            "contribution": -0.2106,
+            "value": 0.009259259259259259,
+            "human_percentile": 24.5,
+            "text": "few names and proper nouns"
+          }
+        ]
+      },
+      "explanation": "Factors contributing to the elevated score:\n• few numbers and figures\n• many commas\n• uniform vocabulary density across sentences\n• low relative variation in sentence length\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.6955,
+        "burstiness": 0.6803,
+        "stylometric": 0.8429,
+        "vocabulary": 0.7092,
+        "syntax": 0.7147,
+        "semantic": 0.5932,
+        "repetition": 0.6119,
+        "statistical": 0.9822,
+        "neural": 0.8832
+      }
+    },
+    {
+      "index": 10,
+      "number": 11,
+      "text": "It enables them to create task lists, set reminders, and prioritize their work.",
+      "start": 1184,
+      "end": 1263,
+      "paragraph": 2,
+      "words": 13,
+      "probability": 0.995,
+      "band": "ai",
+      "level": "very high model indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "tra_conclusive_rate",
+            "family": "repetition",
+            "label": "concluding transitions (in conclusion, overall)",
+            "contribution": 0.4741,
+            "value": 0.2,
+            "human_percentile": 96.0,
+            "text": "many concluding transitions"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.3884,
+            "value": 0.0,
+            "human_percentile": 35.0,
+            "text": "few numbers and figures"
+          },
+          {
+            "feature": "sty_word_len_mean",
+            "family": "stylometric",
+            "label": "average word length",
+            "contribution": 0.3854,
+            "value": 5.747663551401869,
+            "human_percentile": 95.0,
+            "text": "longer words"
+          },
+          {
+            "feature": "ppl_token_median",
+            "family": "perplexity",
+            "label": "median word predictability",
+            "contribution": 0.3725,
+            "value": 12.855861727214092,
+            "human_percentile": 90.0,
+            "text": "predominantly less predictable words"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "sty_pos_propn_frac",
+            "family": "stylometric",
+            "label": "proper-noun share",
+            "contribution": -0.3496,
+            "value": 0.0,
+            "human_percentile": 20.0,
+            "text": "few names and proper nouns"
+          },
+          {
+            "feature": "voc_yule_k",
+            "family": "vocabulary",
+            "label": "vocabulary concentration (Yule's K)",
+            "contribution": -0.0768,
+            "value": 80.35636300113546,
+            "human_percentile": 13.1,
+            "text": "less concentrated vocabulary"
+          }
+        ]
+      },
+      "explanation": "Factors contributing to the elevated score:\n• many concluding transitions\n• few numbers and figures\n• longer words\n• predominantly less predictable words\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.7371,
+        "burstiness": 0.674,
+        "stylometric": 0.846,
+        "vocabulary": 0.722,
+        "syntax": 0.6236,
+        "semantic": 0.5296,
+        "repetition": 0.7568,
+        "statistical": 0.9848,
+        "neural": 0.9392
+      }
+    },
+    {
+      "index": 11,
+      "number": 12,
+      "text": "By having a clear overview of their daily tasks and deadlines, clinical office assistants can effectively plan and organize their workflow, ensuring that nothing is overlooked or forgotten.",
+      "start": 1264,
+      "end": 1453,
+      "paragraph": 2,
+      "words": 28,
+      "probability": 0.995,
+      "band": "ai",
+      "level": "very high model indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "ppl_token_median",
+            "family": "perplexity",
+            "label": "median word predictability",
+            "contribution": 0.5143,
+            "value": 12.922219357129123,
+            "human_percentile": 90.8,
+            "text": "predominantly less predictable words"
+          },
+          {
+            "feature": "tra_conclusive_rate",
+            "family": "repetition",
+            "label": "concluding transitions (in conclusion, overall)",
+            "contribution": 0.514,
+            "value": 0.2,
+            "human_percentile": 96.0,
+            "text": "many concluding transitions"
+          },
+          {
+            "feature": "ppl_sent_min",
+            "family": "perplexity",
+            "label": "lowest sentence perplexity",
+            "contribution": 0.5021,
+            "value": 11.877058666440918,
+            "human_percentile": 95.1,
+            "text": "no extremely predictable sentences"
+          },
+          {
+            "feature": "sem_local_gain",
+            "family": "semantic",
+            "label": "local coherence",
+            "contribution": 0.4796,
+            "value": -0.05338542007502295,
+            "human_percentile": 11.1,
+            "text": "weak local coherence"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "sty_pos_noun_frac",
+            "family": "stylometric",
+            "label": "noun share",
+            "contribution": -0.3321,
+            "value": 0.30612244897959184,
+            "human_percentile": 89.7,
+            "text": "more nouns (nominal, information-dense style)"
+          },
+          {
+            "feature": "sty_pos_propn_frac",
+            "family": "stylometric",
+            "label": "proper-noun share",
+            "contribution": -0.2853,
+            "value": 0.01020408163265306,
+            "human_percentile": 24.9,
+            "text": "few names and proper nouns"
+          }
+        ]
+      },
+      "explanation": "Factors contributing to the elevated score:\n• predominantly less predictable words\n• many concluding transitions\n• no extremely predictable sentences\n• weak local coherence\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.707,
+        "burstiness": 0.6518,
+        "stylometric": 0.8032,
+        "vocabulary": 0.7083,
+        "syntax": 0.6231,
+        "semantic": 0.5749,
+        "repetition": 0.6842,
+        "statistical": 0.9851,
+        "neural": 0.8418
+      }
+    },
+    {
+      "index": 12,
+      "number": 13,
+      "text": "This tool empowers them to stay focused and complete tasks in a timely manner, ultimately enhancing productivity and service delivery.",
+      "start": 1454,
+      "end": 1588,
+      "paragraph": 2,
+      "words": 20,
+      "probability": 0.995,
+      "band": "ai",
+      "level": "very high model indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "ppl_sent_min",
+            "family": "perplexity",
+            "label": "lowest sentence perplexity",
+            "contribution": 0.6766,
+            "value": 11.877058666440918,
+            "human_percentile": 95.1,
+            "text": "no extremely predictable sentences"
+          },
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.6358,
+            "value": 9.574468085106384,
+            "human_percentile": 93.3,
+            "text": "many commas"
+          },
+          {
+            "feature": "sty_pron3_frac",
+            "family": "stylometric",
+            "label": "third-person pronouns",
+            "contribution": 0.5776,
+            "value": 0.07446808510638298,
+            "human_percentile": 92.4,
+            "text": "many third-person pronouns"
+          },
+          {
+            "feature": "sty_word_len_mean",
+            "family": "stylometric",
+            "label": "average word length",
+            "contribution": 0.5474,
+            "value": 5.98936170212766,
+            "human_percentile": 95.3,
+            "text": "longer words"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "sem_redundancy",
+            "family": "semantic",
+            "label": "semantic redundancy",
+            "contribution": -0.2869,
+            "value": 0.07686187880409141,
+            "human_percentile": 21.8,
+            "text": "little restatement"
+          },
+          {
+            "feature": "sty_pos_propn_frac",
+            "family": "stylometric",
+            "label": "proper-noun share",
+            "contribution": -0.2424,
+            "value": 0.010638297872340425,
+            "human_percentile": 25.4,
+            "text": "few names and proper nouns"
+          }
+        ]
+      },
+      "explanation": "Factors contributing to the elevated score:\n• no extremely predictable sentences\n• many commas\n• many third-person pronouns\n• longer words\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.7026,
+        "burstiness": 0.6152,
+        "stylometric": 0.8811,
+        "vocabulary": 0.7697,
+        "syntax": 0.5617,
+        "semantic": 0.4181,
+        "repetition": 0.6757,
+        "statistical": 0.9779,
+        "neural": 0.8561
+      }
+    },
+    {
+      "index": 13,
+      "number": 14,
+      "text": "NueMD is a comprehensive practice management software that offers various features to streamline administrative processes in clinical offices.",
+      "start": 1589,
+      "end": 1731,
+      "paragraph": 3,
+      "words": 18,
+      "probability": 0.995,
+      "band": "ai",
+      "level": "very high model indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "sty_word_len_mean",
+            "family": "stylometric",
+            "label": "average word length",
+            "contribution": 0.569,
+            "value": 6.206185567010309,
+            "human_percentile": 95.5,
+            "text": "longer words"
+          },
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.5465,
+            "value": 10.309278350515465,
+            "human_percentile": 95.0,
+            "text": "many commas"
+          },
+          {
+            "feature": "ppl_sent_min",
+            "family": "perplexity",
+            "label": "lowest sentence perplexity",
+            "contribution": 0.5361,
+            "value": 11.877058666440918,
+            "human_percentile": 95.1,
+            "text": "no extremely predictable sentences"
+          },
+          {
+            "feature": "sty_long_word_frac",
+            "family": "stylometric",
+            "label": "share of long words",
+            "contribution": 0.5137,
+            "value": 0.4845360824742268,
+            "human_percentile": 96.3,
+            "text": "many long words"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "voc_oov_frac",
+            "family": "vocabulary",
+            "label": "unknown/misspelled word share",
+            "contribution": -0.4766,
+            "value": 0.029850746268656716,
+            "human_percentile": 70.0,
+            "text": "many unknown words or misspellings"
+          },
+          {
+            "feature": "rep_pos_trigram",
+            "family": "repetition",
+            "label": "repeated grammatical templates",
+            "contribution": -0.2385,
+            "value": 0.30526315789473685,
+            "human_percentile": 28.9,
+            "text": "few repeated syntactic templates"
+          }
+        ]
+      },
+      "explanation": "Factors contributing to the elevated score:\n• longer words\n• many commas\n• no extremely predictable sentences\n• many long words\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.648,
+        "burstiness": 0.6304,
+        "stylometric": 0.8985,
+        "vocabulary": 0.7647,
+        "syntax": 0.5072,
+        "semantic": 0.5855,
+        "repetition": 0.7028,
+        "statistical": 0.9853,
+        "neural": 0.9081
+      }
+    },
+    {
+      "index": 14,
+      "number": 15,
+      "text": "It provides tools for appointment scheduling, electronic medical records management, billing, and reporting, among others.",
+      "start": 1732,
+      "end": 1854,
+      "paragraph": 3,
+      "words": 15,
+      "probability": 0.995,
+      "band": "ai",
+      "level": "very high model indication",
+      "confidence": "Medium",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "bur_sent_len_cv",
+            "family": "burstiness",
+            "label": "relative sentence-length variation",
+            "contribution": 0.5647,
+            "value": 0.12668615834434868,
+            "human_percentile": 4.0,
+            "text": "low relative variation in sentence length"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.5203,
+            "value": 0.0,
+            "human_percentile": 35.0,
+            "text": "few numbers and figures"
+          },
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.4766,
+            "value": 10.0,
+            "human_percentile": 94.7,
+            "text": "many commas"
+          },
+          {
+            "feature": "ppl_token_median",
+            "family": "perplexity",
+            "label": "median word predictability",
+            "contribution": 0.4562,
+            "value": 13.354150941447196,
+            "human_percentile": 95.0,
+            "text": "predominantly less predictable words"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "voc_oov_frac",
+            "family": "vocabulary",
+            "label": "unknown/misspelled word share",
+            "contribution": -0.4979,
+            "value": 0.03225806451612903,
+            "human_percentile": 71.7,
+            "text": "many unknown words or misspellings"
+          },
+          {
+            "feature": "sty_pos_adj_frac",
+            "family": "stylometric",
+            "label": "adjective share",
+            "contribution": -0.4529,
+            "value": 0.15555555555555556,
+            "human_percentile": 95.0,
+            "text": "many adjectives"
+          }
+        ]
+      },
+      "explanation": "Factors contributing to the elevated score:\n• low relative variation in sentence length\n• few numbers and figures\n• many commas\n• predominantly less predictable words\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5426,
+        "burstiness": 0.7418,
+        "stylometric": 0.9073,
+        "vocabulary": 0.714,
+        "syntax": 0.5612,
+        "semantic": 0.541,
+        "repetition": 0.8474,
+        "statistical": 0.9917,
+        "neural": 0.6209
+      }
+    },
+    {
+      "index": 15,
+      "number": 16,
+      "text": "By utilizing NueMD, clinical office assistants can automate repetitive tasks, reduce paperwork, and enhance data accuracy.",
+      "start": 1855,
+      "end": 1977,
+      "paragraph": 3,
+      "words": 16,
+      "probability": 0.995,
+      "band": "ai",
+      "level": "very high model indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "sty_word_len_mean",
+            "family": "stylometric",
+            "label": "average word length",
+            "contribution": 0.619,
+            "value": 6.467391304347826,
+            "human_percentile": 95.8,
+            "text": "longer words"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.4689,
+            "value": 0.0,
+            "human_percentile": 35.0,
+            "text": "few numbers and figures"
+          },
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.4618,
+            "value": 11.956521739130435,
+            "human_percentile": 95.3,
+            "text": "many commas"
+          },
+          {
+            "feature": "bur_sent_len_cv",
+            "family": "burstiness",
+            "label": "relative sentence-length variation",
+            "contribution": 0.3908,
+            "value": 0.14824110540202018,
+            "human_percentile": 4.6,
+            "text": "low relative variation in sentence length"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_total_rate",
+            "family": "stylometric",
+            "label": "overall punctuation density",
+            "contribution": -0.1556,
+            "value": 17.391304347826086,
+            "human_percentile": 84.8,
+            "text": "dense punctuation"
+          },
+          {
+            "feature": "pun_comma_per_sent_std",
+            "family": "stylometric",
+            "label": "comma-count variation",
+            "contribution": -0.1556,
+            "value": 1.469693845669907,
+            "human_percentile": 89.2,
+            "text": "varied comma use per sentence"
+          }
+        ]
+      },
+      "explanation": "Factors contributing to the elevated score:\n• longer words\n• few numbers and figures\n• many commas\n• low relative variation in sentence length\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5435,
+        "burstiness": 0.7335,
+        "stylometric": 0.9271,
+        "vocabulary": 0.7682,
+        "syntax": 0.6098,
+        "semantic": 0.6146,
+        "repetition": 0.7875,
+        "statistical": 0.9947,
+        "neural": 0.9232
+      }
+    },
+    {
+      "index": 16,
+      "number": 17,
+      "text": "This allows them to allocate more time to patient care and other important responsibilities, ultimately improving the quality of service provided.",
+      "start": 1978,
+      "end": 2124,
+      "paragraph": 3,
+      "words": 21,
+      "probability": 0.995,
+      "band": "ai",
+      "level": "very high model indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.3679,
+            "value": 12.76595744680851,
+            "human_percentile": 95.4,
+            "text": "many commas"
+          },
+          {
+            "feature": "sty_word_len_mean",
+            "family": "stylometric",
+            "label": "average word length",
+            "contribution": 0.3378,
+            "value": 6.319148936170213,
+            "human_percentile": 95.7,
+            "text": "longer words"
+          },
+          {
+            "feature": "tra_conclusive_rate",
+            "family": "repetition",
+            "label": "concluding transitions (in conclusion, overall)",
+            "contribution": 0.2682,
+            "value": 0.2,
+            "human_percentile": 96.0,
+            "text": "many concluding transitions"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.1418,
+            "value": 0.0,
+            "human_percentile": 35.0,
+            "text": "few numbers and figures"
+          }
+        ],
+        "toward_human": []
+      },
+      "explanation": "Factors contributing to the elevated score:\n• many commas\n• longer words\n• many concluding transitions\n• few numbers and figures\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5409,
+        "burstiness": 0.7356,
+        "stylometric": 0.926,
+        "vocabulary": 0.7461,
+        "syntax": 0.6284,
+        "semantic": 0.523,
+        "repetition": 0.7881,
+        "statistical": 0.995,
+        "neural": 0.9412
+      }
+    },
+    {
+      "index": 17,
+      "number": 18,
+      "text": "Lastly, the Medical Assisting Pocket app provides clinical office assistants with access to quick medical references, drug information, and other essential resources.",
+      "start": 2125,
+      "end": 2291,
+      "paragraph": 4,
+      "words": 22,
+      "probability": 0.995,
+      "band": "ai",
+      "level": "very high model indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "tra_conclusive_rate",
+            "family": "repetition",
+            "label": "concluding transitions (in conclusion, overall)",
+            "contribution": 0.7047,
+            "value": 0.2,
+            "human_percentile": 96.0,
+            "text": "many concluding transitions"
+          },
+          {
+            "feature": "sty_long_word_frac",
+            "family": "stylometric",
+            "label": "share of long words",
+            "contribution": 0.461,
+            "value": 0.47115384615384615,
+            "human_percentile": 96.1,
+            "text": "many long words"
+          },
+          {
+            "feature": "voc_zipf_std",
+            "family": "vocabulary",
+            "label": "variation in word commonness",
+            "contribution": 0.4469,
+            "value": 0.69363560881983,
+            "human_percentile": 12.0,
+            "text": "uniform word commonness"
+          },
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.4201,
+            "value": 7.6923076923076925,
+            "human_percentile": 85.5,
+            "text": "many commas"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": -0.1874,
+            "value": 0.0673076923076923,
+            "human_percentile": 80.4,
+            "text": "many adverbs"
+          },
+          {
+            "feature": "voc_oov_frac",
+            "family": "vocabulary",
+            "label": "unknown/misspelled word share",
+            "contribution": -0.1634,
+            "value": 0.014285714285714285,
+            "human_percentile": 54.9,
+            "text": "few unknown words or misspellings"
+          }
+        ]
+      },
+      "explanation": "Factors contributing to the elevated score:\n• many concluding transitions\n• many long words\n• uniform word commonness\n• many commas\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5314,
+        "burstiness": 0.7166,
+        "stylometric": 0.8412,
+        "vocabulary": 0.7413,
+        "syntax": 0.5783,
+        "semantic": 0.5635,
+        "repetition": 0.8265,
+        "statistical": 0.9937,
+        "neural": 0.9412
+      }
+    },
+    {
+      "index": 18,
+      "number": 19,
+      "text": "By having instant access to crucial information, clinical office assistants can promptly respond to patient queries and make informed decisions.",
+      "start": 2292,
+      "end": 2436,
+      "paragraph": 4,
+      "words": 20,
+      "probability": 0.995,
+      "band": "ai",
+      "level": "very high model indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "tra_conclusive_rate",
+            "family": "repetition",
+            "label": "concluding transitions (in conclusion, overall)",
+            "contribution": 1.1426,
+            "value": 0.4,
+            "human_percentile": 97.0,
+            "text": "many concluding transitions"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.5603,
+            "value": 0.0,
+            "human_percentile": 35.0,
+            "text": "few numbers and figures"
+          },
+          {
+            "feature": "rep_trigram",
+            "family": "repetition",
+            "label": "repeated three-word sequences",
+            "contribution": 0.3175,
+            "value": 0.061946902654867256,
+            "human_percentile": 87.9,
+            "text": "many repeated phrases"
+          },
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.3004,
+            "value": 8.695652173913043,
+            "human_percentile": 90.5,
+            "text": "many commas"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": -0.4399,
+            "value": 0.06956521739130435,
+            "human_percentile": 82.0,
+            "text": "many adverbs"
+          },
+          {
+            "feature": "syn_dep_dist_mean",
+            "family": "syntax",
+            "label": "dependency distance",
+            "contribution": -0.3285,
+            "value": 2.596724503566609,
+            "human_percentile": 74.3,
+            "text": "long-distance syntactic dependencies"
+          }
+        ]
+      },
+      "explanation": "Factors contributing to the elevated score:\n• many concluding transitions\n• few numbers and figures\n• many repeated phrases\n• many commas\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.6167,
+        "burstiness": 0.773,
+        "stylometric": 0.856,
+        "vocabulary": 0.6747,
+        "syntax": 0.6479,
+        "semantic": 0.5916,
+        "repetition": 0.945,
+        "statistical": 0.9919,
+        "neural": 0.8748
+      }
+    },
+    {
+      "index": 19,
+      "number": 20,
+      "text": "This tool not only increases productivity but also enhances the overall service quality by ensuring that accurate and up-to-date information is readily available.",
+      "start": 2437,
+      "end": 2599,
+      "paragraph": 4,
+      "words": 25,
+      "probability": 0.995,
+      "band": "ai",
+      "level": "very high model indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "tra_conclusive_rate",
+            "family": "repetition",
+            "label": "concluding transitions (in conclusion, overall)",
+            "contribution": 0.9022,
+            "value": 0.2,
+            "human_percentile": 96.0,
+            "text": "many concluding transitions"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.2703,
+            "value": 0.0,
+            "human_percentile": 35.0,
+            "text": "few numbers and figures"
+          },
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.2644,
+            "value": 11.818181818181818,
+            "human_percentile": 95.2,
+            "text": "many commas"
+          },
+          {
+            "feature": "sty_word_len_mean",
+            "family": "stylometric",
+            "label": "average word length",
+            "contribution": 0.2038,
+            "value": 6.327272727272727,
+            "human_percentile": 95.7,
+            "text": "longer words"
+          }
+        ],
+        "toward_human": []
+      },
+      "explanation": "Factors contributing to the elevated score:\n• many concluding transitions\n• few numbers and figures\n• many commas\n• longer words\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5807,
+        "burstiness": 0.7016,
+        "stylometric": 0.8965,
+        "vocabulary": 0.7282,
+        "syntax": 0.7655,
+        "semantic": 0.6661,
+        "repetition": 0.8589,
+        "statistical": 0.995,
+        "neural": 0.9412
+      }
+    },
+    {
+      "index": 20,
+      "number": 21,
+      "text": "In conclusion, time management tools such as Call Please, Evernote, Todoist, NueMD, and the Medical Assisting Pocket significantly improve the efficiency and effectiveness of clinical office assistants.",
+      "start": 2600,
+      "end": 2802,
+      "paragraph": 5,
+      "words": 27,
+      "probability": 0.995,
+      "band": "ai",
+      "level": "very high model indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "tra_conclusive_rate",
+            "family": "repetition",
+            "label": "concluding transitions (in conclusion, overall)",
+            "contribution": 0.7376,
+            "value": 0.2,
+            "human_percentile": 96.0,
+            "text": "many concluding transitions"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.5067,
+            "value": 0.0,
+            "human_percentile": 35.0,
+            "text": "few numbers and figures"
+          },
+          {
+            "feature": "sty_long_word_frac",
+            "family": "stylometric",
+            "label": "share of long words",
+            "contribution": 0.35,
+            "value": 0.5137614678899083,
+            "human_percentile": 96.7,
+            "text": "many long words"
+          },
+          {
+            "feature": "sty_word_len_mean",
+            "family": "stylometric",
+            "label": "average word length",
+            "contribution": 0.3427,
+            "value": 6.330275229357798,
+            "human_percentile": 95.7,
+            "text": "longer words"
+          }
+        ],
+        "toward_human": []
+      },
+      "explanation": "Factors contributing to the elevated score:\n• many concluding transitions\n• few numbers and figures\n• many long words\n• longer words\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5599,
+        "burstiness": 0.6975,
+        "stylometric": 0.908,
+        "vocabulary": 0.7456,
+        "syntax": 0.7353,
+        "semantic": 0.7335,
+        "repetition": 0.8578,
+        "statistical": 0.995,
+        "neural": 0.9412
+      }
+    },
+    {
+      "index": 21,
+      "number": 22,
+      "text": "These tools assist in managing communication, organizing information, prioritizing tasks, automating processes, and accessing medical references.",
+      "start": 2803,
+      "end": 2948,
+      "paragraph": 5,
+      "words": 16,
+      "probability": 0.995,
+      "band": "ai",
+      "level": "very high model indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "tra_conclusive_rate",
+            "family": "repetition",
+            "label": "concluding transitions (in conclusion, overall)",
+            "contribution": 0.7376,
+            "value": 0.2,
+            "human_percentile": 96.0,
+            "text": "many concluding transitions"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.5067,
+            "value": 0.0,
+            "human_percentile": 35.0,
+            "text": "few numbers and figures"
+          },
+          {
+            "feature": "sty_long_word_frac",
+            "family": "stylometric",
+            "label": "share of long words",
+            "contribution": 0.35,
+            "value": 0.5137614678899083,
+            "human_percentile": 96.7,
+            "text": "many long words"
+          },
+          {
+            "feature": "sty_word_len_mean",
+            "family": "stylometric",
+            "label": "average word length",
+            "contribution": 0.3427,
+            "value": 6.330275229357798,
+            "human_percentile": 95.7,
+            "text": "longer words"
+          }
+        ],
+        "toward_human": []
+      },
+      "explanation": "Factors contributing to the elevated score:\n• many concluding transitions\n• few numbers and figures\n• many long words\n• longer words\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5599,
+        "burstiness": 0.6975,
+        "stylometric": 0.908,
+        "vocabulary": 0.7456,
+        "syntax": 0.7353,
+        "semantic": 0.7335,
+        "repetition": 0.8578,
+        "statistical": 0.995,
+        "neural": 0.9412
+      }
+    },
+    {
+      "index": 22,
+      "number": 23,
+      "text": "By utilizing these tools, clinical office assistants can enhance productivity, streamline operations, and provide high-quality service in a healthcare setting.",
+      "start": 2949,
+      "end": 3108,
+      "paragraph": 5,
+      "words": 21,
+      "probability": 0.995,
+      "band": "ai",
+      "level": "very high model indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "tra_conclusive_rate",
+            "family": "repetition",
+            "label": "concluding transitions (in conclusion, overall)",
+            "contribution": 0.7376,
+            "value": 0.2,
+            "human_percentile": 96.0,
+            "text": "many concluding transitions"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.5067,
+            "value": 0.0,
+            "human_percentile": 35.0,
+            "text": "few numbers and figures"
+          },
+          {
+            "feature": "sty_long_word_frac",
+            "family": "stylometric",
+            "label": "share of long words",
+            "contribution": 0.35,
+            "value": 0.5137614678899083,
+            "human_percentile": 96.7,
+            "text": "many long words"
+          },
+          {
+            "feature": "sty_word_len_mean",
+            "family": "stylometric",
+            "label": "average word length",
+            "contribution": 0.3427,
+            "value": 6.330275229357798,
+            "human_percentile": 95.7,
+            "text": "longer words"
+          }
+        ],
+        "toward_human": []
+      },
+      "explanation": "Factors contributing to the elevated score:\n• many concluding transitions\n• few numbers and figures\n• many long words\n• longer words\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5599,
+        "burstiness": 0.6975,
+        "stylometric": 0.908,
+        "vocabulary": 0.7456,
+        "syntax": 0.7353,
+        "semantic": 0.7335,
+        "repetition": 0.8578,
+        "statistical": 0.995,
+        "neural": 0.9412
+      }
+    }
+  ],
+  "paragraphs": [
+    {
+      "index": 0,
+      "probability": 0.8403174147710137,
+      "words": 75,
+      "sentences": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "index": 1,
+      "probability": 0.9833707938721826,
+      "words": 78,
+      "sentences": [
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    {
+      "index": 2,
+      "probability": 0.9949999999999999,
+      "words": 80,
+      "sentences": [
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "index": 3,
+      "probability": 0.9950000000000001,
+      "words": 70,
+      "sentences": [
+        13,
+        14,
+        15,
+        16
+      ]
+    },
+    {
+      "index": 4,
+      "probability": 0.9949999999999999,
+      "words": 67,
+      "sentences": [
+        17,
+        18,
+        19
+      ]
+    },
+    {
+      "index": 5,
+      "probability": 0.9949999999999999,
+      "words": 64,
+      "sentences": [
+        20,
+        21,
+        22
+      ]
+    }
+  ],
+  "statistics": {
+    "perplexity": {
+      "summary": {
+        "perplexity": 4627.131109749223,
+        "unit": "bits/word (unigram proxy)",
+        "backend": "unigram"
+      },
+      "items": [
+        {
+          "key": "ppl_sent_mean",
+          "label": "Mean sentence surprisal (bits/word (unigram proxy))",
+          "value": 12.175902262905081,
+          "display": "12.176",
+          "human_percentile": 83.9,
+          "human_median": 11.183724297123245,
+          "ai_median": 11.361756904694335,
+          "note": ""
+        },
+        {
+          "key": "ppl_token_median",
+          "label": "Median word surprisal",
+          "value": 12.87247136768853,
+          "display": "12.872",
+          "human_percentile": 91.1,
+          "human_median": 11.294555522617031,
+          "ai_median": 11.759625455901263,
+          "note": ""
+        },
+        {
+          "key": "ppl_sent_min",
+          "label": "Lowest sentence surprisal",
+          "value": 10.574799723753136,
+          "display": "10.575",
+          "human_percentile": 85.2,
+          "human_median": 9.464172283130825,
+          "ai_median": 9.899344434545295,
+          "note": ""
+        }
+      ]
+    },
+    "burstiness": {
+      "summary": {
+        "normalized_score": 0.4738064287297364,
+        "definition": "percentile of sentence-to-sentence predictability variation among human-written reference documents (0 = very uniform)"
+      },
+      "items": [
+        {
+          "key": "bur_ppl_sent_std",
+          "label": "Sentence perplexity std.",
+          "value": 1.0178055220586544,
+          "display": "1.018",
+          "human_percentile": 47.4,
+          "human_median": 1.0402354317291178,
+          "ai_median": 0.899094950120688,
+          "note": ""
+        },
+        {
+          "key": "bur_ppl_sent_B",
+          "label": "Perplexity burstiness index B",
+          "value": -0.8457134963655022,
+          "display": "-0.846",
+          "human_percentile": 37.3,
+          "human_median": -0.8292179809467716,
+          "ai_median": -0.8527764031347929,
+          "note": ""
+        },
+        {
+          "key": "bur_sent_len_cv",
+          "label": "Sentence-length variation (CV)",
+          "value": 0.31962105129115825,
+          "display": "0.320",
+          "human_percentile": 20.5,
+          "human_median": 0.4347638001709496,
+          "ai_median": 0.3264589521525795,
+          "note": ""
+        },
+        {
+          "key": "bur_sent_len_B",
+          "label": "Sentence-length burstiness B",
+          "value": -0.5155866133259528,
+          "display": "-0.516",
+          "human_percentile": 20.5,
+          "human_median": -0.3939576673666262,
+          "ai_median": -0.5077737586657722,
+          "note": ""
+        },
+        {
+          "key": "bur_syntax_cv",
+          "label": "Syntactic variation (CV of depth)",
+          "value": 0.2982944716831585,
+          "display": "0.298",
+          "human_percentile": 26.6,
+          "human_median": 0.36258121546411026,
+          "ai_median": 0.31180478223116176,
+          "note": ""
+        }
+      ]
+    },
+    "stylometry": {
+      "items": [
+        {
+          "key": "sty_sent_len_mean",
+          "label": "Average sentence length (words)",
+          "value": 18.869565217391305,
+          "display": "18.9",
+          "human_percentile": 42.6,
+          "human_median": 20.0,
+          "ai_median": 19.886752136752136,
+          "note": ""
+        },
+        {
+          "key": "sty_sent_len_median",
+          "label": "Median sentence length",
+          "value": 19.0,
+          "display": "19.0",
+          "human_percentile": 50.0,
+          "human_median": 19.0,
+          "ai_median": 19.5,
+          "note": ""
+        },
+        {
+          "key": "sty_word_len_mean",
+          "label": "Average word length",
+          "value": 6.023041474654378,
+          "display": "6.02",
+          "human_percentile": 96.3,
+          "human_median": 4.86252962085308,
+          "ai_median": 5.073364319288233,
+          "note": ""
+        },
+        {
+          "key": "sty_function_frac",
+          "label": "Function-word share",
+          "value": 0.3294930875576037,
+          "display": "0.329",
+          "human_percentile": 4.7,
+          "human_median": 0.45263157894736844,
+          "ai_median": 0.43507632718159034,
+          "note": ""
+        },
+        {
+          "key": "sty_contraction_rate",
+          "label": "Contractions per 100 words",
+          "value": 0.0,
+          "display": "0.00",
+          "human_percentile": 55.0,
+          "human_median": 0.0,
+          "ai_median": 0.0,
+          "note": ""
+        },
+        {
+          "key": "sty_pron1s_frac",
+          "label": "First-person singular share",
+          "value": 0.0,
+          "display": "0.0000",
+          "human_percentile": 55.0,
+          "human_median": 0.0,
+          "ai_median": 0.0,
+          "note": ""
+        },
+        {
+          "key": "sty_pos_adv_frac",
+          "label": "Adverb share",
+          "value": 0.03456221198156682,
+          "display": "0.035",
+          "human_percentile": 41.0,
+          "human_median": 0.03985163490361081,
+          "ai_median": 0.031399070218945994,
+          "note": ""
+        },
+        {
+          "key": "sty_pos_adj_frac",
+          "label": "Adjective share",
+          "value": 0.1359447004608295,
+          "display": "0.136",
+          "human_percentile": 92.4,
+          "human_median": 0.08333333333333333,
+          "ai_median": 0.09134615384615384,
+          "note": ""
+        }
+      ]
+    },
+    "punctuation": {
+      "items": [
+        {
+          "key": "pun_comma_rate",
+          "label": "Commas per 100 words",
+          "value": 8.986175115207374,
+          "display": "8.99",
+          "human_percentile": 95.1,
+          "human_median": 4.646652397581765,
+          "ai_median": 4.798989898989898,
+          "note": ""
+        },
+        {
+          "key": "pun_semicolon_rate",
+          "label": "Semicolons per 100 words",
+          "value": 0.0,
+          "display": "0.00",
+          "human_percentile": 80.0,
+          "human_median": 0.0,
+          "ai_median": 0.0,
+          "note": ""
+        },
+        {
+          "key": "pun_colon_rate",
+          "label": "Colons per 100 words",
+          "value": 0.0,
+          "display": "0.00",
+          "human_percentile": 65.0,
+          "human_median": 0.0,
+          "ai_median": 0.0,
+          "note": ""
+        },
+        {
+          "key": "pun_dash_rate",
+          "label": "Dashes per 100 words",
+          "value": 0.0,
+          "display": "0.00",
+          "human_percentile": 75.0,
+          "human_median": 0.0,
+          "ai_median": 0.0,
+          "note": ""
+        },
+        {
+          "key": "pun_paren_rate",
+          "label": "Parentheses per 100 words",
+          "value": 0.0,
+          "display": "0.00",
+          "human_percentile": 35.0,
+          "human_median": 0.4608294930875576,
+          "ai_median": 0.0,
+          "note": ""
+        },
+        {
+          "key": "pun_type_entropy",
+          "label": "Punctuation variety (entropy)",
+          "value": 0.2839393653038489,
+          "display": "0.284",
+          "human_percentile": 6.7,
+          "human_median": 0.47070017249509416,
+          "ai_median": 0.3855207255966542,
+          "note": ""
+        }
+      ],
+      "note": "No punctuation mark is treated as evidence on its own."
+    },
+    "vocabulary": {
+      "items": [
+        {
+          "key": "voc_mattr",
+          "label": "Moving-average type-token ratio",
+          "value": 0.8728311688311688,
+          "display": "0.873",
+          "human_percentile": 95.6,
+          "human_median": 0.7962019568435498,
+          "ai_median": 0.7942307353103296,
+          "note": ""
+        },
+        {
+          "key": "voc_mtld",
+          "label": "MTLD lexical diversity",
+          "value": 120.56858545828163,
+          "display": "120.6",
+          "human_percentile": 92.2,
+          "human_median": 79.11506274229902,
+          "ai_median": 76.0,
+          "note": ""
+        },
+        {
+          "key": "voc_hapax_ratio",
+          "label": "Hapax legomena ratio",
+          "value": 0.7970700658464371,
+          "display": "0.797",
+          "human_percentile": 68.9,
+          "human_median": 0.7757273649482868,
+          "ai_median": 0.7740288389877554,
+          "note": ""
+        },
+        {
+          "key": "voc_zipf_mean",
+          "label": "Word commonness (Zipf)",
+          "value": 4.587710518150242,
+          "display": "4.59",
+          "human_percentile": 40.5,
+          "human_median": 4.642399555345863,
+          "ai_median": 4.581120957933033,
+          "note": ""
+        },
+        {
+          "key": "voc_rare_frac",
+          "label": "Rare-word share",
+          "value": 0.03436426116838488,
+          "display": "0.034",
+          "human_percentile": 32.3,
+          "human_median": 0.05194805194805195,
+          "ai_median": 0.044444444444444446,
+          "note": ""
+        },
+        {
+          "key": "voc_heaps_slope",
+          "label": "Vocabulary growth (Heaps)",
+          "value": 0.7747938539369754,
+          "display": "0.775",
+          "human_percentile": 21.2,
+          "human_median": 0.8092472991782218,
+          "ai_median": 0.8014076954545111,
+          "note": ""
+        }
+      ]
+    },
+    "syntax": {
+      "items": [
+        {
+          "key": "syn_depth_mean",
+          "label": "Dependency-tree depth",
+          "value": 6.086956521739131,
+          "display": "6.09",
+          "human_percentile": 62.0,
+          "human_median": 5.7,
+          "ai_median": 6.0,
+          "note": ""
+        },
+        {
+          "key": "syn_clauses_per_sent",
+          "label": "Clauses per sentence",
+          "value": 2.739130434782609,
+          "display": "2.74",
+          "human_percentile": 68.0,
+          "human_median": 2.4166666666666665,
+          "ai_median": 2.35,
+          "note": ""
+        },
+        {
+          "key": "syn_subord_per_sent",
+          "label": "Subordinate clauses per sentence",
+          "value": 0.8695652173913043,
+          "display": "0.87",
+          "human_percentile": 40.6,
+          "human_median": 1.0,
+          "ai_median": 0.9333333333333333,
+          "note": ""
+        },
+        {
+          "key": "syn_passive_frac",
+          "label": "Passive-voice sentences",
+          "value": 0.08695652173913043,
+          "display": "0.087",
+          "human_percentile": 27.7,
+          "human_median": 0.17391304347826086,
+          "ai_median": 0.15,
+          "note": ""
+        },
+        {
+          "key": "syn_opening_entropy",
+          "label": "Sentence-opening variety",
+          "value": 0.7218637389093298,
+          "display": "0.722",
+          "human_percentile": 88.3,
+          "human_median": 0.5811493383077881,
+          "ai_median": 0.5252990700743871,
+          "note": ""
+        },
+        {
+          "key": "syn_pos_trigram_diversity",
+          "label": "Syntactic diversity",
+          "value": 0.6377968877968878,
+          "display": "0.638",
+          "human_percentile": 19.8,
+          "human_median": 0.7057345807345806,
+          "ai_median": 0.6611328570639421,
+          "note": ""
+        }
+      ]
+    },
+    "repetition": {
+      "items": [
+        {
+          "key": "rep_trigram",
+          "label": "Repeated 3-word phrases",
+          "value": 0.04672897196261682,
+          "display": "0.047",
+          "human_percentile": 78.0,
+          "human_median": 0.02127659574468085,
+          "ai_median": 0.036036036036036036,
+          "note": ""
+        },
+        {
+          "key": "rep_pos_trigram",
+          "label": "Repeated grammatical templates",
+          "value": 0.5607476635514018,
+          "display": "0.561",
+          "human_percentile": 82.8,
+          "human_median": 0.4724741275006167,
+          "ai_median": 0.53227602557655,
+          "note": ""
+        },
+        {
+          "key": "rep_sentence_template",
+          "label": "Repeated sentence structures",
+          "value": 0.1875,
+          "display": "0.188",
+          "human_percentile": 65.0,
+          "human_median": 0.125,
+          "ai_median": 0.1875,
+          "note": ""
+        },
+        {
+          "key": "tra_per_sent",
+          "label": "Transition words per sentence",
+          "value": 0.34782608695652173,
+          "display": "0.348",
+          "human_percentile": 90.8,
+          "human_median": 0.1,
+          "ai_median": 0.10714285714285714,
+          "note": ""
+        },
+        {
+          "key": "tra_diversity",
+          "label": "Transition diversity",
+          "value": 0.625,
+          "display": "0.625",
+          "human_percentile": 16.9,
+          "human_median": 1.0,
+          "ai_median": 1.0,
+          "note": ""
+        },
+        {
+          "key": "tra_initial_frac",
+          "label": "Sentence-initial transitions",
+          "value": 0.25,
+          "display": "0.250",
+          "human_percentile": 18.8,
+          "human_median": 0.75,
+          "ai_median": 0.8,
+          "note": ""
+        }
+      ]
+    },
+    "semantic": {
+      "items": [
+        {
+          "key": "sem_adj_mean",
+          "label": "Neighbouring-sentence similarity",
+          "value": 0.10446783181856704,
+          "display": "0.104",
+          "human_percentile": 42.5,
+          "human_median": 0.11564306324384079,
+          "ai_median": 0.1330431811138611,
+          "note": ""
+        },
+        {
+          "key": "sem_local_gain",
+          "label": "Local coherence gain",
+          "value": -0.033954823636778916,
+          "display": "-0.034",
+          "human_percentile": 6.0,
+          "human_median": 0.026654890238956903,
+          "ai_median": 0.0021220419597516443,
+          "note": ""
+        },
+        {
+          "key": "sem_topic_jump_rate",
+          "label": "Topic-jump rate",
+          "value": 0.7727272727272727,
+          "display": "0.773",
+          "human_percentile": 90.3,
+          "human_median": 0.5,
+          "ai_median": 0.5714285714285714,
+          "note": ""
+        },
+        {
+          "key": "sem_redundancy",
+          "label": "Semantic redundancy",
+          "value": 0.3412047826034824,
+          "display": "0.341",
+          "human_percentile": 84.1,
+          "human_median": 0.25849197487344067,
+          "ai_median": 0.30182409262747856,
+          "note": ""
+        },
+        {
+          "key": "sem_compression",
+          "label": "Semantic compression",
+          "value": 0.11361792197902937,
+          "display": "0.114",
+          "human_percentile": 40.5,
+          "human_median": 0.12864565508052506,
+          "ai_median": 0.1505580388695132,
+          "note": ""
+        }
+      ],
+      "backend": "lexical"
+    },
+    "consistency": {
+      "items": [
+        {
+          "key": "style_drift_mean",
+          "label": "Style drift (mean JS divergence)",
+          "value": 0.009198442565335323,
+          "display": "0.009",
+          "human_percentile": 5.9,
+          "human_median": 0.018659488390298205,
+          "ai_median": 0.014046195168588077,
+          "note": ""
+        },
+        {
+          "key": "style_drift_max",
+          "label": "Largest style shift",
+          "value": 0.017424067713787676,
+          "display": "0.017",
+          "human_percentile": 14.7,
+          "human_median": 0.032903511062792073,
+          "ai_median": 0.025531710681746776,
+          "note": ""
+        }
+      ]
+    },
+    "paragraphs": {
+      "items": [
+        {
+          "key": "par_len_cv",
+          "label": "Paragraph-length variation (CV)",
+          "value": 0.0800836276358653,
+          "display": "0.080",
+          "human_percentile": null,
+          "human_median": null,
+          "ai_median": null,
+          "note": ""
+        },
+        {
+          "key": "par_ppl_std",
+          "label": "Paragraph perplexity variation",
+          "value": 0.49835175100895424,
+          "display": "0.498",
+          "human_percentile": null,
+          "human_median": null,
+          "ai_median": null,
+          "note": ""
+        }
+      ],
+      "note": "Descriptive only: paragraph formatting is not used by the classifiers."
+    }
+  },
+  "series": {
+    "sentence_probability": [
+      0.7324200911316123,
+      0.7324200911316123,
+      0.7324200911316123,
+      0.8802408762486097,
+      0.9520488294471228,
+      0.98055029778441,
+      0.9906333019057483,
+      0.970380274814349,
+      0.9906333019057483,
+      0.995,
+      0.995,
+      0.995,
+      0.995,
+      0.995,
+      0.995,
+      0.995,
+      0.995,
+      0.995,
+      0.995,
+      0.995,
+      0.995,
+      0.995,
+      0.995
+    ],
+    "sentence_surprisal": [
+      10.574799723753136,
+      11.09523983692379,
+      12.477980715306678,
+      12.198593057055083,
+      11.468033758194105,
+      12.269778377425945,
+      10.825296632178448,
+      11.981081364642714,
+      11.842057221189611,
+      11.881981712542014,
+      11.877169978402529,
+      11.877058666440918,
+      12.03360823713656,
+      12.855828865657314,
+      12.725190312212494,
+      14.988124251326541,
+      10.649151343223737,
+      12.475339577961682,
+      12.372520702371641,
+      10.95438952105339,
+      12.809103441799804,
+      14.234449688899868,
+      12.498312635137578
+    ],
+    "rolling_perplexity_std": [
+      0.6993605882331407,
+      0.6993605882331407,
+      0.6993605882331407,
+      0.5280474964510378,
+      0.6144891693572958,
+      0.5402545239182369,
+      0.49802826689423674,
+      0.49072074906514146,
+      0.43060224764566196,
+      0.046847038283376836,
+      0.06716024568414601,
+      0.3801161959965796,
+      0.42776674789141195,
+      1.1126306250647806,
+      1.406995205961263,
+      1.3790854536693464,
+      1.3844175790828537,
+      1.536050300187187,
+      0.8749960504433926,
+      1.047445997448835,
+      1.0470746951540402,
+      1.0470746951540402,
+      1.0470746951540402
+    ],
+    "rolling_length_cv": [
+      0.5842373946721772,
+      0.5842373946721772,
+      0.5842373946721772,
+      0.5625040994209796,
+      0.2697755140432795,
+      0.25168155908729284,
+      0.2361621676823882,
+      0.2319014820454019,
+      0.24738212681328994,
+      0.2545875386086578,
+      0.25866079445043083,
+      0.24701466197775926,
+      0.2761862762924929,
+      0.2386770495420665,
+      0.12668615834434868,
+      0.14824110540202018,
+      0.14817434337429913,
+      0.14066095036853646,
+      0.11337743313395911,
+      0.17486712783337588,
+      0.17742274867719005,
+      0.17742274867719005,
+      0.17742274867719005
+    ],
+    "rolling_mattr": [
+      0.8684615384615385,
+      0.8684615384615385,
+      0.8684615384615385,
+      0.9107142857142857,
+      0.92,
+      0.89625,
+      0.88,
+      0.8979166666666667,
+      0.9,
+      0.8552542372881355,
+      0.8375862068965517,
+      0.8404081632653061,
+      0.8684444444444445,
+      0.8820833333333333,
+      0.9102439024390244,
+      0.9032558139534884,
+      0.8511111111111112,
+      0.8283636363636364,
+      0.8587878787878788,
+      0.8872131147540984,
+      0.872,
+      0.872,
+      0.872
+    ],
+    "sentence_lengths": [
+      12,
+      1,
+      16,
+      28,
+      18,
+      14,
+      16,
+      21,
+      27,
+      19,
+      13,
+      28,
+      20,
+      18,
+      15,
+      16,
+      21,
+      22,
+      20,
+      25,
+      27,
+      16,
+      21
+    ],
+    "style_drift": {
+      "centers": [
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0
+      ],
+      "values": [
+        0.013788950812596679,
+        0.006913019224134639,
+        0.0049385445755866925,
+        0.008426949138259157,
+        0.009277768501037032,
+        0.0129578267240382,
+        0.004614948211792565,
+        0.017424067713787676,
+        0.004443908186785271
+      ]
+    },
+    "changepoint_statistic": [
+      null,
+      null,
+      null,
+      2.6274684805377797,
+      2.1433892886985575,
+      1.769513528836462,
+      0.8295470571615149,
+      0.41929020873702005,
+      0.3548140262797823,
+      0.3183824636033017,
+      0.5286444773365565,
+      0.3688431111407327,
+      1.1902497403412569,
+      0.9192739246179548,
+      0.8124513631425698,
+      0.11102451559313958,
+      1.5672960922246497,
+      1.183003506791807,
+      0.5360657315538061,
+      0.41324221153255586,
+      1.5490014681870754,
+      null,
+      null
+    ],
+    "changepoint_threshold": 3.402032568631011
+  },
+  "transitions": {
+    "series": [
+      null,
+      null,
+      null,
+      2.6274684805377797,
+      2.1433892886985575,
+      1.769513528836462,
+      0.8295470571615149,
+      0.41929020873702005,
+      0.3548140262797823,
+      0.3183824636033017,
+      0.5286444773365565,
+      0.3688431111407327,
+      1.1902497403412569,
+      0.9192739246179548,
+      0.8124513631425698,
+      0.11102451559313958,
+      1.5672960922246497,
+      1.183003506791807,
+      0.5360657315538061,
+      0.41324221153255586,
+      1.5490014681870754,
+      null,
+      null
+    ],
+    "threshold": 3.402032568631011,
+    "p_value": 0.29850746268656714,
+    "changepoints": []
+  },
+  "explanation": {
+    "document": {
+      "toward_ai": [],
+      "toward_human": []
+    },
+    "summary": "No individual signal stands out as strongly associated with AI-generated text. These are statistical indicators, not proof of AI authorship.",
+    "caveat": "These are statistical indicators, not proof of AI authorship.",
+    "family_contributions": {
+      "perplexity": 0.0,
+      "burstiness": 0.0,
+      "stylometric": 0.0,
+      "vocabulary": 0.0,
+      "syntax": 0.0,
+      "repetition": 0.0,
+      "semantic": 0.0,
+      "consistency": 0.0
+    },
+    "method": "Baseline-replacement attribution on the deployed ensemble: each measurement is replaced by its median in human-written training documents and the change in the ensemble score is its contribution (interactions are ignored)."
+  },
+  "model": {
+    "version": "en-20261002-783106e4aa39-nonnative",
+    "feature_version": "2026.10-f3",
+    "profile": "lite",
+    "predictability_backend": "unigram",
+    "semantic_backend": "lexical",
+    "evidence_thresholds_derived": true,
+    "calibration": {
+      "document": "isotonic",
+      "window": "isotonic"
+    }
+  }
+}

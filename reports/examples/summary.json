@@ -1,0 +1,47 @@
+[
+  {
+    "example": "human_essay",
+    "ground_truth": {
+      "author_type": "human",
+      "generator": "none",
+      "ai_fraction": 0.0
+    },
+    "document_probability": 0.006,
+    "ai_associated_share": 0.064,
+    "human_associated_share": 0.26,
+    "uncertain_share": 0.676,
+    "confidence": 0.952,
+    "category": "Human-assisted",
+    "evidence": "More reliable statistical analysis (text length)"
+  },
+  {
+    "example": "ai_essay",
+    "ground_truth": {
+      "author_type": "ai",
+      "generator": "chatgpt",
+      "ai_fraction": 1.0
+    },
+    "document_probability": 0.995,
+    "ai_associated_share": 1.0,
+    "human_associated_share": 0.0,
+    "uncertain_share": 0.0,
+    "confidence": 0.972,
+    "category": "AI-generated",
+    "evidence": "More reliable statistical analysis (text length)"
+  },
+  {
+    "example": "hybrid_news",
+    "ground_truth": {
+      "author_type": "hybrid_spliced",
+      "generator": "chatgpt",
+      "ai_fraction": 0.15352158390133075
+    },
+    "document_probability": 0.455,
+    "ai_associated_share": 0.0,
+    "human_associated_share": 0.05,
+    "uncertain_share": 0.95,
+    "confidence": 0.954,
+    "category": "Human-assisted",
+    "evidence": "More reliable statistical analysis (text length)"
+  }
+]

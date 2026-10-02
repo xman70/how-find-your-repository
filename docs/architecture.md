@@ -96,7 +96,7 @@ out-of-fold ROC-AUC of 0.67 at document level - far weaker than the multi-signal
 * **coverage** - share of features inside the training population's 0.5-99.5 % range;
 * **stability** - spread of each detector's cross-validation committee.
 
-The evaluation checks that accuracy increases with confidence level.
+The evaluation checks whether accuracy increases with confidence level. **In the current release it does not** (High 0.76 vs Medium 0.90 on 891 end-to-end test documents; no Low cases), so the confidence value is shown with its components but must not be read as a validated reliability estimate. Recalibrating it against observed accuracy is the main open item.
 
 ## Hybrid classification
 

@@ -1,0 +1,3728 @@
+{
+  "meta": {
+    "title": "Example: human essay (example dataset, CC BY 3.0)",
+    "date": "2026-10-02 23:46:17",
+    "word_count": 578,
+    "character_count": 3900,
+    "app_version": "1.0.0",
+    "device": "cpu",
+    "language": "en",
+    "language_confidence": 0.91,
+    "sentence_count": 30,
+    "paragraph_count": 6,
+    "processing_seconds": 4.38
+  },
+  "disclaimer": "AI-text detection is probabilistic. The results should not be used as sole evidence for academic misconduct, disciplinary action, or authorship determination. The detector is designed to assist human review, not to replace it.",
+  "limitations": [
+    "AI-text detection is probabilistic and produces both false positives (human text flagged) and false negatives (AI text missed).",
+    "Probabilities are calibrated on held-out data with equal numbers of human and AI documents (a 50% prior). The share of AI text in your context changes how a given score should be read.",
+    "Performance drops on text from AI models, domains, languages and writing populations that differ from the training data; see the evaluation report for measured cross-model and cross-domain results.",
+    "Paraphrasing, translation, heavy human editing and short texts reduce detection reliability.",
+    "Formulaic genres (legal, scientific, technical) and highly polished human writing can resemble AI-generated text statistically.",
+    "Spelling or grammar mistakes, dialect, nationality and writing ability are never used as evidence of AI authorship, but non-native writing can still differ statistically from the training data; check the false-positive audit in the evaluation report.",
+    "Sentence-level scores use a 5-sentence context window and are less reliable than document-level scores.",
+    "Detected style transitions indicate a statistical change in writing characteristics, not a change of author."
+  ],
+  "privacy": "Privacy mode: Local processing. No text leaves this computer.",
+  "warnings": [],
+  "status": "ok",
+  "result": {
+    "ai_associated_share": 0.06401384083044982,
+    "human_associated_share": 0.25951557093425603,
+    "uncertain_share": 0.6764705882352942,
+    "document_probability": 0.005686039101641036,
+    "estimated_ai_share": 0.31727189369128533,
+    "confidence": 0.9524887014953504,
+    "confidence_level": "High",
+    "confidence_components": {
+      "length_reliability": 0.9946631768239398,
+      "detector_agreement": 0.9074126087482457,
+      "feature_coverage": 1.0,
+      "committee_stability": 0.9814261025484136
+    },
+    "evidence_level": "reliable",
+    "evidence_text": "More reliable statistical analysis (text length)",
+    "hybrid": {
+      "code": 1,
+      "label": "Human-assisted",
+      "rationale": "Mostly human-associated patterns with some AI-associated passages.",
+      "estimated_ai_share": 0.31727189369128533
+    },
+    "interpretation": "Based on the characteristics measured by this model, the text contains patterns that are not notably associated with AI-generated writing. This is a statistical estimate, not a determination of authorship.",
+    "bands": {
+      "t_high": 0.7324200911316123,
+      "t_low": 0.17890216875612688
+    },
+    "share_definition": "Shares are fractions of words in sentences whose calibrated sentence probability is >= 0.73 (AI-associated), <= 0.18 (human-associated) or in between (uncertain/mixed)."
+  },
+  "detectors": [
+    {
+      "name": "statistical",
+      "label": "Statistical model (gradient boosting, all features)",
+      "probability": 0.009284860678816176,
+      "confidence": 0.9887585800891491,
+      "error_estimate": 0.0028103549777127247,
+      "weight": 0.6472750639755831,
+      "validation_brier": 0.09879022786198874,
+      "validation_auc": 0.9383245944898072,
+      "n_features": 121
+    },
+    {
+      "name": "neural",
+      "label": "Neural network (MLP, all features)",
+      "probability": 0.07710479612635784,
+      "confidence": 0.8731025840137318,
+      "error_estimate": 0.03172435399656707,
+      "weight": 0.35272493602441696,
+      "validation_brier": 0.11184326317510584,
+      "validation_auc": 0.9205734450340497,
+      "n_features": 121
+    },
+    {
+      "name": "perplexity",
+      "label": "Perplexity model",
+      "probability": 0.37508919744840996,
+      "confidence": 0.9748259560774994,
+      "error_estimate": 0.006293510980625151,
+      "weight": 0.0,
+      "validation_brier": 0.22915636129416878,
+      "validation_auc": 0.6693323156365389,
+      "n_features": 8
+    },
+    {
+      "name": "burstiness",
+      "label": "Burstiness model",
+      "probability": 0.46019086544419463,
+      "confidence": 0.977893381482602,
+      "error_estimate": 0.005526654629349503,
+      "weight": 0.0,
+      "validation_brier": 0.21797387367896884,
+      "validation_auc": 0.7131496417500245,
+      "n_features": 11
+    },
+    {
+      "name": "stylometric",
+      "label": "Stylometric model",
+      "probability": 0.44312066728008326,
+      "confidence": 0.9636495650033874,
+      "error_estimate": 0.009087608749153148,
+      "weight": 0.0,
+      "validation_brier": 0.1806455724632289,
+      "validation_auc": 0.8044171809913181,
+      "n_features": 44
+    },
+    {
+      "name": "vocabulary",
+      "label": "Vocabulary model",
+      "probability": 0.47093490689155304,
+      "confidence": 0.9719584941640437,
+      "error_estimate": 0.007010376458989082,
+      "weight": 0.0,
+      "validation_brier": 0.1903893905806836,
+      "validation_auc": 0.781375147780224,
+      "n_features": 12
+    },
+    {
+      "name": "syntax",
+      "label": "Syntax model",
+      "probability": 0.34225299547081234,
+      "confidence": 0.9605120104079782,
+      "error_estimate": 0.00987199739800545,
+      "weight": 0.0,
+      "validation_brier": 0.2090191249253117,
+      "validation_auc": 0.7353438564348619,
+      "n_features": 11
+    },
+    {
+      "name": "semantic",
+      "label": "Semantic model",
+      "probability": 0.29141658748590243,
+      "confidence": 0.9825223571812806,
+      "error_estimate": 0.004369410704679851,
+      "weight": 0.0,
+      "validation_brier": 0.21661062198345943,
+      "validation_auc": 0.709640263571688,
+      "n_features": 9
+    },
+    {
+      "name": "repetition",
+      "label": "Repetition & transitions model",
+      "probability": 0.4505798734514842,
+      "confidence": 0.9724469174517713,
+      "error_estimate": 0.006888270637057187,
+      "weight": 0.0,
+      "validation_brier": 0.2013033020695863,
+      "validation_auc": 0.7532871966777124,
+      "n_features": 22
+    }
+  ],
+  "disagreement": {
+    "std": 0.16136779189509864,
+    "range": 0.46165004621273686,
+    "most_ai": "Vocabulary model",
+    "most_human": "Statistical model (gradient boosting, all features)",
+    "note": "The detectors partly disagree."
+  },
+  "ensemble_weights": {
+    "perplexity": 0.0,
+    "burstiness": 0.0,
+    "stylometric": 0.0,
+    "vocabulary": 0.0,
+    "syntax": 0.0,
+    "semantic": 0.0,
+    "repetition": 0.0,
+    "statistical": 0.6472750639755831,
+    "neural": 0.35272493602441696
+  },
+  "sentences": [
+    {
+      "index": 0,
+      "number": 1,
+      "text": "Allergic rhinitis is an intermittent or persistent inflammation of the mucous membrane of the upper respiratory tract, characterized by nasal congestion, discharge, itching, sneezing, and a combination of several symptoms is possible.",
+      "start": 0,
+      "end": 234,
+      "paragraph": 0,
+      "words": 32,
+      "probability": 0.38537541992411145,
+      "band": "uncertain",
+      "level": "low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.6352,
+            "value": 13.392857142857142,
+            "human_percentile": 95.5,
+            "text": "many commas"
+          },
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.4433,
+            "value": 0.0,
+            "human_percentile": 5.0,
+            "text": "few adverbs"
+          },
+          {
+            "feature": "pun_transition_entropy",
+            "family": "stylometric",
+            "label": "punctuation sequence variety",
+            "contribution": 0.2672,
+            "value": 0.290022535476807,
+            "human_percentile": 31.5,
+            "text": "repetitive punctuation patterns"
+          },
+          {
+            "feature": "rep_trigram",
+            "family": "repetition",
+            "label": "repeated three-word sequences",
+            "contribution": 0.1941,
+            "value": 0.018518518518518517,
+            "human_percentile": 62.6,
+            "text": "few repeated phrases"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_comma_per_sent_std",
+            "family": "stylometric",
+            "label": "comma-count variation",
+            "contribution": -0.5596,
+            "value": 2.5298221281347035,
+            "human_percentile": 95.1,
+            "text": "varied comma use per sentence"
+          },
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -0.4012,
+            "value": 0.8928571428571429,
+            "human_percentile": 68.4,
+            "text": "many parentheses"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• many commas\n• few adverbs\n• repetitive punctuation patterns\n• few repeated phrases\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5271,
+        "burstiness": 0.3489,
+        "stylometric": 0.6169,
+        "vocabulary": 0.688,
+        "syntax": 0.4399,
+        "semantic": 0.4473,
+        "repetition": 0.49,
+        "statistical": 0.4112,
+        "neural": 0.4034
+      }
+    },
+    {
+      "index": 1,
+      "number": 2,
+      "text": "In this situation, a 35-year-old patient presented with nasal congestion, eyelid edema, conjunctival erythema, allergic folds and spangles, and inflamed nostrils, which confirms her diagnosis (Seidman et al. 2015).",
+      "start": 235,
+      "end": 449,
+      "paragraph": 0,
+      "words": 31,
+      "probability": 0.38537541992411145,
+      "band": "uncertain",
+      "level": "low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.6352,
+            "value": 13.392857142857142,
+            "human_percentile": 95.5,
+            "text": "many commas"
+          },
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.4433,
+            "value": 0.0,
+            "human_percentile": 5.0,
+            "text": "few adverbs"
+          },
+          {
+            "feature": "pun_transition_entropy",
+            "family": "stylometric",
+            "label": "punctuation sequence variety",
+            "contribution": 0.2672,
+            "value": 0.290022535476807,
+            "human_percentile": 31.5,
+            "text": "repetitive punctuation patterns"
+          },
+          {
+            "feature": "rep_trigram",
+            "family": "repetition",
+            "label": "repeated three-word sequences",
+            "contribution": 0.1941,
+            "value": 0.018518518518518517,
+            "human_percentile": 62.6,
+            "text": "few repeated phrases"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_comma_per_sent_std",
+            "family": "stylometric",
+            "label": "comma-count variation",
+            "contribution": -0.5596,
+            "value": 2.5298221281347035,
+            "human_percentile": 95.1,
+            "text": "varied comma use per sentence"
+          },
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -0.4012,
+            "value": 0.8928571428571429,
+            "human_percentile": 68.4,
+            "text": "many parentheses"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• many commas\n• few adverbs\n• repetitive punctuation patterns\n• few repeated phrases\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5271,
+        "burstiness": 0.3489,
+        "stylometric": 0.6169,
+        "vocabulary": 0.688,
+        "syntax": 0.4399,
+        "semantic": 0.4473,
+        "repetition": 0.49,
+        "statistical": 0.4112,
+        "neural": 0.4034
+      }
+    },
+    {
+      "index": 2,
+      "number": 3,
+      "text": "A medical specialist identified some of the symptoms listed.",
+      "start": 450,
+      "end": 510,
+      "paragraph": 0,
+      "words": 9,
+      "probability": 0.38537541992411145,
+      "band": "uncertain",
+      "level": "low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.6352,
+            "value": 13.392857142857142,
+            "human_percentile": 95.5,
+            "text": "many commas"
+          },
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.4433,
+            "value": 0.0,
+            "human_percentile": 5.0,
+            "text": "few adverbs"
+          },
+          {
+            "feature": "pun_transition_entropy",
+            "family": "stylometric",
+            "label": "punctuation sequence variety",
+            "contribution": 0.2672,
+            "value": 0.290022535476807,
+            "human_percentile": 31.5,
+            "text": "repetitive punctuation patterns"
+          },
+          {
+            "feature": "rep_trigram",
+            "family": "repetition",
+            "label": "repeated three-word sequences",
+            "contribution": 0.1941,
+            "value": 0.018518518518518517,
+            "human_percentile": 62.6,
+            "text": "few repeated phrases"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_comma_per_sent_std",
+            "family": "stylometric",
+            "label": "comma-count variation",
+            "contribution": -0.5596,
+            "value": 2.5298221281347035,
+            "human_percentile": 95.1,
+            "text": "varied comma use per sentence"
+          },
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -0.4012,
+            "value": 0.8928571428571429,
+            "human_percentile": 68.4,
+            "text": "many parentheses"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• many commas\n• few adverbs\n• repetitive punctuation patterns\n• few repeated phrases\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5271,
+        "burstiness": 0.3489,
+        "stylometric": 0.6169,
+        "vocabulary": 0.688,
+        "syntax": 0.4399,
+        "semantic": 0.4473,
+        "repetition": 0.49,
+        "statistical": 0.4112,
+        "neural": 0.4034
+      }
+    },
+    {
+      "index": 3,
+      "number": 4,
+      "text": "The hypersensitivity reaction is the first type since allergic rhinitis is determined by it.",
+      "start": 511,
+      "end": 603,
+      "paragraph": 1,
+      "words": 14,
+      "probability": 0.2670109792613952,
+      "band": "uncertain",
+      "level": "low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.3457,
+            "value": 11.881188118811881,
+            "human_percentile": 95.3,
+            "text": "many commas"
+          },
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.2917,
+            "value": 0.009900990099009901,
+            "human_percentile": 9.9,
+            "text": "few adverbs"
+          },
+          {
+            "feature": "voc_mtld",
+            "family": "vocabulary",
+            "label": "vocabulary diversity (MTLD)",
+            "contribution": 0.2062,
+            "value": 128.05333333333334,
+            "human_percentile": 93.0,
+            "text": "higher lexical diversity"
+          },
+          {
+            "feature": "rep_trigram",
+            "family": "repetition",
+            "label": "repeated three-word sequences",
+            "contribution": 0.1931,
+            "value": 0.020833333333333332,
+            "human_percentile": 65.4,
+            "text": "few repeated phrases"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_comma_per_sent_std",
+            "family": "stylometric",
+            "label": "comma-count variation",
+            "contribution": -0.5081,
+            "value": 2.33238075793812,
+            "human_percentile": 95.1,
+            "text": "varied comma use per sentence"
+          },
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -0.4611,
+            "value": 1.9801980198019802,
+            "human_percentile": 88.0,
+            "text": "many parentheses"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• many commas\n• few adverbs\n• higher lexical diversity\n• few repeated phrases\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5071,
+        "burstiness": 0.3545,
+        "stylometric": 0.5365,
+        "vocabulary": 0.5413,
+        "syntax": 0.3398,
+        "semantic": 0.4378,
+        "repetition": 0.4741,
+        "statistical": 0.2841,
+        "neural": 0.3882
+      }
+    },
+    {
+      "index": 4,
+      "number": 5,
+      "text": "The allergen, having entered the body for the first time, causes the appearance of specific antibodies, immunoglobulins, which are fixed on the surface of mast cells.",
+      "start": 604,
+      "end": 770,
+      "paragraph": 1,
+      "words": 26,
+      "probability": 0.2670109792613952,
+      "band": "uncertain",
+      "level": "low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.4503,
+            "value": 8.98876404494382,
+            "human_percentile": 91.4,
+            "text": "many commas"
+          },
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.3013,
+            "value": 0.011235955056179775,
+            "human_percentile": 11.3,
+            "text": "few adverbs"
+          },
+          {
+            "feature": "voc_zipf_mean",
+            "family": "vocabulary",
+            "label": "word commonness",
+            "contribution": 0.2283,
+            "value": 4.180000633526077,
+            "human_percentile": 6.1,
+            "text": "rarer, more sophisticated vocabulary"
+          },
+          {
+            "feature": "ppl_token_median",
+            "family": "perplexity",
+            "label": "median word predictability",
+            "contribution": 0.1691,
+            "value": 12.822587728535293,
+            "human_percentile": 89.3,
+            "text": "predominantly less predictable words"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -0.905,
+            "value": 1.1235955056179776,
+            "human_percentile": 75.3,
+            "text": "many parentheses"
+          },
+          {
+            "feature": "pun_comma_per_sent_std",
+            "family": "stylometric",
+            "label": "comma-count variation",
+            "contribution": -0.4932,
+            "value": 1.4966629547095767,
+            "human_percentile": 90.0,
+            "text": "varied comma use per sentence"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• many commas\n• few adverbs\n• rarer, more sophisticated vocabulary\n• predominantly less predictable words\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5465,
+        "burstiness": 0.4322,
+        "stylometric": 0.6978,
+        "vocabulary": 0.5172,
+        "syntax": 0.5288,
+        "semantic": 0.4419,
+        "repetition": 0.4659,
+        "statistical": 0.324,
+        "neural": 0.3121
+      }
+    },
+    {
+      "index": 5,
+      "number": 6,
+      "text": "Upon repeated contact of an already sensitized organism with an irritant, IgE-dependent activation of mast cells occurs (Hoyte & Nelson, 2018).",
+      "start": 771,
+      "end": 914,
+      "paragraph": 1,
+      "words": 21,
+      "probability": 0.38537541992411145,
+      "band": "uncertain",
+      "level": "low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "bur_sent_len_cv",
+            "family": "burstiness",
+            "label": "relative sentence-length variation",
+            "contribution": 0.3837,
+            "value": 0.19534423844256277,
+            "human_percentile": 9.6,
+            "text": "low relative variation in sentence length"
+          },
+          {
+            "feature": "pun_transition_entropy",
+            "family": "stylometric",
+            "label": "punctuation sequence variety",
+            "contribution": 0.2976,
+            "value": 0.31503830726999227,
+            "human_percentile": 38.9,
+            "text": "repetitive punctuation patterns"
+          },
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.2718,
+            "value": 0.010101010101010102,
+            "human_percentile": 10.0,
+            "text": "few adverbs"
+          },
+          {
+            "feature": "ppl_token_median",
+            "family": "perplexity",
+            "label": "median word predictability",
+            "contribution": 0.2115,
+            "value": 12.855861727214092,
+            "human_percentile": 90.0,
+            "text": "predominantly less predictable words"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -0.9584,
+            "value": 1.0101010101010102,
+            "human_percentile": 72.0,
+            "text": "many parentheses"
+          },
+          {
+            "feature": "pun_comma_per_sent_std",
+            "family": "stylometric",
+            "label": "comma-count variation",
+            "contribution": -0.5256,
+            "value": 1.32664991614216,
+            "human_percentile": 85.0,
+            "text": "varied comma use per sentence"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• low relative variation in sentence length\n• repetitive punctuation patterns\n• few adverbs\n• predominantly less predictable words\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5468,
+        "burstiness": 0.6232,
+        "stylometric": 0.7912,
+        "vocabulary": 0.5707,
+        "syntax": 0.4779,
+        "semantic": 0.5485,
+        "repetition": 0.409,
+        "statistical": 0.4104,
+        "neural": 0.4107
+      }
+    },
+    {
+      "index": 6,
+      "number": 7,
+      "text": "This process causes the release of histamine, heparin, and other inflammatory mediators responsible for the manifestation of allergic reactions.",
+      "start": 915,
+      "end": 1059,
+      "paragraph": 1,
+      "words": 19,
+      "probability": 0.5105721520717524,
+      "band": "uncertain",
+      "level": "uncertain",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.4857,
+            "value": 8.849557522123893,
+            "human_percentile": 91.0,
+            "text": "many commas"
+          },
+          {
+            "feature": "bur_sent_len_cv",
+            "family": "burstiness",
+            "label": "relative sentence-length variation",
+            "contribution": 0.2562,
+            "value": 0.16461128528971922,
+            "human_percentile": 5.6,
+            "text": "low relative variation in sentence length"
+          },
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.239,
+            "value": 0.017699115044247787,
+            "human_percentile": 19.2,
+            "text": "few adverbs"
+          },
+          {
+            "feature": "sty_sent_len_p10",
+            "family": "stylometric",
+            "label": "short-sentence length (10th pct.)",
+            "contribution": 0.1938,
+            "value": 19.0,
+            "human_percentile": 88.1,
+            "text": "no very short sentences"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -1.0014,
+            "value": 0.8849557522123894,
+            "human_percentile": 68.2,
+            "text": "many parentheses"
+          },
+          {
+            "feature": "tra_emphatic_rate",
+            "family": "repetition",
+            "label": "emphatic markers (indeed, notably)",
+            "contribution": -0.3072,
+            "value": 0.2,
+            "human_percentile": 97.5,
+            "text": "many emphatic markers"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• many commas\n• low relative variation in sentence length\n• few adverbs\n• no very short sentences\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5717,
+        "burstiness": 0.6653,
+        "stylometric": 0.8181,
+        "vocabulary": 0.5613,
+        "syntax": 0.5816,
+        "semantic": 0.5114,
+        "repetition": 0.4178,
+        "statistical": 0.4658,
+        "neural": 0.4707
+      }
+    },
+    {
+      "index": 7,
+      "number": 8,
+      "text": "In fact, pathophysiology implies that the initial intake of the allergen causes the production of IgE by plasma cells.",
+      "start": 1060,
+      "end": 1178,
+      "paragraph": 1,
+      "words": 19,
+      "probability": 0.5676314482873456,
+      "band": "uncertain",
+      "level": "uncertain",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.4002,
+            "value": 6.60377358490566,
+            "human_percentile": 76.9,
+            "text": "many commas"
+          },
+          {
+            "feature": "ppl_token_median",
+            "family": "perplexity",
+            "label": "median word predictability",
+            "contribution": 0.2961,
+            "value": 14.051755841373543,
+            "human_percentile": 95.3,
+            "text": "predominantly less predictable words"
+          },
+          {
+            "feature": "bur_vocab_std",
+            "family": "burstiness",
+            "label": "vocabulary variation between sentences",
+            "contribution": 0.1962,
+            "value": 0.027949705684073567,
+            "human_percentile": 8.2,
+            "text": "uniform vocabulary density across sentences"
+          },
+          {
+            "feature": "ppl_sent_min",
+            "family": "perplexity",
+            "label": "lowest sentence perplexity",
+            "contribution": 0.1899,
+            "value": 11.69909744468649,
+            "human_percentile": 95.0,
+            "text": "no extremely predictable sentences"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -0.9133,
+            "value": 0.9433962264150944,
+            "human_percentile": 70.0,
+            "text": "many parentheses"
+          },
+          {
+            "feature": "tra_emphatic_rate",
+            "family": "repetition",
+            "label": "emphatic markers (indeed, notably)",
+            "contribution": -0.4862,
+            "value": 0.2,
+            "human_percentile": 97.5,
+            "text": "many emphatic markers"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• many commas\n• predominantly less predictable words\n• uniform vocabulary density across sentences\n• no extremely predictable sentences\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.6624,
+        "burstiness": 0.6893,
+        "stylometric": 0.8376,
+        "vocabulary": 0.6616,
+        "syntax": 0.5476,
+        "semantic": 0.4835,
+        "repetition": 0.5641,
+        "statistical": 0.5692,
+        "neural": 0.4389
+      }
+    },
+    {
+      "index": 8,
+      "number": 9,
+      "text": "Three subjective conclusions from this situation are: the patient experiences constant sneezing, considers the complication of infectious diseases and describes improvement away from home in a different climate.",
+      "start": 1179,
+      "end": 1390,
+      "paragraph": 2,
+      "words": 28,
+      "probability": 0.8238240361394226,
+      "band": "ai",
+      "level": "very high model indication",
+      "confidence": "Medium",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.3666,
+            "value": 6.382978723404255,
+            "human_percentile": 74.8,
+            "text": "many commas"
+          },
+          {
+            "feature": "bur_sent_len_cv",
+            "family": "burstiness",
+            "label": "relative sentence-length variation",
+            "contribution": 0.3422,
+            "value": 0.3198573697526151,
+            "human_percentile": 36.2,
+            "text": "low relative variation in sentence length"
+          },
+          {
+            "feature": "voc_zipf_mean",
+            "family": "vocabulary",
+            "label": "word commonness",
+            "contribution": 0.23,
+            "value": 4.171864406779661,
+            "human_percentile": 5.8,
+            "text": "rarer, more sophisticated vocabulary"
+          },
+          {
+            "feature": "bur_vocab_std",
+            "family": "burstiness",
+            "label": "vocabulary variation between sentences",
+            "contribution": 0.1789,
+            "value": 0.051961361032093235,
+            "human_percentile": 36.9,
+            "text": "uniform vocabulary density across sentences"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "tra_emphatic_rate",
+            "family": "repetition",
+            "label": "emphatic markers (indeed, notably)",
+            "contribution": -0.4776,
+            "value": 0.2,
+            "human_percentile": 97.5,
+            "text": "many emphatic markers"
+          },
+          {
+            "feature": "sty_pos_noun_frac",
+            "family": "stylometric",
+            "label": "noun share",
+            "contribution": -0.2629,
+            "value": 0.35106382978723405,
+            "human_percentile": 95.4,
+            "text": "more nouns (nominal, information-dense style)"
+          }
+        ]
+      },
+      "explanation": "Factors contributing to the elevated score:\n• many commas\n• low relative variation in sentence length\n• rarer, more sophisticated vocabulary\n• uniform vocabulary density across sentences\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5366,
+        "burstiness": 0.4932,
+        "stylometric": 0.844,
+        "vocabulary": 0.7177,
+        "syntax": 0.6339,
+        "semantic": 0.502,
+        "repetition": 0.617,
+        "statistical": 0.8456,
+        "neural": 0.4855
+      }
+    },
+    {
+      "index": 9,
+      "number": 10,
+      "text": "A specialist established objective conclusions: firstly, eyelid edema and allergic sheen caused by venous edema of the lower eyelid.",
+      "start": 1391,
+      "end": 1523,
+      "paragraph": 2,
+      "words": 19,
+      "probability": 0.6593622912317294,
+      "band": "uncertain",
+      "level": "elevated indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.2074,
+            "value": 5.747126436781609,
+            "human_percentile": 67.4,
+            "text": "many commas"
+          },
+          {
+            "feature": "sty_pos_aux_frac",
+            "family": "stylometric",
+            "label": "auxiliary-verb share",
+            "contribution": 0.1519,
+            "value": 0.011494252873563218,
+            "human_percentile": 4.5,
+            "text": "few auxiliary verbs"
+          },
+          {
+            "feature": "pun_transition_entropy",
+            "family": "stylometric",
+            "label": "punctuation sequence variety",
+            "contribution": 0.115,
+            "value": 0.27974043368529516,
+            "human_percentile": 26.3,
+            "text": "repetitive punctuation patterns"
+          },
+          {
+            "feature": "voc_dis_ratio",
+            "family": "vocabulary",
+            "label": "words used exactly twice",
+            "contribution": 0.0967,
+            "value": 0.09090909090909091,
+            "human_percentile": 20.0,
+            "text": "fewer words used twice"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "tra_emphatic_rate",
+            "family": "repetition",
+            "label": "emphatic markers (indeed, notably)",
+            "contribution": -0.2658,
+            "value": 0.2,
+            "human_percentile": 97.5,
+            "text": "many emphatic markers"
+          },
+          {
+            "feature": "sty_pos_propn_frac",
+            "family": "stylometric",
+            "label": "proper-noun share",
+            "contribution": -0.2364,
+            "value": 0.011494252873563218,
+            "human_percentile": 26.3,
+            "text": "few names and proper nouns"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• many commas\n• few auxiliary verbs\n• repetitive punctuation patterns\n• fewer words used twice\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.6071,
+        "burstiness": 0.4079,
+        "stylometric": 0.8278,
+        "vocabulary": 0.7498,
+        "syntax": 0.4945,
+        "semantic": 0.4617,
+        "repetition": 0.5682,
+        "statistical": 0.6915,
+        "neural": 0.52
+      }
+    },
+    {
+      "index": 10,
+      "number": 11,
+      "text": "In other words, allergies give inflammation to the eyes.",
+      "start": 1524,
+      "end": 1580,
+      "paragraph": 2,
+      "words": 9,
+      "probability": 0.7573909023044126,
+      "band": "ai",
+      "level": "elevated indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "sty_pos_aux_frac",
+            "family": "stylometric",
+            "label": "auxiliary-verb share",
+            "contribution": 0.5063,
+            "value": 0.011904761904761904,
+            "human_percentile": 4.7,
+            "text": "few auxiliary verbs"
+          },
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.3268,
+            "value": 5.9523809523809526,
+            "human_percentile": 70.0,
+            "text": "many commas"
+          },
+          {
+            "feature": "tra_sequential_rate",
+            "family": "repetition",
+            "label": "sequencing transitions (first, finally)",
+            "contribution": 0.2572,
+            "value": 0.6,
+            "human_percentile": 97.5,
+            "text": "many sequencing transitions"
+          },
+          {
+            "feature": "voc_zipf_mean",
+            "family": "vocabulary",
+            "label": "word commonness",
+            "contribution": 0.2322,
+            "value": 4.205820856967655,
+            "human_percentile": 7.2,
+            "text": "rarer, more sophisticated vocabulary"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "sty_pos_noun_frac",
+            "family": "stylometric",
+            "label": "noun share",
+            "contribution": -0.4596,
+            "value": 0.32142857142857145,
+            "human_percentile": 93.3,
+            "text": "more nouns (nominal, information-dense style)"
+          },
+          {
+            "feature": "sty_pos_propn_frac",
+            "family": "stylometric",
+            "label": "proper-noun share",
+            "contribution": -0.2271,
+            "value": 0.0,
+            "human_percentile": 20.0,
+            "text": "few names and proper nouns"
+          }
+        ]
+      },
+      "explanation": "Factors contributing to the elevated score:\n• few auxiliary verbs\n• many commas\n• many sequencing transitions\n• rarer, more sophisticated vocabulary\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5777,
+        "burstiness": 0.3831,
+        "stylometric": 0.8325,
+        "vocabulary": 0.7088,
+        "syntax": 0.5656,
+        "semantic": 0.4707,
+        "repetition": 0.7691,
+        "statistical": 0.7491,
+        "neural": 0.5991
+      }
+    },
+    {
+      "index": 11,
+      "number": 12,
+      "text": "Secondly, inflamed nostrils and an allergic fold indicate a stable runny nose.",
+      "start": 1581,
+      "end": 1659,
+      "paragraph": 2,
+      "words": 12,
+      "probability": 0.6975890111339056,
+      "band": "uncertain",
+      "level": "elevated indication",
+      "confidence": "Medium",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.714,
+            "value": 7.407407407407407,
+            "human_percentile": 83.6,
+            "text": "many commas"
+          },
+          {
+            "feature": "tra_sequential_rate",
+            "family": "repetition",
+            "label": "sequencing transitions (first, finally)",
+            "contribution": 0.3347,
+            "value": 0.8,
+            "human_percentile": 98.7,
+            "text": "many sequencing transitions"
+          },
+          {
+            "feature": "sty_pos_aux_frac",
+            "family": "stylometric",
+            "label": "auxiliary-verb share",
+            "contribution": 0.2047,
+            "value": 0.024691358024691357,
+            "human_percentile": 14.0,
+            "text": "few auxiliary verbs"
+          },
+          {
+            "feature": "syn_dep_dist_mean",
+            "family": "syntax",
+            "label": "dependency distance",
+            "contribution": 0.1554,
+            "value": 2.2057070707070707,
+            "human_percentile": 34.8,
+            "text": "compact syntactic dependencies"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "sty_pos_propn_frac",
+            "family": "stylometric",
+            "label": "proper-noun share",
+            "contribution": -0.2502,
+            "value": 0.0,
+            "human_percentile": 20.0,
+            "text": "few names and proper nouns"
+          },
+          {
+            "feature": "sem_local_gain",
+            "family": "semantic",
+            "label": "local coherence",
+            "contribution": -0.2055,
+            "value": 0.03336341682548888,
+            "human_percentile": 61.4,
+            "text": "strong local coherence"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• many commas\n• many sequencing transitions\n• few auxiliary verbs\n• compact syntactic dependencies\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.4373,
+        "burstiness": 0.3703,
+        "stylometric": 0.7106,
+        "vocabulary": 0.6163,
+        "syntax": 0.4957,
+        "semantic": 0.4324,
+        "repetition": 0.7309,
+        "statistical": 0.7684,
+        "neural": 0.4213
+      }
+    },
+    {
+      "index": 12,
+      "number": 13,
+      "text": "Thirdly, the constancy of these signs shows the constant close presence of a source of irritation.",
+      "start": 1660,
+      "end": 1758,
+      "paragraph": 2,
+      "words": 16,
+      "probability": 0.4162429516487657,
+      "band": "uncertain",
+      "level": "uncertain",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.4797,
+            "value": 8.045977011494253,
+            "human_percentile": 87.4,
+            "text": "many commas"
+          },
+          {
+            "feature": "tra_sequential_rate",
+            "family": "repetition",
+            "label": "sequencing transitions (first, finally)",
+            "contribution": 0.4611,
+            "value": 0.6,
+            "human_percentile": 97.5,
+            "text": "many sequencing transitions"
+          },
+          {
+            "feature": "voc_zipf_mean",
+            "family": "vocabulary",
+            "label": "word commonness",
+            "contribution": 0.2265,
+            "value": 4.099378065275438,
+            "human_percentile": 4.8,
+            "text": "rarer, more sophisticated vocabulary"
+          },
+          {
+            "feature": "tra_gap_cv",
+            "family": "repetition",
+            "label": "spacing of transitions",
+            "contribution": 0.2136,
+            "value": 0.0,
+            "human_percentile": 45.0,
+            "text": "evenly spaced transitions"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -1.2575,
+            "value": 1.1494252873563218,
+            "human_percentile": 75.8,
+            "text": "many parentheses"
+          },
+          {
+            "feature": "sty_pos_propn_frac",
+            "family": "stylometric",
+            "label": "proper-noun share",
+            "contribution": -0.1782,
+            "value": 0.022988505747126436,
+            "human_percentile": 37.4,
+            "text": "few names and proper nouns"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• many commas\n• many sequencing transitions\n• rarer, more sophisticated vocabulary\n• evenly spaced transitions\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.4153,
+        "burstiness": 0.3432,
+        "stylometric": 0.6269,
+        "vocabulary": 0.5856,
+        "syntax": 0.4754,
+        "semantic": 0.4211,
+        "repetition": 0.622,
+        "statistical": 0.4108,
+        "neural": 0.5669
+      }
+    },
+    {
+      "index": 13,
+      "number": 14,
+      "text": "First of all, it is necessary to pass tests for sources of irritation, which are taken by the method of a swab from the nose.",
+      "start": 1759,
+      "end": 1884,
+      "paragraph": 3,
+      "words": 25,
+      "probability": 0.2670109792613952,
+      "band": "uncertain",
+      "level": "low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.2313,
+            "value": 7.777777777777778,
+            "human_percentile": 86.0,
+            "text": "many commas"
+          },
+          {
+            "feature": "tra_sequential_rate",
+            "family": "repetition",
+            "label": "sequencing transitions (first, finally)",
+            "contribution": 0.1989,
+            "value": 0.6,
+            "human_percentile": 97.5,
+            "text": "many sequencing transitions"
+          },
+          {
+            "feature": "sty_sconj_frac",
+            "family": "stylometric",
+            "label": "subordinating conjunctions",
+            "contribution": 0.1687,
+            "value": 0.0,
+            "human_percentile": 15.0,
+            "text": "few subordinating conjunctions"
+          },
+          {
+            "feature": "ppl_token_median",
+            "family": "perplexity",
+            "label": "median word predictability",
+            "contribution": 0.1316,
+            "value": 12.955519570060712,
+            "human_percentile": 91.3,
+            "text": "predominantly less predictable words"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -1.512,
+            "value": 2.2222222222222223,
+            "human_percentile": 90.3,
+            "text": "many parentheses"
+          },
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": -0.1204,
+            "value": 0.05555555555555555,
+            "human_percentile": 70.0,
+            "text": "many adverbs"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• many commas\n• many sequencing transitions\n• few subordinating conjunctions\n• predominantly less predictable words\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.3951,
+        "burstiness": 0.4176,
+        "stylometric": 0.5448,
+        "vocabulary": 0.5828,
+        "syntax": 0.4947,
+        "semantic": 0.4317,
+        "repetition": 0.6839,
+        "statistical": 0.2894,
+        "neural": 0.3745
+      }
+    },
+    {
+      "index": 14,
+      "number": 15,
+      "text": "Based on the findings, pharmacological treatment with antihistamines and corticosteroid nasal sprays and decongestants is then prescribed to reduce congestion and symptoms (Hoyte & Nelson, 2018).",
+      "start": 1885,
+      "end": 2080,
+      "paragraph": 3,
+      "words": 25,
+      "probability": 0.18997433649814657,
+      "band": "uncertain",
+      "level": "very low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "tra_sequential_rate",
+            "family": "repetition",
+            "label": "sequencing transitions (first, finally)",
+            "contribution": 0.2502,
+            "value": 0.6,
+            "human_percentile": 97.5,
+            "text": "many sequencing transitions"
+          },
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.1792,
+            "value": 8.602150537634408,
+            "human_percentile": 90.2,
+            "text": "many commas"
+          },
+          {
+            "feature": "sty_sconj_frac",
+            "family": "stylometric",
+            "label": "subordinating conjunctions",
+            "contribution": 0.1575,
+            "value": 0.0,
+            "human_percentile": 15.0,
+            "text": "few subordinating conjunctions"
+          },
+          {
+            "feature": "ppl_sent_median",
+            "family": "perplexity",
+            "label": "median sentence perplexity",
+            "contribution": 0.0969,
+            "value": 11.269569611234612,
+            "human_percentile": 59.1,
+            "text": "high median sentence perplexity"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -1.5966,
+            "value": 2.150537634408602,
+            "human_percentile": 89.8,
+            "text": "many parentheses"
+          },
+          {
+            "feature": "sty_pos_verb_frac",
+            "family": "stylometric",
+            "label": "verb share",
+            "contribution": -0.1257,
+            "value": 0.08602150537634409,
+            "human_percentile": 17.9,
+            "text": "fewer verbs"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• many sequencing transitions\n• many commas\n• few subordinating conjunctions\n• high median sentence perplexity\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.3613,
+        "burstiness": 0.4214,
+        "stylometric": 0.529,
+        "vocabulary": 0.4894,
+        "syntax": 0.3899,
+        "semantic": 0.4101,
+        "repetition": 0.6656,
+        "statistical": 0.2192,
+        "neural": 0.3703
+      }
+    },
+    {
+      "index": 15,
+      "number": 16,
+      "text": "Equally important are environmental control and nasal irrigation (Schuler IV & Montejo, 2021).",
+      "start": 2081,
+      "end": 2175,
+      "paragraph": 3,
+      "words": 12,
+      "probability": 0.14599457677152122,
+      "band": "human",
+      "level": "very low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "tra_sequential_rate",
+            "family": "repetition",
+            "label": "sequencing transitions (first, finally)",
+            "contribution": 0.2412,
+            "value": 0.4,
+            "human_percentile": 96.2,
+            "text": "many sequencing transitions"
+          },
+          {
+            "feature": "voc_zipf_mean",
+            "family": "vocabulary",
+            "label": "word commonness",
+            "contribution": 0.2211,
+            "value": 4.269305821435914,
+            "human_percentile": 10.0,
+            "text": "rarer, more sophisticated vocabulary"
+          },
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.1864,
+            "value": 8.51063829787234,
+            "human_percentile": 89.8,
+            "text": "many commas"
+          },
+          {
+            "feature": "sty_sconj_frac",
+            "family": "stylometric",
+            "label": "subordinating conjunctions",
+            "contribution": 0.1795,
+            "value": 0.0,
+            "human_percentile": 15.0,
+            "text": "few subordinating conjunctions"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -1.7233,
+            "value": 2.127659574468085,
+            "human_percentile": 89.5,
+            "text": "many parentheses"
+          },
+          {
+            "feature": "rep_bigram",
+            "family": "repetition",
+            "label": "repeated word pairs",
+            "contribution": -0.1617,
+            "value": 0.0,
+            "human_percentile": 10.0,
+            "text": "few repeated word pairs"
+          }
+        ]
+      },
+      "explanation": null,
+      "detectors": {
+        "perplexity": 0.2602,
+        "burstiness": 0.3307,
+        "stylometric": 0.5319,
+        "vocabulary": 0.2869,
+        "syntax": 0.3396,
+        "semantic": 0.3851,
+        "repetition": 0.6645,
+        "statistical": 0.1581,
+        "neural": 0.3814
+      }
+    },
+    {
+      "index": 16,
+      "number": 17,
+      "text": "Finally, as a consequence, as little contact with known allergens as possible should be ensured.",
+      "start": 2176,
+      "end": 2272,
+      "paragraph": 3,
+      "words": 15,
+      "probability": 0.10224934020292849,
+      "band": "human",
+      "level": "very low indication",
+      "confidence": "Medium",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "tra_sequential_rate",
+            "family": "repetition",
+            "label": "sequencing transitions (first, finally)",
+            "contribution": 0.2393,
+            "value": 0.2,
+            "human_percentile": 95.0,
+            "text": "many sequencing transitions"
+          },
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.2211,
+            "value": 7.954545454545454,
+            "human_percentile": 86.9,
+            "text": "many commas"
+          },
+          {
+            "feature": "voc_zipf_mean",
+            "family": "vocabulary",
+            "label": "word commonness",
+            "contribution": 0.1273,
+            "value": 4.2658364336808114,
+            "human_percentile": 9.9,
+            "text": "rarer, more sophisticated vocabulary"
+          },
+          {
+            "feature": "sty_sconj_frac",
+            "family": "stylometric",
+            "label": "subordinating conjunctions",
+            "contribution": 0.1045,
+            "value": 0.011627906976744186,
+            "human_percentile": 29.0,
+            "text": "few subordinating conjunctions"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -1.718,
+            "value": 2.272727272727273,
+            "human_percentile": 90.6,
+            "text": "many parentheses"
+          },
+          {
+            "feature": "rep_bigram",
+            "family": "repetition",
+            "label": "repeated word pairs",
+            "contribution": -0.1549,
+            "value": 0.023529411764705882,
+            "human_percentile": 17.9,
+            "text": "few repeated word pairs"
+          }
+        ]
+      },
+      "explanation": null,
+      "detectors": {
+        "perplexity": 0.2776,
+        "burstiness": 0.3885,
+        "stylometric": 0.5664,
+        "vocabulary": 0.3753,
+        "syntax": 0.3179,
+        "semantic": 0.3946,
+        "repetition": 0.5476,
+        "statistical": 0.0807,
+        "neural": 0.3951
+      }
+    },
+    {
+      "index": 17,
+      "number": 18,
+      "text": "In this case, the symptoms appeared around the same time as the cat appeared in the house.",
+      "start": 2273,
+      "end": 2363,
+      "paragraph": 3,
+      "words": 17,
+      "probability": 0.057064804382622715,
+      "band": "human",
+      "level": "very low indication",
+      "confidence": "Medium",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.4402,
+            "value": 8.695652173913043,
+            "human_percentile": 90.5,
+            "text": "many commas"
+          },
+          {
+            "feature": "pun_transition_entropy",
+            "family": "stylometric",
+            "label": "punctuation sequence variety",
+            "contribution": 0.3946,
+            "value": 0.2523740704431151,
+            "human_percentile": 18.0,
+            "text": "repetitive punctuation patterns"
+          },
+          {
+            "feature": "tra_sequential_rate",
+            "family": "repetition",
+            "label": "sequencing transitions (first, finally)",
+            "contribution": 0.3222,
+            "value": 0.2,
+            "human_percentile": 95.0,
+            "text": "many sequencing transitions"
+          },
+          {
+            "feature": "voc_zipf_std",
+            "family": "vocabulary",
+            "label": "variation in word commonness",
+            "contribution": 0.3073,
+            "value": 1.0416059234017736,
+            "human_percentile": 81.5,
+            "text": "mix of common and rare words"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -0.9827,
+            "value": 1.4492753623188406,
+            "human_percentile": 81.5,
+            "text": "many parentheses"
+          },
+          {
+            "feature": "tra_causal_rate",
+            "family": "repetition",
+            "label": "causal transitions (therefore)",
+            "contribution": -0.6003,
+            "value": 0.2,
+            "human_percentile": 90.0,
+            "text": "many causal transitions"
+          }
+        ]
+      },
+      "explanation": null,
+      "detectors": {
+        "perplexity": 0.3034,
+        "burstiness": 0.3361,
+        "stylometric": 0.5732,
+        "vocabulary": 0.2891,
+        "syntax": 0.2326,
+        "semantic": 0.4228,
+        "repetition": 0.3078,
+        "statistical": 0.058,
+        "neural": 0.2511
+      }
+    },
+    {
+      "index": 18,
+      "number": 19,
+      "text": "Since humans often show hypersensitivity to animal saliva, this option is very likely to be used as a hypothesis.",
+      "start": 2364,
+      "end": 2477,
+      "paragraph": 3,
+      "words": 19,
+      "probability": 0.07272701621525625,
+      "band": "human",
+      "level": "very low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.1375,
+            "value": 7.0588235294117645,
+            "human_percentile": 81.0,
+            "text": "many commas"
+          },
+          {
+            "feature": "sty_short_sent_frac",
+            "family": "stylometric",
+            "label": "share of short sentences",
+            "contribution": 0.1088,
+            "value": 0.2,
+            "human_percentile": 65.0,
+            "text": "many short sentences"
+          },
+          {
+            "feature": "sty_pos_pron_frac",
+            "family": "stylometric",
+            "label": "pronoun share",
+            "contribution": 0.103,
+            "value": 0.011764705882352941,
+            "human_percentile": 6.4,
+            "text": "few pronouns"
+          },
+          {
+            "feature": "sty_pos_det_frac",
+            "family": "stylometric",
+            "label": "determiner share",
+            "contribution": 0.0795,
+            "value": 0.12941176470588237,
+            "human_percentile": 76.8,
+            "text": "many determiners"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "tra_causal_rate",
+            "family": "repetition",
+            "label": "causal transitions (therefore)",
+            "contribution": -0.922,
+            "value": 0.2,
+            "human_percentile": 90.0,
+            "text": "many causal transitions"
+          },
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -0.8235,
+            "value": 1.1764705882352942,
+            "human_percentile": 76.4,
+            "text": "many parentheses"
+          }
+        ]
+      },
+      "explanation": null,
+      "detectors": {
+        "perplexity": 0.4056,
+        "burstiness": 0.37,
+        "stylometric": 0.418,
+        "vocabulary": 0.2707,
+        "syntax": 0.2246,
+        "semantic": 0.5145,
+        "repetition": 0.37,
+        "statistical": 0.1128,
+        "neural": 0.1626
+      }
+    },
+    {
+      "index": 19,
+      "number": 20,
+      "text": "Thus, the following approach is required.",
+      "start": 2478,
+      "end": 2519,
+      "paragraph": 4,
+      "words": 6,
+      "probability": 0.1340744081552764,
+      "band": "human",
+      "level": "very low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "tra_comma_frac",
+            "family": "repetition",
+            "label": "transition followed by comma",
+            "contribution": 0.1259,
+            "value": 1.0,
+            "human_percentile": 100.0,
+            "text": "transitions consistently followed by commas"
+          },
+          {
+            "feature": "tra_sent_frac",
+            "family": "repetition",
+            "label": "sentences with transitions",
+            "contribution": 0.1256,
+            "value": 0.4,
+            "human_percentile": 85.0,
+            "text": "many sentences with transitions"
+          },
+          {
+            "feature": "rep_trigram",
+            "family": "repetition",
+            "label": "repeated three-word sequences",
+            "contribution": 0.1173,
+            "value": 0.021505376344086023,
+            "human_percentile": 66.1,
+            "text": "few repeated phrases"
+          },
+          {
+            "feature": "sem_adj_std",
+            "family": "semantic",
+            "label": "variation in sentence-to-sentence similarity",
+            "contribution": 0.1068,
+            "value": 0.19785992557640406,
+            "human_percentile": 95.2,
+            "text": "uneven semantic progression"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "tra_causal_rate",
+            "family": "repetition",
+            "label": "causal transitions (therefore)",
+            "contribution": -0.696,
+            "value": 0.2,
+            "human_percentile": 90.0,
+            "text": "many causal transitions"
+          },
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -0.6493,
+            "value": 2.0618556701030926,
+            "human_percentile": 88.9,
+            "text": "many parentheses"
+          }
+        ]
+      },
+      "explanation": null,
+      "detectors": {
+        "perplexity": 0.4022,
+        "burstiness": 0.3511,
+        "stylometric": 0.3869,
+        "vocabulary": 0.3261,
+        "syntax": 0.2975,
+        "semantic": 0.3493,
+        "repetition": 0.3091,
+        "statistical": 0.1349,
+        "neural": 0.3446
+      }
+    },
+    {
+      "index": 20,
+      "number": 21,
+      "text": "First of all, pharmacological treatment with intranasal antihistamines and reduction of contact with the cat is necessary if the source of hypersensitivity is confirmed (Seidman et al. 2015).",
+      "start": 2520,
+      "end": 2711,
+      "paragraph": 4,
+      "words": 28,
+      "probability": 0.1340744081552764,
+      "band": "human",
+      "level": "very low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "rep_trigram",
+            "family": "repetition",
+            "label": "repeated three-word sequences",
+            "contribution": 0.1043,
+            "value": 0.022988505747126436,
+            "human_percentile": 67.6,
+            "text": "few repeated phrases"
+          },
+          {
+            "feature": "sty_pos_pron_frac",
+            "family": "stylometric",
+            "label": "pronoun share",
+            "contribution": 0.0647,
+            "value": 0.02197802197802198,
+            "human_percentile": 14.4,
+            "text": "few pronouns"
+          },
+          {
+            "feature": "rep_bigram",
+            "family": "repetition",
+            "label": "repeated word pairs",
+            "contribution": 0.0579,
+            "value": 0.125,
+            "human_percentile": 75.4,
+            "text": "many repeated word pairs"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "tra_causal_rate",
+            "family": "repetition",
+            "label": "causal transitions (therefore)",
+            "contribution": -0.7918,
+            "value": 0.2,
+            "human_percentile": 90.0,
+            "text": "many causal transitions"
+          },
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -0.7552,
+            "value": 2.197802197802198,
+            "human_percentile": 90.1,
+            "text": "many parentheses"
+          }
+        ]
+      },
+      "explanation": null,
+      "detectors": {
+        "perplexity": 0.5068,
+        "burstiness": 0.3639,
+        "stylometric": 0.3325,
+        "vocabulary": 0.332,
+        "syntax": 0.3118,
+        "semantic": 0.3609,
+        "repetition": 0.3172,
+        "statistical": 0.1307,
+        "neural": 0.2816
+      }
+    },
+    {
+      "index": 21,
+      "number": 22,
+      "text": "If the proposed treatment is ineffective, it is necessary to resort to more complex pharmacological treatment or surgical interventions in the nasal area (Seidman et al. 2015).",
+      "start": 2712,
+      "end": 2888,
+      "paragraph": 4,
+      "words": 27,
+      "probability": 0.10224934020292849,
+      "band": "human",
+      "level": "very low indication",
+      "confidence": "Medium",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "sty_pos_aux_frac",
+            "family": "stylometric",
+            "label": "auxiliary-verb share",
+            "contribution": 0.1142,
+            "value": 0.09195402298850575,
+            "human_percentile": 88.3,
+            "text": "many auxiliary verbs"
+          },
+          {
+            "feature": "ppl_token_mean",
+            "family": "perplexity",
+            "label": "average word predictability",
+            "contribution": 0.0959,
+            "value": 12.064060513773969,
+            "human_percentile": 82.5,
+            "text": "less predictable word choices (higher perplexity)"
+          },
+          {
+            "feature": "syn_passive_frac",
+            "family": "syntax",
+            "label": "passive voice",
+            "contribution": 0.0873,
+            "value": 0.6,
+            "human_percentile": 90.0,
+            "text": "frequent passive voice"
+          },
+          {
+            "feature": "sty_pos_propn_frac",
+            "family": "stylometric",
+            "label": "proper-noun share",
+            "contribution": 0.0857,
+            "value": 0.06896551724137931,
+            "human_percentile": 64.2,
+            "text": "few names and proper nouns"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "tra_causal_rate",
+            "family": "repetition",
+            "label": "causal transitions (therefore)",
+            "contribution": -0.4964,
+            "value": 0.2,
+            "human_percentile": 90.0,
+            "text": "many causal transitions"
+          },
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -0.431,
+            "value": 2.2988505747126435,
+            "human_percentile": 90.7,
+            "text": "many parentheses"
+          }
+        ]
+      },
+      "explanation": null,
+      "detectors": {
+        "perplexity": 0.5277,
+        "burstiness": 0.3288,
+        "stylometric": 0.3555,
+        "vocabulary": 0.2466,
+        "syntax": 0.2595,
+        "semantic": 0.3562,
+        "repetition": 0.2982,
+        "statistical": 0.0873,
+        "neural": 0.3636
+      }
+    },
+    {
+      "index": 22,
+      "number": 23,
+      "text": "Antihistamine class of drugs and decongestants are offered as pharmacological treatment.",
+      "start": 2889,
+      "end": 2977,
+      "paragraph": 4,
+      "words": 11,
+      "probability": 0.1268997384269478,
+      "band": "human",
+      "level": "very low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "sty_word_len_std",
+            "family": "stylometric",
+            "label": "word-length variation",
+            "contribution": 0.3382,
+            "value": 4.024896505930895,
+            "human_percentile": 95.2,
+            "text": "varied word lengths"
+          },
+          {
+            "feature": "ppl_sent_min",
+            "family": "perplexity",
+            "label": "lowest sentence perplexity",
+            "contribution": 0.1423,
+            "value": 11.695646437713615,
+            "human_percentile": 95.0,
+            "text": "no extremely predictable sentences"
+          },
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.0992,
+            "value": 0.030612244897959183,
+            "human_percentile": 38.2,
+            "text": "few adverbs"
+          },
+          {
+            "feature": "tra_sequential_rate",
+            "family": "repetition",
+            "label": "sequencing transitions (first, finally)",
+            "contribution": 0.0805,
+            "value": 0.2,
+            "human_percentile": 95.0,
+            "text": "many sequencing transitions"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -0.8192,
+            "value": 2.0408163265306123,
+            "human_percentile": 88.7,
+            "text": "many parentheses"
+          },
+          {
+            "feature": "pun_semicolon_rate",
+            "family": "stylometric",
+            "label": "semicolon density",
+            "contribution": -0.5588,
+            "value": 1.0204081632653061,
+            "human_percentile": 95.1,
+            "text": "many semicolons"
+          }
+        ]
+      },
+      "explanation": null,
+      "detectors": {
+        "perplexity": 0.6208,
+        "burstiness": 0.476,
+        "stylometric": 0.3911,
+        "vocabulary": 0.2469,
+        "syntax": 0.3374,
+        "semantic": 0.4539,
+        "repetition": 0.5088,
+        "statistical": 0.156,
+        "neural": 0.1639
+      }
+    },
+    {
+      "index": 23,
+      "number": 24,
+      "text": "Fexofenadine is the pharmacologically active metabolite of terfenadine; it does not have a sedative effect.",
+      "start": 2978,
+      "end": 3085,
+      "paragraph": 5,
+      "words": 15,
+      "probability": 0.14599457677152122,
+      "band": "human",
+      "level": "very low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "sty_word_len_std",
+            "family": "stylometric",
+            "label": "word-length variation",
+            "contribution": 0.2943,
+            "value": 3.8228681624736054,
+            "human_percentile": 95.1,
+            "text": "varied word lengths"
+          },
+          {
+            "feature": "voc_rare_frac",
+            "family": "vocabulary",
+            "label": "rare-word share",
+            "contribution": 0.1611,
+            "value": 0.21568627450980393,
+            "human_percentile": 95.7,
+            "text": "many rare words"
+          },
+          {
+            "feature": "ppl_sent_mean",
+            "family": "perplexity",
+            "label": "average sentence perplexity",
+            "contribution": 0.1006,
+            "value": 12.203883199872102,
+            "human_percentile": 84.1,
+            "text": "high average sentence perplexity"
+          },
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.0975,
+            "value": 0.020833333333333332,
+            "human_percentile": 23.7,
+            "text": "few adverbs"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -0.4704,
+            "value": 2.0833333333333335,
+            "human_percentile": 89.1,
+            "text": "many parentheses"
+          },
+          {
+            "feature": "pun_transition_entropy",
+            "family": "stylometric",
+            "label": "punctuation sequence variety",
+            "contribution": -0.2694,
+            "value": 0.43593531321516044,
+            "human_percentile": 82.5,
+            "text": "varied punctuation patterns"
+          }
+        ]
+      },
+      "explanation": null,
+      "detectors": {
+        "perplexity": 0.5855,
+        "burstiness": 0.4937,
+        "stylometric": 0.3788,
+        "vocabulary": 0.3823,
+        "syntax": 0.3831,
+        "semantic": 0.4102,
+        "repetition": 0.4209,
+        "statistical": 0.1651,
+        "neural": 0.3506
+      }
+    },
+    {
+      "index": 24,
+      "number": 25,
+      "text": "The antihistamine effect appears after 1 hour, reaching a maximum after 6 hours, lasting for 24 hours.",
+      "start": 3086,
+      "end": 3188,
+      "paragraph": 5,
+      "words": 17,
+      "probability": 0.18997433649814657,
+      "band": "uncertain",
+      "level": "very low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "sty_word_len_std",
+            "family": "stylometric",
+            "label": "word-length variation",
+            "contribution": 0.2615,
+            "value": 3.9074639099807493,
+            "human_percentile": 95.2,
+            "text": "varied word lengths"
+          },
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.1928,
+            "value": 0.010638297872340425,
+            "human_percentile": 10.6,
+            "text": "few adverbs"
+          },
+          {
+            "feature": "ppl_token_mean",
+            "family": "perplexity",
+            "label": "average word predictability",
+            "contribution": 0.104,
+            "value": 12.232502737617802,
+            "human_percentile": 85.9,
+            "text": "less predictable word choices (higher perplexity)"
+          },
+          {
+            "feature": "voc_zipf_mean",
+            "family": "vocabulary",
+            "label": "word commonness",
+            "contribution": 0.0931,
+            "value": 4.156472364341392,
+            "human_percentile": 5.1,
+            "text": "rarer, more sophisticated vocabulary"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -0.6484,
+            "value": 1.0638297872340425,
+            "human_percentile": 73.6,
+            "text": "many parentheses"
+          },
+          {
+            "feature": "pun_transition_entropy",
+            "family": "stylometric",
+            "label": "punctuation sequence variety",
+            "contribution": -0.2241,
+            "value": 0.4297788002398577,
+            "human_percentile": 80.4,
+            "text": "varied punctuation patterns"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• varied word lengths\n• few adverbs\n• less predictable word choices (higher perplexity)\n• rarer, more sophisticated vocabulary\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5543,
+        "burstiness": 0.5166,
+        "stylometric": 0.5179,
+        "vocabulary": 0.3749,
+        "syntax": 0.4668,
+        "semantic": 0.4567,
+        "repetition": 0.4881,
+        "statistical": 0.213,
+        "neural": 0.3695
+      }
+    },
+    {
+      "index": 25,
+      "number": 26,
+      "text": "After 28 days of the administration, no addiction is observed, which is an achievement compared to similar drugs of the previous generation (Klimek et al. 2019).",
+      "start": 3189,
+      "end": 3350,
+      "paragraph": 5,
+      "words": 26,
+      "probability": 0.2670109792613952,
+      "band": "uncertain",
+      "level": "low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "sty_word_len_std",
+            "family": "stylometric",
+            "label": "word-length variation",
+            "contribution": 0.2751,
+            "value": 3.6791903768195864,
+            "human_percentile": 95.1,
+            "text": "varied word lengths"
+          },
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.2045,
+            "value": 0.01,
+            "human_percentile": 10.0,
+            "text": "few adverbs"
+          },
+          {
+            "feature": "ppl_token_median",
+            "family": "perplexity",
+            "label": "median word predictability",
+            "contribution": 0.133,
+            "value": 13.221273817651703,
+            "human_percentile": 94.6,
+            "text": "predominantly less predictable words"
+          },
+          {
+            "feature": "bur_sent_len_cv",
+            "family": "burstiness",
+            "label": "relative sentence-length variation",
+            "contribution": 0.116,
+            "value": 0.2280350850198276,
+            "human_percentile": 15.2,
+            "text": "low relative variation in sentence length"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -0.7054,
+            "value": 2.0,
+            "human_percentile": 88.2,
+            "text": "many parentheses"
+          },
+          {
+            "feature": "pun_transition_entropy",
+            "family": "stylometric",
+            "label": "punctuation sequence variety",
+            "contribution": -0.2238,
+            "value": 0.43593531321516044,
+            "human_percentile": 82.5,
+            "text": "varied punctuation patterns"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• varied word lengths\n• few adverbs\n• predominantly less predictable words\n• low relative variation in sentence length\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.449,
+        "burstiness": 0.5536,
+        "stylometric": 0.5053,
+        "vocabulary": 0.4323,
+        "syntax": 0.5241,
+        "semantic": 0.4561,
+        "repetition": 0.4714,
+        "statistical": 0.2872,
+        "neural": 0.3913
+      }
+    },
+    {
+      "index": 26,
+      "number": 27,
+      "text": "Phenylephrine is presented as a part of combined preparations for treating acute respiratory viral infections, and influenza is used to achieve a moderate vasoconstrictive effect.",
+      "start": 3351,
+      "end": 3530,
+      "paragraph": 5,
+      "words": 25,
+      "probability": 0.38537541992411145,
+      "band": "uncertain",
+      "level": "low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.2935,
+            "value": 0.009523809523809525,
+            "human_percentile": 9.7,
+            "text": "few adverbs"
+          },
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": 0.2749,
+            "value": 7.619047619047619,
+            "human_percentile": 85.1,
+            "text": "many commas"
+          },
+          {
+            "feature": "sty_sent_len_p10",
+            "family": "stylometric",
+            "label": "short-sentence length (10th pct.)",
+            "contribution": 0.2416,
+            "value": 17.0,
+            "human_percentile": 80.8,
+            "text": "no very short sentences"
+          },
+          {
+            "feature": "bur_sent_len_cv",
+            "family": "burstiness",
+            "label": "relative sentence-length variation",
+            "contribution": 0.2115,
+            "value": 0.18319413392067949,
+            "human_percentile": 8.0,
+            "text": "low relative variation in sentence length"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -0.7566,
+            "value": 1.9047619047619047,
+            "human_percentile": 87.3,
+            "text": "many parentheses"
+          },
+          {
+            "feature": "sty_pron3_frac",
+            "family": "stylometric",
+            "label": "third-person pronouns",
+            "contribution": -0.1949,
+            "value": 0.0,
+            "human_percentile": 20.0,
+            "text": "few third-person pronouns"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• few adverbs\n• many commas\n• no very short sentences\n• low relative variation in sentence length\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.469,
+        "burstiness": 0.6022,
+        "stylometric": 0.5224,
+        "vocabulary": 0.5076,
+        "syntax": 0.4528,
+        "semantic": 0.518,
+        "repetition": 0.4796,
+        "statistical": 0.3969,
+        "neural": 0.4298
+      }
+    },
+    {
+      "index": 27,
+      "number": 28,
+      "text": "Reduces swelling and hyperemia of the nasal mucosa by stimulating α1-adrenergic receptors (Klimek et al. 2019).",
+      "start": 3531,
+      "end": 3642,
+      "paragraph": 5,
+      "words": 17,
+      "probability": 0.29528922545988895,
+      "band": "uncertain",
+      "level": "low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.2421,
+            "value": 0.018867924528301886,
+            "human_percentile": 20.8,
+            "text": "few adverbs"
+          },
+          {
+            "feature": "sty_sent_len_p10",
+            "family": "stylometric",
+            "label": "short-sentence length (10th pct.)",
+            "contribution": 0.2064,
+            "value": 17.4,
+            "human_percentile": 82.5,
+            "text": "no very short sentences"
+          },
+          {
+            "feature": "ppl_token_median",
+            "family": "perplexity",
+            "label": "median word predictability",
+            "contribution": 0.187,
+            "value": 12.756203884367471,
+            "human_percentile": 87.9,
+            "text": "predominantly less predictable words"
+          },
+          {
+            "feature": "sty_pos_propn_frac",
+            "family": "stylometric",
+            "label": "proper-noun share",
+            "contribution": 0.1604,
+            "value": 0.07547169811320754,
+            "human_percentile": 66.8,
+            "text": "many names and proper nouns"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -1.0185,
+            "value": 1.8867924528301887,
+            "human_percentile": 87.1,
+            "text": "many parentheses"
+          },
+          {
+            "feature": "syn_dep_dist_mean",
+            "family": "syntax",
+            "label": "dependency distance",
+            "contribution": -0.2238,
+            "value": 2.595816305469556,
+            "human_percentile": 74.2,
+            "text": "long-distance syntactic dependencies"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• few adverbs\n• no very short sentences\n• predominantly less predictable words\n• many names and proper nouns\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.4844,
+        "burstiness": 0.6132,
+        "stylometric": 0.5146,
+        "vocabulary": 0.5244,
+        "syntax": 0.4051,
+        "semantic": 0.5288,
+        "repetition": 0.4284,
+        "statistical": 0.3699,
+        "neural": 0.3255
+      }
+    },
+    {
+      "index": 28,
+      "number": 29,
+      "text": "In this situation, the abuse of intranasal vasoconstrictor drugs, which can be addictive and only eliminate symptoms, is not recommended.",
+      "start": 3643,
+      "end": 3780,
+      "paragraph": 5,
+      "words": 20,
+      "probability": 0.29528922545988895,
+      "band": "uncertain",
+      "level": "low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.2421,
+            "value": 0.018867924528301886,
+            "human_percentile": 20.8,
+            "text": "few adverbs"
+          },
+          {
+            "feature": "sty_sent_len_p10",
+            "family": "stylometric",
+            "label": "short-sentence length (10th pct.)",
+            "contribution": 0.2064,
+            "value": 17.4,
+            "human_percentile": 82.5,
+            "text": "no very short sentences"
+          },
+          {
+            "feature": "ppl_token_median",
+            "family": "perplexity",
+            "label": "median word predictability",
+            "contribution": 0.187,
+            "value": 12.756203884367471,
+            "human_percentile": 87.9,
+            "text": "predominantly less predictable words"
+          },
+          {
+            "feature": "sty_pos_propn_frac",
+            "family": "stylometric",
+            "label": "proper-noun share",
+            "contribution": 0.1604,
+            "value": 0.07547169811320754,
+            "human_percentile": 66.8,
+            "text": "many names and proper nouns"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -1.0185,
+            "value": 1.8867924528301887,
+            "human_percentile": 87.1,
+            "text": "many parentheses"
+          },
+          {
+            "feature": "syn_dep_dist_mean",
+            "family": "syntax",
+            "label": "dependency distance",
+            "contribution": -0.2238,
+            "value": 2.595816305469556,
+            "human_percentile": 74.2,
+            "text": "long-distance syntactic dependencies"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• few adverbs\n• no very short sentences\n• predominantly less predictable words\n• many names and proper nouns\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.4844,
+        "burstiness": 0.6132,
+        "stylometric": 0.5146,
+        "vocabulary": 0.5244,
+        "syntax": 0.4051,
+        "semantic": 0.5288,
+        "repetition": 0.4284,
+        "statistical": 0.3699,
+        "neural": 0.3255
+      }
+    },
+    {
+      "index": 29,
+      "number": 30,
+      "text": "It is also not recommended to wear masks and other personal protective equipment that restricts the respiratory system.",
+      "start": 3781,
+      "end": 3900,
+      "paragraph": 5,
+      "words": 18,
+      "probability": 0.29528922545988895,
+      "band": "uncertain",
+      "level": "low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.2421,
+            "value": 0.018867924528301886,
+            "human_percentile": 20.8,
+            "text": "few adverbs"
+          },
+          {
+            "feature": "sty_sent_len_p10",
+            "family": "stylometric",
+            "label": "short-sentence length (10th pct.)",
+            "contribution": 0.2064,
+            "value": 17.4,
+            "human_percentile": 82.5,
+            "text": "no very short sentences"
+          },
+          {
+            "feature": "ppl_token_median",
+            "family": "perplexity",
+            "label": "median word predictability",
+            "contribution": 0.187,
+            "value": 12.756203884367471,
+            "human_percentile": 87.9,
+            "text": "predominantly less predictable words"
+          },
+          {
+            "feature": "sty_pos_propn_frac",
+            "family": "stylometric",
+            "label": "proper-noun share",
+            "contribution": 0.1604,
+            "value": 0.07547169811320754,
+            "human_percentile": 66.8,
+            "text": "many names and proper nouns"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_paren_rate",
+            "family": "stylometric",
+            "label": "parenthesis usage",
+            "contribution": -1.0185,
+            "value": 1.8867924528301887,
+            "human_percentile": 87.1,
+            "text": "many parentheses"
+          },
+          {
+            "feature": "syn_dep_dist_mean",
+            "family": "syntax",
+            "label": "dependency distance",
+            "contribution": -0.2238,
+            "value": 2.595816305469556,
+            "human_percentile": 74.2,
+            "text": "long-distance syntactic dependencies"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• few adverbs\n• no very short sentences\n• predominantly less predictable words\n• many names and proper nouns\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.4844,
+        "burstiness": 0.6132,
+        "stylometric": 0.5146,
+        "vocabulary": 0.5244,
+        "syntax": 0.4051,
+        "semantic": 0.5288,
+        "repetition": 0.4284,
+        "statistical": 0.3699,
+        "neural": 0.3255
+      }
+    }
+  ],
+  "paragraphs": [
+    {
+      "index": 0,
+      "probability": 0.38537541992411145,
+      "words": 72,
+      "sentences": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "index": 1,
+      "probability": 0.3965574888453031,
+      "words": 99,
+      "sentences": [
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "index": 2,
+      "probability": 0.6838384526908753,
+      "words": 84,
+      "sentences": [
+        8,
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "index": 3,
+      "probability": 0.15099312301668302,
+      "words": 113,
+      "sentences": [
+        13,
+        14,
+        15,
+        16,
+        17,
+        18
+      ]
+    },
+    {
+      "index": 4,
+      "probability": 0.12104387757576239,
+      "words": 72,
+      "sentences": [
+        19,
+        20,
+        21,
+        22
+      ]
+    },
+    {
+      "index": 5,
+      "probability": 0.27708015022633525,
+      "words": 138,
+      "sentences": [
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29
+      ]
+    }
+  ],
+  "statistics": {
+    "perplexity": {
+      "summary": {
+        "perplexity": 4579.062053019508,
+        "unit": "bits/word (unigram proxy)",
+        "backend": "unigram"
+      },
+      "items": [
+        {
+          "key": "ppl_sent_mean",
+          "label": "Mean sentence surprisal (bits/word (unigram proxy))",
+          "value": 12.160836400443786,
+          "display": "12.161",
+          "human_percentile": 83.7,
+          "human_median": 11.183724297123245,
+          "ai_median": 11.361756904694335,
+          "note": ""
+        },
+        {
+          "key": "ppl_token_median",
+          "label": "Median word surprisal",
+          "value": 12.756203884367471,
+          "display": "12.756",
+          "human_percentile": 89.3,
+          "human_median": 11.294555522617031,
+          "ai_median": 11.759625455901263,
+          "note": ""
+        },
+        {
+          "key": "ppl_sent_min",
+          "label": "Lowest sentence surprisal",
+          "value": 8.971157094754068,
+          "display": "8.971",
+          "human_percentile": 29.3,
+          "human_median": 9.464172283130825,
+          "ai_median": 9.899344434545295,
+          "note": ""
+        }
+      ]
+    },
+    "burstiness": {
+      "summary": {
+        "normalized_score": 0.8785878295116283,
+        "definition": "percentile of sentence-to-sentence predictability variation among human-written reference documents (0 = very uniform)"
+      },
+      "items": [
+        {
+          "key": "bur_ppl_sent_std",
+          "label": "Sentence perplexity std.",
+          "value": 1.6527911761707077,
+          "display": "1.653",
+          "human_percentile": 87.9,
+          "human_median": 1.0402354317291178,
+          "ai_median": 0.899094950120688,
+          "note": ""
+        },
+        {
+          "key": "bur_ppl_sent_B",
+          "label": "Perplexity burstiness index B",
+          "value": -0.7607013556715881,
+          "display": "-0.761",
+          "human_percentile": 85.3,
+          "human_median": -0.8292179809467716,
+          "ai_median": -0.8527764031347929,
+          "note": ""
+        },
+        {
+          "key": "bur_sent_len_cv",
+          "label": "Sentence-length variation (CV)",
+          "value": 0.349189641842017,
+          "display": "0.349",
+          "human_percentile": 26.9,
+          "human_median": 0.4347638001709496,
+          "ai_median": 0.3264589521525795,
+          "note": ""
+        },
+        {
+          "key": "bur_sent_len_B",
+          "label": "Sentence-length burstiness B",
+          "value": -0.4823712975363841,
+          "display": "-0.482",
+          "human_percentile": 26.9,
+          "human_median": -0.3939576673666262,
+          "ai_median": -0.5077737586657722,
+          "note": ""
+        },
+        {
+          "key": "bur_syntax_cv",
+          "label": "Syntactic variation (CV of depth)",
+          "value": 0.4317877695883727,
+          "display": "0.432",
+          "human_percentile": 72.6,
+          "human_median": 0.36258121546411026,
+          "ai_median": 0.31180478223116176,
+          "note": ""
+        }
+      ]
+    },
+    "stylometry": {
+      "items": [
+        {
+          "key": "sty_sent_len_mean",
+          "label": "Average sentence length (words)",
+          "value": 19.266666666666666,
+          "display": "19.3",
+          "human_percentile": 45.0,
+          "human_median": 20.0,
+          "ai_median": 19.886752136752136,
+          "note": ""
+        },
+        {
+          "key": "sty_sent_len_median",
+          "label": "Median sentence length",
+          "value": 19.0,
+          "display": "19.0",
+          "human_percentile": 50.0,
+          "human_median": 19.0,
+          "ai_median": 19.5,
+          "note": ""
+        },
+        {
+          "key": "sty_word_len_mean",
+          "label": "Average word length",
+          "value": 5.624778761061947,
+          "display": "5.62",
+          "human_percentile": 94.5,
+          "human_median": 4.86252962085308,
+          "ai_median": 5.073364319288233,
+          "note": ""
+        },
+        {
+          "key": "sty_function_frac",
+          "label": "Function-word share",
+          "value": 0.4088495575221239,
+          "display": "0.409",
+          "human_percentile": 25.0,
+          "human_median": 0.45263157894736844,
+          "ai_median": 0.43507632718159034,
+          "note": ""
+        },
+        {
+          "key": "sty_contraction_rate",
+          "label": "Contractions per 100 words",
+          "value": 0.0,
+          "display": "0.00",
+          "human_percentile": 55.0,
+          "human_median": 0.0,
+          "ai_median": 0.0,
+          "note": ""
+        },
+        {
+          "key": "sty_pron1s_frac",
+          "label": "First-person singular share",
+          "value": 0.0,
+          "display": "0.0000",
+          "human_percentile": 55.0,
+          "human_median": 0.0,
+          "ai_median": 0.0,
+          "note": ""
+        },
+        {
+          "key": "sty_pos_adv_frac",
+          "label": "Adverb share",
+          "value": 0.029411764705882353,
+          "display": "0.029",
+          "human_percentile": 31.6,
+          "human_median": 0.03985163490361081,
+          "ai_median": 0.031399070218945994,
+          "note": ""
+        },
+        {
+          "key": "sty_pos_adj_frac",
+          "label": "Adjective share",
+          "value": 0.1384083044982699,
+          "display": "0.138",
+          "human_percentile": 93.1,
+          "human_median": 0.08333333333333333,
+          "ai_median": 0.09134615384615384,
+          "note": ""
+        }
+      ]
+    },
+    "punctuation": {
+      "items": [
+        {
+          "key": "pun_comma_rate",
+          "label": "Commas per 100 words",
+          "value": 7.7854671280276815,
+          "display": "7.79",
+          "human_percentile": 91.1,
+          "human_median": 4.646652397581765,
+          "ai_median": 4.798989898989898,
+          "note": ""
+        },
+        {
+          "key": "pun_semicolon_rate",
+          "label": "Semicolons per 100 words",
+          "value": 0.17301038062283736,
+          "display": "0.17",
+          "human_percentile": 85.2,
+          "human_median": 0.0,
+          "ai_median": 0.0,
+          "note": ""
+        },
+        {
+          "key": "pun_colon_rate",
+          "label": "Colons per 100 words",
+          "value": 0.3460207612456747,
+          "display": "0.35",
+          "human_percentile": 78.5,
+          "human_median": 0.0,
+          "ai_median": 0.0,
+          "note": ""
+        },
+        {
+          "key": "pun_dash_rate",
+          "label": "Dashes per 100 words",
+          "value": 0.0,
+          "display": "0.00",
+          "human_percentile": 75.0,
+          "human_median": 0.0,
+          "ai_median": 0.0,
+          "note": ""
+        },
+        {
+          "key": "pun_paren_rate",
+          "label": "Parentheses per 100 words",
+          "value": 1.3840830449826989,
+          "display": "1.38",
+          "human_percentile": 80.5,
+          "human_median": 0.4608294930875576,
+          "ai_median": 0.0,
+          "note": ""
+        },
+        {
+          "key": "pun_type_entropy",
+          "label": "Punctuation variety (entropy)",
+          "value": 0.4616378257341306,
+          "display": "0.462",
+          "human_percentile": 46.9,
+          "human_median": 0.47070017249509416,
+          "ai_median": 0.3855207255966542,
+          "note": ""
+        }
+      ],
+      "note": "No punctuation mark is treated as evidence on its own."
+    },
+    "vocabulary": {
+      "items": [
+        {
+          "key": "voc_mattr",
+          "label": "Moving-average type-token ratio",
+          "value": 0.8081395348837209,
+          "display": "0.808",
+          "human_percentile": 61.6,
+          "human_median": 0.7962019568435498,
+          "ai_median": 0.7942307353103296,
+          "note": ""
+        },
+        {
+          "key": "voc_mtld",
+          "label": "MTLD lexical diversity",
+          "value": 99.03633338179938,
+          "display": "99.0",
+          "human_percentile": 76.9,
+          "human_median": 79.11506274229902,
+          "ai_median": 76.0,
+          "note": ""
+        },
+        {
+          "key": "voc_hapax_ratio",
+          "label": "Hapax legomena ratio",
+          "value": 0.8133688809487896,
+          "display": "0.813",
+          "human_percentile": 81.6,
+          "human_median": 0.7757273649482868,
+          "ai_median": 0.7740288389877554,
+          "note": ""
+        },
+        {
+          "key": "voc_zipf_mean",
+          "label": "Word commonness (Zipf)",
+          "value": 4.1296585506942,
+          "display": "4.13",
+          "human_percentile": 4.8,
+          "human_median": 4.642399555345863,
+          "ai_median": 4.581120957933033,
+          "note": ""
+        },
+        {
+          "key": "voc_rare_frac",
+          "label": "Rare-word share",
+          "value": 0.18263473053892215,
+          "display": "0.183",
+          "human_percentile": 95.4,
+          "human_median": 0.05194805194805195,
+          "ai_median": 0.044444444444444446,
+          "note": ""
+        },
+        {
+          "key": "voc_heaps_slope",
+          "label": "Vocabulary growth (Heaps)",
+          "value": 0.8091164672143119,
+          "display": "0.809",
+          "human_percentile": 49.9,
+          "human_median": 0.8092472991782218,
+          "ai_median": 0.8014076954545111,
+          "note": ""
+        }
+      ]
+    },
+    "syntax": {
+      "items": [
+        {
+          "key": "syn_depth_mean",
+          "label": "Dependency-tree depth",
+          "value": 5.9,
+          "display": "5.90",
+          "human_percentile": 56.3,
+          "human_median": 5.7,
+          "ai_median": 6.0,
+          "note": ""
+        },
+        {
+          "key": "syn_clauses_per_sent",
+          "label": "Clauses per sentence",
+          "value": 2.066666666666667,
+          "display": "2.07",
+          "human_percentile": 30.0,
+          "human_median": 2.4166666666666665,
+          "ai_median": 2.35,
+          "note": ""
+        },
+        {
+          "key": "syn_subord_per_sent",
+          "label": "Subordinate clauses per sentence",
+          "value": 0.7666666666666667,
+          "display": "0.77",
+          "human_percentile": 31.7,
+          "human_median": 1.0,
+          "ai_median": 0.9333333333333333,
+          "note": ""
+        },
+        {
+          "key": "syn_passive_frac",
+          "label": "Passive-voice sentences",
+          "value": 0.4666666666666667,
+          "display": "0.467",
+          "human_percentile": 91.2,
+          "human_median": 0.17391304347826086,
+          "ai_median": 0.15,
+          "note": ""
+        },
+        {
+          "key": "syn_opening_entropy",
+          "label": "Sentence-opening variety",
+          "value": 0.7470839697919227,
+          "display": "0.747",
+          "human_percentile": 92.7,
+          "human_median": 0.5811493383077881,
+          "ai_median": 0.5252990700743871,
+          "note": ""
+        },
+        {
+          "key": "syn_pos_trigram_diversity",
+          "label": "Syntactic diversity",
+          "value": 0.6303893178893178,
+          "display": "0.630",
+          "human_percentile": 17.6,
+          "human_median": 0.7057345807345806,
+          "ai_median": 0.6611328570639421,
+          "note": ""
+        }
+      ]
+    },
+    "repetition": {
+      "items": [
+        {
+          "key": "rep_trigram",
+          "label": "Repeated 3-word phrases",
+          "value": 0.01436265709156194,
+          "display": "0.014",
+          "human_percentile": 38.2,
+          "human_median": 0.02127659574468085,
+          "ai_median": 0.036036036036036036,
+          "note": ""
+        },
+        {
+          "key": "rep_pos_trigram",
+          "label": "Repeated grammatical templates",
+          "value": 0.5807017543859649,
+          "display": "0.581",
+          "human_percentile": 87.4,
+          "human_median": 0.4724741275006167,
+          "ai_median": 0.53227602557655,
+          "note": ""
+        },
+        {
+          "key": "rep_sentence_template",
+          "label": "Repeated sentence structures",
+          "value": 0.041666666666666664,
+          "display": "0.042",
+          "human_percentile": 35.8,
+          "human_median": 0.125,
+          "ai_median": 0.1875,
+          "note": ""
+        },
+        {
+          "key": "tra_per_sent",
+          "label": "Transition words per sentence",
+          "value": 0.3,
+          "display": "0.300",
+          "human_percentile": 86.5,
+          "human_median": 0.1,
+          "ai_median": 0.10714285714285714,
+          "note": ""
+        },
+        {
+          "key": "tra_diversity",
+          "label": "Transition diversity",
+          "value": 0.8888888888888888,
+          "display": "0.889",
+          "human_percentile": 45.6,
+          "human_median": 1.0,
+          "ai_median": 1.0,
+          "note": ""
+        },
+        {
+          "key": "tra_initial_frac",
+          "label": "Sentence-initial transitions",
+          "value": 0.8888888888888888,
+          "display": "0.889",
+          "human_percentile": 56.1,
+          "human_median": 0.75,
+          "ai_median": 0.8,
+          "note": ""
+        }
+      ]
+    },
+    "semantic": {
+      "items": [
+        {
+          "key": "sem_adj_mean",
+          "label": "Neighbouring-sentence similarity",
+          "value": 0.09932522562169281,
+          "display": "0.099",
+          "human_percentile": 39.0,
+          "human_median": 0.11564306324384079,
+          "ai_median": 0.1330431811138611,
+          "note": ""
+        },
+        {
+          "key": "sem_local_gain",
+          "label": "Local coherence gain",
+          "value": 0.03947970703148956,
+          "display": "0.039",
+          "human_percentile": 63.5,
+          "human_median": 0.026654890238956903,
+          "ai_median": 0.0021220419597516443,
+          "note": ""
+        },
+        {
+          "key": "sem_topic_jump_rate",
+          "label": "Topic-jump rate",
+          "value": 0.4827586206896552,
+          "display": "0.483",
+          "human_percentile": 40.7,
+          "human_median": 0.5,
+          "ai_median": 0.5714285714285714,
+          "note": ""
+        },
+        {
+          "key": "sem_redundancy",
+          "label": "Semantic redundancy",
+          "value": 0.20988798601023972,
+          "display": "0.210",
+          "human_percentile": 27.5,
+          "human_median": 0.25849197487344067,
+          "ai_median": 0.30182409262747856,
+          "note": ""
+        },
+        {
+          "key": "sem_compression",
+          "label": "Semantic compression",
+          "value": 0.06432896616545644,
+          "display": "0.064",
+          "human_percentile": 8.9,
+          "human_median": 0.12864565508052506,
+          "ai_median": 0.1505580388695132,
+          "note": ""
+        }
+      ],
+      "backend": "lexical"
+    },
+    "consistency": {
+      "items": [
+        {
+          "key": "style_drift_mean",
+          "label": "Style drift (mean JS divergence)",
+          "value": 0.016596818037215928,
+          "display": "0.017",
+          "human_percentile": 37.9,
+          "human_median": 0.018659488390298205,
+          "ai_median": 0.014046195168588077,
+          "note": ""
+        },
+        {
+          "key": "style_drift_max",
+          "label": "Largest style shift",
+          "value": 0.030908526441786023,
+          "display": "0.031",
+          "human_percentile": 44.1,
+          "human_median": 0.032903511062792073,
+          "ai_median": 0.025531710681746776,
+          "note": ""
+        }
+      ]
+    },
+    "paragraphs": {
+      "items": [
+        {
+          "key": "par_len_cv",
+          "label": "Paragraph-length variation (CV)",
+          "value": 0.24555287196138648,
+          "display": "0.246",
+          "human_percentile": null,
+          "human_median": null,
+          "ai_median": null,
+          "note": ""
+        },
+        {
+          "key": "par_ppl_std",
+          "label": "Paragraph perplexity variation",
+          "value": 0.5957812296440517,
+          "display": "0.596",
+          "human_percentile": null,
+          "human_median": null,
+          "ai_median": null,
+          "note": ""
+        }
+      ],
+      "note": "Descriptive only: paragraph formatting is not used by the classifiers."
+    }
+  },
+  "series": {
+    "sentence_probability": [
+      0.38537541992411145,
+      0.38537541992411145,
+      0.38537541992411145,
+      0.2670109792613952,
+      0.2670109792613952,
+      0.38537541992411145,
+      0.5105721520717524,
+      0.5676314482873456,
+      0.8238240361394226,
+      0.6593622912317294,
+      0.7573909023044126,
+      0.6975890111339056,
+      0.4162429516487657,
+      0.2670109792613952,
+      0.18997433649814657,
+      0.14599457677152122,
+      0.10224934020292849,
+      0.057064804382622715,
+      0.07272701621525625,
+      0.1340744081552764,
+      0.1340744081552764,
+      0.10224934020292849,
+      0.1268997384269478,
+      0.14599457677152122,
+      0.18997433649814657,
+      0.2670109792613952,
+      0.38537541992411145,
+      0.29528922545988895,
+      0.29528922545988895,
+      0.29528922545988895
+    ],
+    "sentence_surprisal": [
+      12.910862405422938,
+      14.506496169993246,
+      10.729751555036797,
+      11.235233947396937,
+      10.879312490772126,
+      14.521807709080374,
+      12.254416331888551,
+      11.820817652544672,
+      11.69909744468649,
+      14.198589639448636,
+      10.659696036106489,
+      14.525082024505894,
+      11.269569611234612,
+      9.593703493637632,
+      13.541008608422864,
+      14.934788278467243,
+      11.232505442250451,
+      8.971157094754068,
+      11.063737165739486,
+      10.452998960000725,
+      11.695646437713615,
+      11.739175259841788,
+      13.17295301738372,
+      13.121577076360529,
+      11.937543270552386,
+      11.048167375222087,
+      12.58739926073167,
+      16.103046107622692,
+      11.463972429277478,
+      10.954979717217391
+    ],
+    "rolling_perplexity_std": [
+      1.452779354224718,
+      1.452779354224718,
+      1.452779354224718,
+      1.7547107076575317,
+      1.4035511965499756,
+      1.280303415591129,
+      1.2269061610303635,
+      1.2116244879259246,
+      1.1608226883947037,
+      1.5128178218163337,
+      1.582650166698813,
+      1.9655978958492195,
+      1.835057412334792,
+      2.034757296069612,
+      1.8886603400742856,
+      2.2779155658693977,
+      2.0791356621441666,
+      1.9701860274192946,
+      0.9439995996235234,
+      1.0215352661294492,
+      0.9058463238513571,
+      1.0179367773708634,
+      0.669717488015651,
+      0.8250851903870376,
+      0.7988819894393621,
+      1.7172185660615742,
+      1.8113616794990202,
+      1.9253252346242953,
+      1.9253252346242953,
+      1.9253252346242953
+    ],
+    "rolling_length_cv": [
+      0.41361552935358825,
+      0.41361552935358825,
+      0.41361552935358825,
+      0.39280860247281923,
+      0.32835144261129123,
+      0.19534423844256277,
+      0.16461128528971922,
+      0.16448675258644052,
+      0.3198573697526151,
+      0.37878751846630077,
+      0.3901421335279509,
+      0.3434673516850261,
+      0.3787875184663007,
+      0.327730693416725,
+      0.2897245932324189,
+      0.2822659396047149,
+      0.24792527533262987,
+      0.3285734506885401,
+      0.4159451654038515,
+      0.4105630464276264,
+      0.4757112268552388,
+      0.501813332251565,
+      0.34392448053781055,
+      0.3267580654449609,
+      0.30906040524114786,
+      0.2280350850198276,
+      0.18319413392067949,
+      0.17241195172167043,
+      0.17241195172167043,
+      0.17241195172167043
+    ],
+    "rolling_mattr": [
+      0.8432786885245902,
+      0.8432786885245902,
+      0.8432786885245902,
+      0.813469387755102,
+      0.7907692307692308,
+      0.8012244897959183,
+      0.8038095238095239,
+      0.8117857142857143,
+      0.8186666666666667,
+      0.8184210526315789,
+      0.8142857142857143,
+      0.813125,
+      0.787027027027027,
+      0.7958974358974359,
+      0.8223809523809524,
+      0.8427906976744186,
+      0.8243243243243243,
+      0.7873684210526316,
+      0.7902857142857143,
+      0.7582608695652174,
+      0.72,
+      0.7161111111111111,
+      0.7536363636363637,
+      0.8014634146341464,
+      0.7885,
+      0.8057777777777778,
+      0.8424,
+      0.8585185185185186,
+      0.8585185185185186,
+      0.8585185185185186
+    ],
+    "sentence_lengths": [
+      32,
+      31,
+      9,
+      14,
+      26,
+      21,
+      19,
+      19,
+      28,
+      19,
+      9,
+      12,
+      16,
+      25,
+      25,
+      12,
+      15,
+      17,
+      19,
+      6,
+      28,
+      27,
+      11,
+      15,
+      17,
+      26,
+      25,
+      17,
+      20,
+      18
+    ],
+    "style_drift": {
+      "centers": [
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0,
+        16.0,
+        18.0,
+        20.0,
+        22.0,
+        24.0,
+        26.0
+      ],
+      "values": [
+        0.030908526441786023,
+        0.016429590185225988,
+        0.01985128046865369,
+        0.003528015654185743,
+        0.028930823201676732,
+        0.013103399589638604,
+        0.005729713962695096,
+        0.03009759961559368,
+        0.017350689051634477,
+        0.014759554194229797,
+        0.011194495063231797,
+        0.007278129018039519
+      ]
+    },
+    "changepoint_statistic": [
+      null,
+      null,
+      null,
+      0.20624347416614192,
+      0.22066080561280518,
+      0.6255158419795408,
+      1.2658992057163854,
+      1.313724564219003,
+      1.2270977412287678,
+      1.020816383762085,
+      1.1801299736815745,
+      1.0879595997867284,
+      1.836873635876317,
+      1.9503644361204318,
+      1.5906224245018779,
+      0.8381585690610649,
+      1.1269393141492732,
+      0.6752172215494006,
+      0.21503754428939462,
+      0.3833978800353243,
+      1.798094406968953,
+      1.1564538573660856,
+      0.7112652675783844,
+      0.5525356864699487,
+      0.8739092894733187,
+      0.7519922723124638,
+      0.35698711812459155,
+      0.14848778316384464,
+      null,
+      null
+    ],
+    "changepoint_threshold": 3.1434862089622313
+  },
+  "transitions": {
+    "series": [
+      null,
+      null,
+      null,
+      0.20624347416614192,
+      0.22066080561280518,
+      0.6255158419795408,
+      1.2658992057163854,
+      1.313724564219003,
+      1.2270977412287678,
+      1.020816383762085,
+      1.1801299736815745,
+      1.0879595997867284,
+      1.836873635876317,
+      1.9503644361204318,
+      1.5906224245018779,
+      0.8381585690610649,
+      1.1269393141492732,
+      0.6752172215494006,
+      0.21503754428939462,
+      0.3833978800353243,
+      1.798094406968953,
+      1.1564538573660856,
+      0.7112652675783844,
+      0.5525356864699487,
+      0.8739092894733187,
+      0.7519922723124638,
+      0.35698711812459155,
+      0.14848778316384464,
+      null,
+      null
+    ],
+    "threshold": 3.1434862089622313,
+    "p_value": 0.7412935323383084,
+    "changepoints": []
+  },
+  "explanation": {
+    "document": {
+      "toward_ai": [
+        {
+          "feature": "tra_sequential_rate",
+          "family": "repetition",
+          "label": "sequencing transitions (first, finally)",
+          "contribution": 0.2651,
+          "value": 0.2,
+          "human_percentile": 95.9,
+          "text": "many sequencing transitions"
+        },
+        {
+          "feature": "voc_zipf_mean",
+          "family": "vocabulary",
+          "label": "word commonness",
+          "contribution": 0.2292,
+          "value": 4.1296585506942,
+          "human_percentile": 4.8,
+          "text": "rarer, more sophisticated vocabulary"
+        },
+        {
+          "feature": "ppl_token_mean",
+          "family": "perplexity",
+          "label": "average word predictability",
+          "contribution": 0.1885,
+          "value": 12.182604135233793,
+          "human_percentile": 85.7,
+          "text": "less predictable word choices (higher perplexity)"
+        },
+        {
+          "feature": "voc_oov_frac",
+          "family": "vocabulary",
+          "label": "unknown/misspelled word share",
+          "contribution": 0.1876,
+          "value": 0.0029940119760479044,
+          "human_percentile": 28.7,
+          "text": "few unknown words or misspellings"
+        },
+        {
+          "feature": "pun_comma_rate",
+          "family": "stylometric",
+          "label": "comma density",
+          "contribution": 0.1784,
+          "value": 7.7854671280276815,
+          "human_percentile": 91.1,
+          "text": "many commas"
+        }
+      ],
+      "toward_human": [
+        {
+          "feature": "sem_compression",
+          "family": "semantic",
+          "label": "semantic compression",
+          "contribution": -0.953,
+          "value": 0.06432896616545644,
+          "human_percentile": 8.9,
+          "text": "semantically diverse content"
+        },
+        {
+          "feature": "pun_paren_rate",
+          "family": "stylometric",
+          "label": "parenthesis usage",
+          "contribution": -0.5063,
+          "value": 1.3840830449826989,
+          "human_percentile": 80.5,
+          "text": "many parentheses"
+        }
+      ]
+    },
+    "summary": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• many sequencing transitions\n• rarer, more sophisticated vocabulary\n• less predictable word choices (higher perplexity)\n• few unknown words or misspellings\n• many commas\nThese are statistical indicators, not proof of AI authorship.",
+    "caveat": "These are statistical indicators, not proof of AI authorship.",
+    "family_contributions": {
+      "stylometric": -1.5978965105830234,
+      "semantic": -1.2129269470688744,
+      "burstiness": -0.5011599431751277,
+      "syntax": -0.42335892292229005,
+      "vocabulary": 0.39637312142219017,
+      "repetition": -0.17700201584180952,
+      "perplexity": 0.15111274290676757,
+      "consistency": -0.002602683390139582
+    },
+    "method": "Baseline-replacement attribution on the deployed ensemble: each measurement is replaced by its median in human-written training documents and the change in the ensemble score is its contribution (interactions are ignored)."
+  },
+  "model": {
+    "version": "en-20261002-783106e4aa39-nonnative",
+    "feature_version": "2026.10-f3",
+    "profile": "lite",
+    "predictability_backend": "unigram",
+    "semantic_backend": "lexical",
+    "evidence_thresholds_derived": true,
+    "calibration": {
+      "document": "isotonic",
+      "window": "isotonic"
+    }
+  }
+}

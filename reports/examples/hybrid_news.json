@@ -1,0 +1,2569 @@
+{
+  "meta": {
+    "title": "Example: hybrid news (example dataset, CC BY 3.0)",
+    "date": "2026-10-02 23:46:26",
+    "word_count": 496,
+    "character_count": 3083,
+    "app_version": "1.0.0",
+    "device": "cpu",
+    "language": "en",
+    "language_confidence": 0.861,
+    "sentence_count": 18,
+    "paragraph_count": 2,
+    "processing_seconds": 0.47
+  },
+  "disclaimer": "AI-text detection is probabilistic. The results should not be used as sole evidence for academic misconduct, disciplinary action, or authorship determination. The detector is designed to assist human review, not to replace it.",
+  "limitations": [
+    "AI-text detection is probabilistic and produces both false positives (human text flagged) and false negatives (AI text missed).",
+    "Probabilities are calibrated on held-out data with equal numbers of human and AI documents (a 50% prior). The share of AI text in your context changes how a given score should be read.",
+    "Performance drops on text from AI models, domains, languages and writing populations that differ from the training data; see the evaluation report for measured cross-model and cross-domain results.",
+    "Paraphrasing, translation, heavy human editing and short texts reduce detection reliability.",
+    "Formulaic genres (legal, scientific, technical) and highly polished human writing can resemble AI-generated text statistically.",
+    "Spelling or grammar mistakes, dialect, nationality and writing ability are never used as evidence of AI authorship, but non-native writing can still differ statistically from the training data; check the false-positive audit in the evaluation report.",
+    "Sentence-level scores use a 5-sentence context window and are less reliable than document-level scores.",
+    "Detected style transitions indicate a statistical change in writing characteristics, not a change of author."
+  ],
+  "privacy": "Privacy mode: Local processing. No text leaves this computer.",
+  "warnings": [],
+  "status": "ok",
+  "result": {
+    "ai_associated_share": 0.0,
+    "human_associated_share": 0.05040322580645161,
+    "uncertain_share": 0.9495967741935484,
+    "document_probability": 0.4545889075951587,
+    "estimated_ai_share": 0.37804009750128154,
+    "confidence": 0.9538372383484591,
+    "confidence_level": "High",
+    "confidence_components": {
+      "length_reliability": 0.9909056658471591,
+      "detector_agreement": 0.9584654052120873,
+      "feature_coverage": 1.0,
+      "committee_stability": 0.9295129522726007
+    },
+    "evidence_level": "reliable",
+    "evidence_text": "More reliable statistical analysis (text length)",
+    "hybrid": {
+      "code": 1,
+      "label": "Human-assisted",
+      "rationale": "Mostly human-associated patterns with some AI-associated passages.",
+      "estimated_ai_share": 0.37804009750128154
+    },
+    "interpretation": "Based on the characteristics measured by this model, the text contains patterns that are weakly associated with AI-generated writing. This is a statistical estimate, not a determination of authorship.",
+    "bands": {
+      "t_high": 0.7324200911316123,
+      "t_low": 0.17890216875612688
+    },
+    "share_definition": "Shares are fractions of words in sentences whose calibrated sentence probability is >= 0.73 (AI-associated), <= 0.18 (human-associated) or in between (uncertain/mixed)."
+  },
+  "detectors": [
+    {
+      "name": "statistical",
+      "label": "Statistical model (gradient boosting, all features)",
+      "probability": 0.437402911478395,
+      "confidence": 0.6497194357202954,
+      "error_estimate": 0.08757014106992614,
+      "weight": 0.6472750639755831,
+      "validation_brier": 0.09879022786198874,
+      "validation_auc": 0.9383245944898072,
+      "n_features": 121
+    },
+    {
+      "name": "neural",
+      "label": "Neural network (MLP, all features)",
+      "probability": 0.406978968225726,
+      "confidence": 0.21944171635491583,
+      "error_estimate": 0.19513957091127104,
+      "weight": 0.35272493602441696,
+      "validation_brier": 0.11184326317510584,
+      "validation_auc": 0.9205734450340497,
+      "n_features": 121
+    },
+    {
+      "name": "perplexity",
+      "label": "Perplexity model",
+      "probability": 0.5920750235511997,
+      "confidence": 0.9942644185540204,
+      "error_estimate": 0.0014338953614949084,
+      "weight": 0.0,
+      "validation_brier": 0.22915636129416878,
+      "validation_auc": 0.6693323156365389,
+      "n_features": 8
+    },
+    {
+      "name": "burstiness",
+      "label": "Burstiness model",
+      "probability": 0.5715362038656262,
+      "confidence": 0.9827246885720696,
+      "error_estimate": 0.0043188278569825855,
+      "weight": 0.0,
+      "validation_brier": 0.21797387367896884,
+      "validation_auc": 0.7131496417500245,
+      "n_features": 11
+    },
+    {
+      "name": "stylometric",
+      "label": "Stylometric model",
+      "probability": 0.41860030630705686,
+      "confidence": 0.9793937748678168,
+      "error_estimate": 0.005151556283045801,
+      "weight": 0.0,
+      "validation_brier": 0.1806455724632289,
+      "validation_auc": 0.8044171809913181,
+      "n_features": 44
+    },
+    {
+      "name": "vocabulary",
+      "label": "Vocabulary model",
+      "probability": 0.6348569864451855,
+      "confidence": 0.9760294959064587,
+      "error_estimate": 0.005992626023385309,
+      "weight": 0.0,
+      "validation_brier": 0.1903893905806836,
+      "validation_auc": 0.781375147780224,
+      "n_features": 12
+    },
+    {
+      "name": "syntax",
+      "label": "Syntax model",
+      "probability": 0.39783841095936134,
+      "confidence": 0.9637473024832941,
+      "error_estimate": 0.009063174379176487,
+      "weight": 0.0,
+      "validation_brier": 0.2090191249253117,
+      "validation_auc": 0.7353438564348619,
+      "n_features": 11
+    },
+    {
+      "name": "semantic",
+      "label": "Semantic model",
+      "probability": 0.47395308284710624,
+      "confidence": 0.991288057089154,
+      "error_estimate": 0.002177985727711494,
+      "weight": 0.0,
+      "validation_brier": 0.21661062198345943,
+      "validation_auc": 0.709640263571688,
+      "n_features": 9
+    },
+    {
+      "name": "repetition",
+      "label": "Repetition & transitions model",
+      "probability": 0.3812323881636524,
+      "confidence": 0.9746242513587862,
+      "error_estimate": 0.0063439371603034676,
+      "weight": 0.0,
+      "validation_brier": 0.2013033020695863,
+      "validation_auc": 0.7532871966777124,
+      "n_features": 22
+    }
+  ],
+  "disagreement": {
+    "std": 0.0896757242272815,
+    "range": 0.2536245982815331,
+    "most_ai": "Vocabulary model",
+    "most_human": "Repetition & transitions model",
+    "note": "The detectors largely agree."
+  },
+  "ensemble_weights": {
+    "perplexity": 0.0,
+    "burstiness": 0.0,
+    "stylometric": 0.0,
+    "vocabulary": 0.0,
+    "syntax": 0.0,
+    "semantic": 0.0,
+    "repetition": 0.0,
+    "statistical": 0.6472750639755831,
+    "neural": 0.35272493602441696
+  },
+  "sentences": [
+    {
+      "index": 0,
+      "number": 1,
+      "text": "China warned Taiwan on Wednesday not to seek independence from the communist mainland, hinting the island would meet disaster if Taipei insisted on splitting from the motherland.",
+      "start": 0,
+      "end": 178,
+      "paragraph": 0,
+      "words": 27,
+      "probability": 0.407715752939583,
+      "band": "uncertain",
+      "level": "uncertain",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "bur_sent_len_cv",
+            "family": "burstiness",
+            "label": "relative sentence-length variation",
+            "contribution": 0.2479,
+            "value": 0.278421073515233,
+            "human_percentile": 26.1,
+            "text": "low relative variation in sentence length"
+          },
+          {
+            "feature": "tra_comma_frac",
+            "family": "repetition",
+            "label": "transition followed by comma",
+            "contribution": 0.2358,
+            "value": 1.0,
+            "human_percentile": 100.0,
+            "text": "transitions consistently followed by commas"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.1834,
+            "value": 0.005917159763313609,
+            "human_percentile": 38.7,
+            "text": "few numbers and figures"
+          },
+          {
+            "feature": "rep_bigram",
+            "family": "repetition",
+            "label": "repeated word pairs",
+            "contribution": 0.1662,
+            "value": 0.1437125748502994,
+            "human_percentile": 81.3,
+            "text": "many repeated word pairs"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "syn_dep_dist_mean",
+            "family": "syntax",
+            "label": "dependency distance",
+            "contribution": -0.8955,
+            "value": 2.8992257556814938,
+            "human_percentile": 90.8,
+            "text": "long-distance syntactic dependencies"
+          },
+          {
+            "feature": "syn_subord_per_sent",
+            "family": "syntax",
+            "label": "subordinate clauses",
+            "contribution": -0.3877,
+            "value": 2.8,
+            "human_percentile": 95.4,
+            "text": "many subordinate clauses"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• low relative variation in sentence length\n• transitions consistently followed by commas\n• few numbers and figures\n• many repeated word pairs\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5439,
+        "burstiness": 0.5225,
+        "stylometric": 0.4735,
+        "vocabulary": 0.6438,
+        "syntax": 0.3342,
+        "semantic": 0.6907,
+        "repetition": 0.4657,
+        "statistical": 0.4226,
+        "neural": 0.4773
+      }
+    },
+    {
+      "index": 1,
+      "number": 2,
+      "text": "Taipei had failed to answer a 1995 call by Chinese President Jiang Zemin for reconciliation and had instead actively sought to split Taiwan from mainland China, the official Xinhua news agency said.",
+      "start": 179,
+      "end": 377,
+      "paragraph": 0,
+      "words": 32,
+      "probability": 0.407715752939583,
+      "band": "uncertain",
+      "level": "uncertain",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "bur_sent_len_cv",
+            "family": "burstiness",
+            "label": "relative sentence-length variation",
+            "contribution": 0.2479,
+            "value": 0.278421073515233,
+            "human_percentile": 26.1,
+            "text": "low relative variation in sentence length"
+          },
+          {
+            "feature": "tra_comma_frac",
+            "family": "repetition",
+            "label": "transition followed by comma",
+            "contribution": 0.2358,
+            "value": 1.0,
+            "human_percentile": 100.0,
+            "text": "transitions consistently followed by commas"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.1834,
+            "value": 0.005917159763313609,
+            "human_percentile": 38.7,
+            "text": "few numbers and figures"
+          },
+          {
+            "feature": "rep_bigram",
+            "family": "repetition",
+            "label": "repeated word pairs",
+            "contribution": 0.1662,
+            "value": 0.1437125748502994,
+            "human_percentile": 81.3,
+            "text": "many repeated word pairs"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "syn_dep_dist_mean",
+            "family": "syntax",
+            "label": "dependency distance",
+            "contribution": -0.8955,
+            "value": 2.8992257556814938,
+            "human_percentile": 90.8,
+            "text": "long-distance syntactic dependencies"
+          },
+          {
+            "feature": "syn_subord_per_sent",
+            "family": "syntax",
+            "label": "subordinate clauses",
+            "contribution": -0.3877,
+            "value": 2.8,
+            "human_percentile": 95.4,
+            "text": "many subordinate clauses"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• low relative variation in sentence length\n• transitions consistently followed by commas\n• few numbers and figures\n• many repeated word pairs\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5439,
+        "burstiness": 0.5225,
+        "stylometric": 0.4735,
+        "vocabulary": 0.6438,
+        "syntax": 0.3342,
+        "semantic": 0.6907,
+        "repetition": 0.4657,
+        "statistical": 0.4226,
+        "neural": 0.4773
+      }
+    },
+    {
+      "index": 2,
+      "number": 3,
+      "text": "\"We urge the Taiwan authorities to rein themselves in at the precipice so that they can see clearly that the status of Taiwan being part of China cannot be changed and that the trend of Taiwan's reunion with the motherland cannot be resisted,\" the agency said in a commentary.",
+      "start": 378,
+      "end": 654,
+      "paragraph": 0,
+      "words": 51,
+      "probability": 0.407715752939583,
+      "band": "uncertain",
+      "level": "uncertain",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "bur_sent_len_cv",
+            "family": "burstiness",
+            "label": "relative sentence-length variation",
+            "contribution": 0.2479,
+            "value": 0.278421073515233,
+            "human_percentile": 26.1,
+            "text": "low relative variation in sentence length"
+          },
+          {
+            "feature": "tra_comma_frac",
+            "family": "repetition",
+            "label": "transition followed by comma",
+            "contribution": 0.2358,
+            "value": 1.0,
+            "human_percentile": 100.0,
+            "text": "transitions consistently followed by commas"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.1834,
+            "value": 0.005917159763313609,
+            "human_percentile": 38.7,
+            "text": "few numbers and figures"
+          },
+          {
+            "feature": "rep_bigram",
+            "family": "repetition",
+            "label": "repeated word pairs",
+            "contribution": 0.1662,
+            "value": 0.1437125748502994,
+            "human_percentile": 81.3,
+            "text": "many repeated word pairs"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "syn_dep_dist_mean",
+            "family": "syntax",
+            "label": "dependency distance",
+            "contribution": -0.8955,
+            "value": 2.8992257556814938,
+            "human_percentile": 90.8,
+            "text": "long-distance syntactic dependencies"
+          },
+          {
+            "feature": "syn_subord_per_sent",
+            "family": "syntax",
+            "label": "subordinate clauses",
+            "contribution": -0.3877,
+            "value": 2.8,
+            "human_percentile": 95.4,
+            "text": "many subordinate clauses"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• low relative variation in sentence length\n• transitions consistently followed by commas\n• few numbers and figures\n• many repeated word pairs\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5439,
+        "burstiness": 0.5225,
+        "stylometric": 0.4735,
+        "vocabulary": 0.6438,
+        "syntax": 0.3342,
+        "semantic": 0.6907,
+        "repetition": 0.4657,
+        "statistical": 0.4226,
+        "neural": 0.4773
+      }
+    },
+    {
+      "index": 3,
+      "number": 4,
+      "text": "Beijing, which views Taiwan as a rebel province, refuses to rule out the use of force to recover the island if Taipei declares independence.",
+      "start": 655,
+      "end": 795,
+      "paragraph": 0,
+      "words": 24,
+      "probability": 0.3800874152526661,
+      "band": "uncertain",
+      "level": "low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "tra_comma_frac",
+            "family": "repetition",
+            "label": "transition followed by comma",
+            "contribution": 0.2866,
+            "value": 1.0,
+            "human_percentile": 100.0,
+            "text": "transitions consistently followed by commas"
+          },
+          {
+            "feature": "bur_sent_len_cv",
+            "family": "burstiness",
+            "label": "relative sentence-length variation",
+            "contribution": 0.2344,
+            "value": 0.2523360247522242,
+            "human_percentile": 20.2,
+            "text": "low relative variation in sentence length"
+          },
+          {
+            "feature": "syn_depth_mean",
+            "family": "syntax",
+            "label": "syntactic depth",
+            "contribution": 0.2125,
+            "value": 9.2,
+            "human_percentile": 95.7,
+            "text": "deeply nested sentence structure"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.2065,
+            "value": 0.005714285714285714,
+            "human_percentile": 38.5,
+            "text": "few numbers and figures"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "syn_dep_dist_mean",
+            "family": "syntax",
+            "label": "dependency distance",
+            "contribution": -0.8902,
+            "value": 2.8136488326045703,
+            "human_percentile": 87.6,
+            "text": "long-distance syntactic dependencies"
+          },
+          {
+            "feature": "syn_subord_per_sent",
+            "family": "syntax",
+            "label": "subordinate clauses",
+            "contribution": -0.4299,
+            "value": 2.8,
+            "human_percentile": 95.4,
+            "text": "many subordinate clauses"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• transitions consistently followed by commas\n• low relative variation in sentence length\n• deeply nested sentence structure\n• few numbers and figures\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5088,
+        "burstiness": 0.5624,
+        "stylometric": 0.407,
+        "vocabulary": 0.609,
+        "syntax": 0.3389,
+        "semantic": 0.5343,
+        "repetition": 0.5347,
+        "statistical": 0.3839,
+        "neural": 0.3973
+      }
+    },
+    {
+      "index": 4,
+      "number": 5,
+      "text": "However, the tough commentary by China's state news agency held out the possibility of a resumption of quasi-official talks if Taiwan's authorities showed they sincerely wanted the eventual unification they say is their goal.",
+      "start": 796,
+      "end": 1021,
+      "paragraph": 0,
+      "words": 35,
+      "probability": 0.5105721520717524,
+      "band": "uncertain",
+      "level": "uncertain",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "bur_sent_len_cv",
+            "family": "burstiness",
+            "label": "relative sentence-length variation",
+            "contribution": 0.3298,
+            "value": 0.2961500124282213,
+            "human_percentile": 30.3,
+            "text": "low relative variation in sentence length"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.1986,
+            "value": 0.0,
+            "human_percentile": 35.0,
+            "text": "few numbers and figures"
+          },
+          {
+            "feature": "voc_zipf_std",
+            "family": "vocabulary",
+            "label": "variation in word commonness",
+            "contribution": 0.1904,
+            "value": 0.802017198760294,
+            "human_percentile": 31.2,
+            "text": "uniform word commonness"
+          },
+          {
+            "feature": "tra_comma_frac",
+            "family": "repetition",
+            "label": "transition followed by comma",
+            "contribution": 0.1687,
+            "value": 1.0,
+            "human_percentile": 100.0,
+            "text": "transitions consistently followed by commas"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "syn_dep_dist_mean",
+            "family": "syntax",
+            "label": "dependency distance",
+            "contribution": -0.9563,
+            "value": 2.7531649616368283,
+            "human_percentile": 84.9,
+            "text": "long-distance syntactic dependencies"
+          },
+          {
+            "feature": "syn_subord_per_sent",
+            "family": "syntax",
+            "label": "subordinate clauses",
+            "contribution": -0.3921,
+            "value": 2.8,
+            "human_percentile": 95.4,
+            "text": "many subordinate clauses"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• low relative variation in sentence length\n• few numbers and figures\n• uniform word commonness\n• transitions consistently followed by commas\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.4957,
+        "burstiness": 0.5052,
+        "stylometric": 0.4952,
+        "vocabulary": 0.5023,
+        "syntax": 0.3629,
+        "semantic": 0.55,
+        "repetition": 0.535,
+        "statistical": 0.5005,
+        "neural": 0.4533
+      }
+    },
+    {
+      "index": 5,
+      "number": 6,
+      "text": "The commentary was issued to mark the second anniversary of a conciliatory speech by Jiang, who urged an end to hostilities between the bitter political rivals and the opening of direct trade links.",
+      "start": 1022,
+      "end": 1220,
+      "paragraph": 0,
+      "words": 33,
+      "probability": 0.6344077199468157,
+      "band": "uncertain",
+      "level": "elevated indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "bur_sent_len_cv",
+            "family": "burstiness",
+            "label": "relative sentence-length variation",
+            "contribution": 0.4159,
+            "value": 0.1578827222371341,
+            "human_percentile": 4.9,
+            "text": "low relative variation in sentence length"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.3589,
+            "value": 0.006756756756756757,
+            "human_percentile": 39.2,
+            "text": "few numbers and figures"
+          },
+          {
+            "feature": "voc_zipf_std",
+            "family": "vocabulary",
+            "label": "variation in word commonness",
+            "contribution": 0.3082,
+            "value": 0.7600807944294675,
+            "human_percentile": 22.6,
+            "text": "uniform word commonness"
+          },
+          {
+            "feature": "bur_vocab_std",
+            "family": "burstiness",
+            "label": "vocabulary variation between sentences",
+            "contribution": 0.2513,
+            "value": 0.025992093283366956,
+            "human_percentile": 7.0,
+            "text": "uniform vocabulary density across sentences"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "syn_dep_dist_mean",
+            "family": "syntax",
+            "label": "dependency distance",
+            "contribution": -0.9524,
+            "value": 2.7368659420289854,
+            "human_percentile": 83.9,
+            "text": "long-distance syntactic dependencies"
+          },
+          {
+            "feature": "syn_subord_per_sent",
+            "family": "syntax",
+            "label": "subordinate clauses",
+            "contribution": -0.2683,
+            "value": 2.4,
+            "human_percentile": 95.1,
+            "text": "many subordinate clauses"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• low relative variation in sentence length\n• few numbers and figures\n• uniform word commonness\n• uniform vocabulary density across sentences\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.6558,
+        "burstiness": 0.7539,
+        "stylometric": 0.5699,
+        "vocabulary": 0.6323,
+        "syntax": 0.3921,
+        "semantic": 0.5013,
+        "repetition": 0.4065,
+        "statistical": 0.6532,
+        "neural": 0.4526
+      }
+    },
+    {
+      "index": 6,
+      "number": 7,
+      "text": "Taiwan officials had shrugged off Jiang's olive branch and were actively working to divide China and further block economic and trade links, Xinhua said.",
+      "start": 1221,
+      "end": 1374,
+      "paragraph": 0,
+      "words": 24,
+      "probability": 0.5676314482873456,
+      "band": "uncertain",
+      "level": "uncertain",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "bur_sent_len_cv",
+            "family": "burstiness",
+            "label": "relative sentence-length variation",
+            "contribution": 0.4696,
+            "value": 0.1578827222371341,
+            "human_percentile": 4.9,
+            "text": "low relative variation in sentence length"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.3759,
+            "value": 0.006756756756756757,
+            "human_percentile": 39.2,
+            "text": "few numbers and figures"
+          },
+          {
+            "feature": "voc_zipf_std",
+            "family": "vocabulary",
+            "label": "variation in word commonness",
+            "contribution": 0.2383,
+            "value": 0.7918012823948506,
+            "human_percentile": 29.0,
+            "text": "uniform word commonness"
+          },
+          {
+            "feature": "bur_vocab_std",
+            "family": "burstiness",
+            "label": "vocabulary variation between sentences",
+            "contribution": 0.2243,
+            "value": 0.025992093283366956,
+            "human_percentile": 7.0,
+            "text": "uniform vocabulary density across sentences"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "syn_dep_dist_mean",
+            "family": "syntax",
+            "label": "dependency distance",
+            "contribution": -1.0728,
+            "value": 2.76875,
+            "human_percentile": 85.6,
+            "text": "long-distance syntactic dependencies"
+          },
+          {
+            "feature": "syn_subord_per_sent",
+            "family": "syntax",
+            "label": "subordinate clauses",
+            "contribution": -0.327,
+            "value": 2.2,
+            "human_percentile": 95.0,
+            "text": "many subordinate clauses"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• low relative variation in sentence length\n• few numbers and figures\n• uniform word commonness\n• uniform vocabulary density across sentences\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.6395,
+        "burstiness": 0.7508,
+        "stylometric": 0.5018,
+        "vocabulary": 0.5578,
+        "syntax": 0.4622,
+        "semantic": 0.5338,
+        "repetition": 0.4204,
+        "statistical": 0.5527,
+        "neural": 0.4787
+      }
+    },
+    {
+      "index": 7,
+      "number": 8,
+      "text": "\"The Taiwan authorities advocate 'splitting the country and ruling under separate regimes' and 'two equal political entities', which are in fact aimed at tearing apart China's sovereignty and territory,\" the agency said.",
+      "start": 1375,
+      "end": 1595,
+      "paragraph": 0,
+      "words": 32,
+      "probability": 0.29528922545988895,
+      "band": "uncertain",
+      "level": "low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "bur_vocab_std",
+            "family": "burstiness",
+            "label": "vocabulary variation between sentences",
+            "contribution": 0.3219,
+            "value": 0.026872574961702995,
+            "human_percentile": 7.6,
+            "text": "uniform vocabulary density across sentences"
+          },
+          {
+            "feature": "bur_sent_len_cv",
+            "family": "burstiness",
+            "label": "relative sentence-length variation",
+            "contribution": 0.3087,
+            "value": 0.18908036662105152,
+            "human_percentile": 8.8,
+            "text": "low relative variation in sentence length"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.2972,
+            "value": 0.006578947368421052,
+            "human_percentile": 39.1,
+            "text": "few numbers and figures"
+          },
+          {
+            "feature": "sty_word_len_mean",
+            "family": "stylometric",
+            "label": "average word length",
+            "contribution": 0.2438,
+            "value": 5.315789473684211,
+            "human_percentile": 82.5,
+            "text": "longer words"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "syn_dep_dist_mean",
+            "family": "syntax",
+            "label": "dependency distance",
+            "contribution": -1.199,
+            "value": 2.898574561403509,
+            "human_percentile": 90.8,
+            "text": "long-distance syntactic dependencies"
+          },
+          {
+            "feature": "pun_transition_entropy",
+            "family": "stylometric",
+            "label": "punctuation sequence variety",
+            "contribution": -0.5963,
+            "value": 0.4399901721678806,
+            "human_percentile": 83.8,
+            "text": "varied punctuation patterns"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• uniform vocabulary density across sentences\n• low relative variation in sentence length\n• few numbers and figures\n• longer words\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.6015,
+        "burstiness": 0.7018,
+        "stylometric": 0.5399,
+        "vocabulary": 0.4706,
+        "syntax": 0.5564,
+        "semantic": 0.5353,
+        "repetition": 0.4177,
+        "statistical": 0.2942,
+        "neural": 0.4721
+      }
+    },
+    {
+      "index": 8,
+      "number": 9,
+      "text": "It said people gifted with insight and who had at heart the fundamental interests of Taiwan's people should unite and remove obstacles preventing talks.",
+      "start": 1596,
+      "end": 1748,
+      "paragraph": 0,
+      "words": 24,
+      "probability": 0.2879651355380907,
+      "band": "uncertain",
+      "level": "low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "sty_cconj_frac",
+            "family": "stylometric",
+            "label": "coordinating conjunctions",
+            "contribution": 0.4208,
+            "value": 0.07874015748031496,
+            "human_percentile": 95.3,
+            "text": "many coordinating conjunctions"
+          },
+          {
+            "feature": "sty_word_len_mean",
+            "family": "stylometric",
+            "label": "average word length",
+            "contribution": 0.3369,
+            "value": 5.3858267716535435,
+            "human_percentile": 85.6,
+            "text": "longer words"
+          },
+          {
+            "feature": "rep_opening_word",
+            "family": "repetition",
+            "label": "repeated sentence-opening words",
+            "contribution": 0.2216,
+            "value": 0.8,
+            "human_percentile": 95.0,
+            "text": "repeated first words"
+          },
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.1992,
+            "value": 0.023622047244094488,
+            "human_percentile": 27.7,
+            "text": "few adverbs"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "syn_dep_dist_mean",
+            "family": "syntax",
+            "label": "dependency distance",
+            "contribution": -1.1222,
+            "value": 2.961074561403509,
+            "human_percentile": 92.4,
+            "text": "long-distance syntactic dependencies"
+          },
+          {
+            "feature": "pun_transition_entropy",
+            "family": "stylometric",
+            "label": "punctuation sequence variety",
+            "contribution": -0.3281,
+            "value": 0.4144331706677332,
+            "human_percentile": 75.2,
+            "text": "varied punctuation patterns"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• many coordinating conjunctions\n• longer words\n• repeated first words\n• few adverbs\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.6036,
+        "burstiness": 0.4798,
+        "stylometric": 0.516,
+        "vocabulary": 0.6204,
+        "syntax": 0.3548,
+        "semantic": 0.4583,
+        "repetition": 0.3729,
+        "statistical": 0.2579,
+        "neural": 0.5391
+      }
+    },
+    {
+      "index": 9,
+      "number": 10,
+      "text": "\"The Taiwan authorities, under pressure both from within and without, have to respond to the important speech of President Jiang Zemin and at least gesture to make strategic readjustments regarding some questions in the cross-straits relations,\" Xinhua said.",
+      "start": 1749,
+      "end": 2007,
+      "paragraph": 0,
+      "words": 39,
+      "probability": 0.21195157899789507,
+      "band": "uncertain",
+      "level": "low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "rep_opening_word",
+            "family": "repetition",
+            "label": "repeated sentence-opening words",
+            "contribution": 0.332,
+            "value": 0.8,
+            "human_percentile": 95.0,
+            "text": "repeated first words"
+          },
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.2516,
+            "value": 0.007751937984496124,
+            "human_percentile": 8.8,
+            "text": "few adverbs"
+          },
+          {
+            "feature": "sty_cconj_frac",
+            "family": "stylometric",
+            "label": "coordinating conjunctions",
+            "contribution": 0.2077,
+            "value": 0.0625,
+            "human_percentile": 90.0,
+            "text": "many coordinating conjunctions"
+          },
+          {
+            "feature": "tra_emphatic_rate",
+            "family": "repetition",
+            "label": "emphatic markers (indeed, notably)",
+            "contribution": 0.1943,
+            "value": 0.2,
+            "human_percentile": 97.5,
+            "text": "many emphatic markers"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "syn_dep_dist_mean",
+            "family": "syntax",
+            "label": "dependency distance",
+            "contribution": -0.8297,
+            "value": 2.830074561403509,
+            "human_percentile": 88.3,
+            "text": "long-distance syntactic dependencies"
+          },
+          {
+            "feature": "bur_sent_len_std",
+            "family": "burstiness",
+            "label": "sentence-length variation",
+            "contribution": -0.3106,
+            "value": 10.322790320451151,
+            "human_percentile": 79.5,
+            "text": "strongly varying sentence lengths"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• repeated first words\n• few adverbs\n• many coordinating conjunctions\n• many emphatic markers\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5569,
+        "burstiness": 0.48,
+        "stylometric": 0.5237,
+        "vocabulary": 0.4327,
+        "syntax": 0.3535,
+        "semantic": 0.4578,
+        "repetition": 0.4063,
+        "statistical": 0.1826,
+        "neural": 0.5481
+      }
+    },
+    {
+      "index": 10,
+      "number": 11,
+      "text": "It did not specify what adjustments were needed.",
+      "start": 2008,
+      "end": 2056,
+      "paragraph": 0,
+      "words": 8,
+      "probability": 0.17890216875612688,
+      "band": "human",
+      "level": "very low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.2083,
+            "value": 0.008771929824561403,
+            "human_percentile": 9.3,
+            "text": "few adverbs"
+          },
+          {
+            "feature": "voc_dis_ratio",
+            "family": "vocabulary",
+            "label": "words used exactly twice",
+            "contribution": 0.1724,
+            "value": 0.07228915662650602,
+            "human_percentile": 9.7,
+            "text": "fewer words used twice"
+          },
+          {
+            "feature": "sty_cconj_frac",
+            "family": "stylometric",
+            "label": "coordinating conjunctions",
+            "contribution": 0.0852,
+            "value": 0.04424778761061947,
+            "human_percentile": 69.7,
+            "text": "many coordinating conjunctions"
+          },
+          {
+            "feature": "voc_mattr",
+            "family": "vocabulary",
+            "label": "vocabulary diversity (MATTR)",
+            "contribution": 0.0587,
+            "value": 0.860625,
+            "human_percentile": 88.6,
+            "text": "higher lexical diversity"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "bur_sent_len_std",
+            "family": "burstiness",
+            "label": "sentence-length variation",
+            "contribution": -0.3796,
+            "value": 10.264501936285074,
+            "human_percentile": 79.2,
+            "text": "strongly varying sentence lengths"
+          },
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": -0.3371,
+            "value": 2.6315789473684212,
+            "human_percentile": 23.6,
+            "text": "few commas"
+          }
+        ]
+      },
+      "explanation": null,
+      "detectors": {
+        "perplexity": 0.4873,
+        "burstiness": 0.4323,
+        "stylometric": 0.4695,
+        "vocabulary": 0.5863,
+        "syntax": 0.4452,
+        "semantic": 0.4396,
+        "repetition": 0.5034,
+        "statistical": 0.2135,
+        "neural": 0.3215
+      }
+    },
+    {
+      "index": 11,
+      "number": 12,
+      "text": "Taiwan has barred direct trade and transport links with the mainland since the two were separated at the end of the Chinese civil war in 1949.",
+      "start": 2057,
+      "end": 2199,
+      "paragraph": 0,
+      "words": 26,
+      "probability": 0.26086883180585513,
+      "band": "uncertain",
+      "level": "low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "pun_transition_entropy",
+            "family": "stylometric",
+            "label": "punctuation sequence variety",
+            "contribution": 0.2734,
+            "value": 0.30988236823967286,
+            "human_percentile": 37.8,
+            "text": "repetitive punctuation patterns"
+          },
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.1751,
+            "value": 0.009174311926605505,
+            "human_percentile": 9.5,
+            "text": "few adverbs"
+          },
+          {
+            "feature": "voc_mtld",
+            "family": "vocabulary",
+            "label": "vocabulary diversity (MTLD)",
+            "contribution": 0.1545,
+            "value": 136.08,
+            "human_percentile": 95.0,
+            "text": "higher lexical diversity"
+          },
+          {
+            "feature": "syn_passive_frac",
+            "family": "syntax",
+            "label": "passive voice",
+            "contribution": 0.1134,
+            "value": 0.6,
+            "human_percentile": 90.0,
+            "text": "frequent passive voice"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "bur_sent_len_std",
+            "family": "burstiness",
+            "label": "sentence-length variation",
+            "contribution": -0.2965,
+            "value": 10.342146779078316,
+            "human_percentile": 79.6,
+            "text": "strongly varying sentence lengths"
+          },
+          {
+            "feature": "rep_bigram",
+            "family": "repetition",
+            "label": "repeated word pairs",
+            "contribution": -0.1755,
+            "value": 0.0,
+            "human_percentile": 10.0,
+            "text": "few repeated word pairs"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• repetitive punctuation patterns\n• few adverbs\n• higher lexical diversity\n• frequent passive voice\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.4852,
+        "burstiness": 0.4155,
+        "stylometric": 0.4983,
+        "vocabulary": 0.5785,
+        "syntax": 0.4712,
+        "semantic": 0.3981,
+        "repetition": 0.4844,
+        "statistical": 0.2417,
+        "neural": 0.4847
+      }
+    },
+    {
+      "index": 12,
+      "number": 13,
+      "text": "Taipei has clung to its ban as a last bargaining chip in talks on reunification with Beijing.",
+      "start": 2200,
+      "end": 2293,
+      "paragraph": 0,
+      "words": 17,
+      "probability": 0.17890216875612688,
+      "band": "human",
+      "level": "very low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.1147,
+            "value": 0.009708737864077669,
+            "human_percentile": 9.8,
+            "text": "few adverbs"
+          },
+          {
+            "feature": "sty_long_sent_frac",
+            "family": "stylometric",
+            "label": "share of long sentences",
+            "contribution": 0.094,
+            "value": 0.2,
+            "human_percentile": 55.0,
+            "text": "many long sentences"
+          },
+          {
+            "feature": "syn_clauses_per_sent",
+            "family": "syntax",
+            "label": "clauses per sentence",
+            "contribution": 0.091,
+            "value": 1.8,
+            "human_percentile": 25.0,
+            "text": "few clauses per sentence"
+          },
+          {
+            "feature": "sty_pos_verb_frac",
+            "family": "stylometric",
+            "label": "verb share",
+            "contribution": 0.0825,
+            "value": 0.08737864077669903,
+            "human_percentile": 19.0,
+            "text": "fewer verbs"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_comma_rate",
+            "family": "stylometric",
+            "label": "comma density",
+            "contribution": -0.4057,
+            "value": 1.941747572815534,
+            "human_percentile": 15.5,
+            "text": "few commas"
+          },
+          {
+            "feature": "bur_sent_len_std",
+            "family": "burstiness",
+            "label": "sentence-length variation",
+            "contribution": -0.1819,
+            "value": 8.452218643646177,
+            "human_percentile": 66.2,
+            "text": "strongly varying sentence lengths"
+          }
+        ]
+      },
+      "explanation": null,
+      "detectors": {
+        "perplexity": 0.4392,
+        "burstiness": 0.42,
+        "stylometric": 0.309,
+        "vocabulary": 0.4644,
+        "syntax": 0.4869,
+        "semantic": 0.3975,
+        "repetition": 0.3877,
+        "statistical": 0.1904,
+        "neural": 0.3422
+      }
+    },
+    {
+      "index": 13,
+      "number": 14,
+      "text": "China's resumption of sovereignty over Hong Kong this year is expected to give Beijing more leverage in any talks.",
+      "start": 2294,
+      "end": 2408,
+      "paragraph": 0,
+      "words": 19,
+      "probability": 0.21195157899789507,
+      "band": "uncertain",
+      "level": "low indication",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "bur_sent_len_cv",
+            "family": "burstiness",
+            "label": "relative sentence-length variation",
+            "contribution": 0.2368,
+            "value": 0.27009692077805186,
+            "human_percentile": 24.2,
+            "text": "low relative variation in sentence length"
+          },
+          {
+            "feature": "sty_sent_len_p10",
+            "family": "stylometric",
+            "label": "short-sentence length (10th pct.)",
+            "contribution": 0.2252,
+            "value": 17.8,
+            "human_percentile": 84.2,
+            "text": "no very short sentences"
+          },
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.1471,
+            "value": 0.007751937984496124,
+            "human_percentile": 8.8,
+            "text": "few adverbs"
+          },
+          {
+            "feature": "sty_long_sent_frac",
+            "family": "stylometric",
+            "label": "share of long sentences",
+            "contribution": 0.0715,
+            "value": 0.4,
+            "human_percentile": 80.0,
+            "text": "many long sentences"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_transition_entropy",
+            "family": "stylometric",
+            "label": "punctuation sequence variety",
+            "contribution": -0.6387,
+            "value": 0.4643470621029626,
+            "human_percentile": 89.6,
+            "text": "varied punctuation patterns"
+          },
+          {
+            "feature": "syn_dep_dist_mean",
+            "family": "syntax",
+            "label": "dependency distance",
+            "contribution": -0.3908,
+            "value": 2.5620895420369107,
+            "human_percentile": 71.4,
+            "text": "long-distance syntactic dependencies"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• low relative variation in sentence length\n• no very short sentences\n• few adverbs\n• many long sentences\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5759,
+        "burstiness": 0.5198,
+        "stylometric": 0.3122,
+        "vocabulary": 0.5378,
+        "syntax": 0.6011,
+        "semantic": 0.4447,
+        "repetition": 0.416,
+        "statistical": 0.3037,
+        "neural": 0.2437
+      }
+    },
+    {
+      "index": 14,
+      "number": 15,
+      "text": "\"With the return of Hong Kong and that of Macau in 1999, the solution of the Taiwan question and the motherland's reunification will become more prominent issues for all Chinese people,\" Xinhua said.",
+      "start": 2409,
+      "end": 2608,
+      "paragraph": 0,
+      "words": 33,
+      "probability": 0.4026230556772962,
+      "band": "uncertain",
+      "level": "uncertain",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "sty_pos_aux_frac",
+            "family": "stylometric",
+            "label": "auxiliary-verb share",
+            "contribution": 0.3618,
+            "value": 0.016666666666666666,
+            "human_percentile": 7.7,
+            "text": "few auxiliary verbs"
+          },
+          {
+            "feature": "sty_sent_len_p10",
+            "family": "stylometric",
+            "label": "short-sentence length (10th pct.)",
+            "contribution": 0.255,
+            "value": 17.0,
+            "human_percentile": 80.8,
+            "text": "no very short sentences"
+          },
+          {
+            "feature": "bur_sent_len_cv",
+            "family": "burstiness",
+            "label": "relative sentence-length variation",
+            "contribution": 0.2248,
+            "value": 0.32489314482696546,
+            "human_percentile": 37.5,
+            "text": "low relative variation in sentence length"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.1658,
+            "value": 0.008333333333333333,
+            "human_percentile": 40.7,
+            "text": "few numbers and figures"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_transition_entropy",
+            "family": "stylometric",
+            "label": "punctuation sequence variety",
+            "contribution": -0.516,
+            "value": 0.4643470621029626,
+            "human_percentile": 89.6,
+            "text": "varied punctuation patterns"
+          },
+          {
+            "feature": "sty_pos_propn_frac",
+            "family": "stylometric",
+            "label": "proper-noun share",
+            "contribution": -0.2301,
+            "value": 0.175,
+            "human_percentile": 89.0,
+            "text": "many names and proper nouns"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• few auxiliary verbs\n• no very short sentences\n• low relative variation in sentence length\n• few numbers and figures\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.5918,
+        "burstiness": 0.5125,
+        "stylometric": 0.3619,
+        "vocabulary": 0.6089,
+        "syntax": 0.6686,
+        "semantic": 0.4772,
+        "repetition": 0.4764,
+        "statistical": 0.4111,
+        "neural": 0.4425
+      }
+    },
+    {
+      "index": 15,
+      "number": 16,
+      "text": "On Monday, China's former President Jiang Zemin warned the nation's military personnel against the dangers of non-compliance, citing their \"sacred duty\" to obey their political masters, and stay loyal to the Communist Party.",
+      "start": 2610,
+      "end": 2834,
+      "paragraph": 1,
+      "words": 34,
+      "probability": 0.407715752939583,
+      "band": "uncertain",
+      "level": "uncertain",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "bur_sent_len_cv",
+            "family": "burstiness",
+            "label": "relative sentence-length variation",
+            "contribution": 0.3184,
+            "value": 0.29121725943980303,
+            "human_percentile": 29.1,
+            "text": "low relative variation in sentence length"
+          },
+          {
+            "feature": "sty_pos_aux_frac",
+            "family": "stylometric",
+            "label": "auxiliary-verb share",
+            "contribution": 0.2905,
+            "value": 0.024193548387096774,
+            "human_percentile": 13.6,
+            "text": "few auxiliary verbs"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.217,
+            "value": 0.008064516129032258,
+            "human_percentile": 40.0,
+            "text": "few numbers and figures"
+          },
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.1762,
+            "value": 0.008064516129032258,
+            "human_percentile": 9.0,
+            "text": "few adverbs"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_transition_entropy",
+            "family": "stylometric",
+            "label": "punctuation sequence variety",
+            "contribution": -0.6448,
+            "value": 0.46005883854547935,
+            "human_percentile": 88.7,
+            "text": "varied punctuation patterns"
+          },
+          {
+            "feature": "syn_dep_dist_mean",
+            "family": "syntax",
+            "label": "dependency distance",
+            "contribution": -0.6286,
+            "value": 2.7035937437175823,
+            "human_percentile": 81.8,
+            "text": "long-distance syntactic dependencies"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• low relative variation in sentence length\n• few auxiliary verbs\n• few numbers and figures\n• few adverbs\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.595,
+        "burstiness": 0.5363,
+        "stylometric": 0.4266,
+        "vocabulary": 0.6218,
+        "syntax": 0.58,
+        "semantic": 0.4846,
+        "repetition": 0.4823,
+        "statistical": 0.4376,
+        "neural": 0.4587
+      }
+    },
+    {
+      "index": 16,
+      "number": 17,
+      "text": "Jiang's comments came during a speech delivered in Beijing during a special gathering of senior military officials.",
+      "start": 2835,
+      "end": 2950,
+      "paragraph": 1,
+      "words": 17,
+      "probability": 0.407715752939583,
+      "band": "uncertain",
+      "level": "uncertain",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "bur_sent_len_cv",
+            "family": "burstiness",
+            "label": "relative sentence-length variation",
+            "contribution": 0.3184,
+            "value": 0.29121725943980303,
+            "human_percentile": 29.1,
+            "text": "low relative variation in sentence length"
+          },
+          {
+            "feature": "sty_pos_aux_frac",
+            "family": "stylometric",
+            "label": "auxiliary-verb share",
+            "contribution": 0.2905,
+            "value": 0.024193548387096774,
+            "human_percentile": 13.6,
+            "text": "few auxiliary verbs"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.217,
+            "value": 0.008064516129032258,
+            "human_percentile": 40.0,
+            "text": "few numbers and figures"
+          },
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.1762,
+            "value": 0.008064516129032258,
+            "human_percentile": 9.0,
+            "text": "few adverbs"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_transition_entropy",
+            "family": "stylometric",
+            "label": "punctuation sequence variety",
+            "contribution": -0.6448,
+            "value": 0.46005883854547935,
+            "human_percentile": 88.7,
+            "text": "varied punctuation patterns"
+          },
+          {
+            "feature": "syn_dep_dist_mean",
+            "family": "syntax",
+            "label": "dependency distance",
+            "contribution": -0.6286,
+            "value": 2.7035937437175823,
+            "human_percentile": 81.8,
+            "text": "long-distance syntactic dependencies"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• low relative variation in sentence length\n• few auxiliary verbs\n• few numbers and figures\n• few adverbs\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.595,
+        "burstiness": 0.5363,
+        "stylometric": 0.4266,
+        "vocabulary": 0.6218,
+        "syntax": 0.58,
+        "semantic": 0.4846,
+        "repetition": 0.4823,
+        "statistical": 0.4376,
+        "neural": 0.4587
+      }
+    },
+    {
+      "index": 17,
+      "number": 18,
+      "text": "Jiang was commemorating the upcoming 60th anniversary of the founding of the PLA, or People's Liberation Army, during the civil war.",
+      "start": 2951,
+      "end": 3083,
+      "paragraph": 1,
+      "words": 21,
+      "probability": 0.407715752939583,
+      "band": "uncertain",
+      "level": "uncertain",
+      "confidence": "High",
+      "signals": {
+        "toward_ai": [
+          {
+            "feature": "bur_sent_len_cv",
+            "family": "burstiness",
+            "label": "relative sentence-length variation",
+            "contribution": 0.3184,
+            "value": 0.29121725943980303,
+            "human_percentile": 29.1,
+            "text": "low relative variation in sentence length"
+          },
+          {
+            "feature": "sty_pos_aux_frac",
+            "family": "stylometric",
+            "label": "auxiliary-verb share",
+            "contribution": 0.2905,
+            "value": 0.024193548387096774,
+            "human_percentile": 13.6,
+            "text": "few auxiliary verbs"
+          },
+          {
+            "feature": "sty_pos_num_frac",
+            "family": "stylometric",
+            "label": "number share",
+            "contribution": 0.217,
+            "value": 0.008064516129032258,
+            "human_percentile": 40.0,
+            "text": "few numbers and figures"
+          },
+          {
+            "feature": "sty_pos_adv_frac",
+            "family": "stylometric",
+            "label": "adverb share",
+            "contribution": 0.1762,
+            "value": 0.008064516129032258,
+            "human_percentile": 9.0,
+            "text": "few adverbs"
+          }
+        ],
+        "toward_human": [
+          {
+            "feature": "pun_transition_entropy",
+            "family": "stylometric",
+            "label": "punctuation sequence variety",
+            "contribution": -0.6448,
+            "value": 0.46005883854547935,
+            "human_percentile": 88.7,
+            "text": "varied punctuation patterns"
+          },
+          {
+            "feature": "syn_dep_dist_mean",
+            "family": "syntax",
+            "label": "dependency distance",
+            "contribution": -0.6286,
+            "value": 2.7035937437175823,
+            "human_percentile": 81.8,
+            "text": "long-distance syntactic dependencies"
+          }
+        ]
+      },
+      "explanation": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• low relative variation in sentence length\n• few auxiliary verbs\n• few numbers and figures\n• few adverbs\nThese are statistical indicators, not proof of AI authorship.",
+      "detectors": {
+        "perplexity": 0.595,
+        "burstiness": 0.5363,
+        "stylometric": 0.4266,
+        "vocabulary": 0.6218,
+        "syntax": 0.58,
+        "semantic": 0.4846,
+        "repetition": 0.4823,
+        "statistical": 0.4376,
+        "neural": 0.4587
+      }
+    }
+  ],
+  "paragraphs": [
+    {
+      "index": 0,
+      "probability": 0.3764027838721354,
+      "words": 424,
+      "sentences": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "index": 1,
+      "probability": 0.407715752939583,
+      "words": 72,
+      "sentences": [
+        15,
+        16,
+        17
+      ]
+    }
+  ],
+  "statistics": {
+    "perplexity": {
+      "summary": {
+        "perplexity": 2821.7547178036275,
+        "unit": "bits/word (unigram proxy)",
+        "backend": "unigram"
+      },
+      "items": [
+        {
+          "key": "ppl_sent_mean",
+          "label": "Mean sentence surprisal (bits/word (unigram proxy))",
+          "value": 11.462376871184112,
+          "display": "11.462",
+          "human_percentile": 62.7,
+          "human_median": 11.183724297123245,
+          "ai_median": 11.361756904694335,
+          "note": ""
+        },
+        {
+          "key": "ppl_token_median",
+          "label": "Median word surprisal",
+          "value": 11.82606401779901,
+          "display": "11.826",
+          "human_percentile": 65.5,
+          "human_median": 11.294555522617031,
+          "ai_median": 11.759625455901263,
+          "note": ""
+        },
+        {
+          "key": "ppl_sent_min",
+          "label": "Lowest sentence surprisal",
+          "value": 9.971275620802139,
+          "display": "9.971",
+          "human_percentile": 69.7,
+          "human_median": 9.464172283130825,
+          "ai_median": 9.899344434545295,
+          "note": ""
+        }
+      ]
+    },
+    "burstiness": {
+      "summary": {
+        "normalized_score": 0.14759753138346363,
+        "definition": "percentile of sentence-to-sentence predictability variation among human-written reference documents (0 = very uniform)"
+      },
+      "items": [
+        {
+          "key": "bur_ppl_sent_std",
+          "label": "Sentence perplexity std.",
+          "value": 0.6986695507179669,
+          "display": "0.699",
+          "human_percentile": 14.8,
+          "human_median": 1.0402354317291178,
+          "ai_median": 0.899094950120688,
+          "note": ""
+        },
+        {
+          "key": "bur_ppl_sent_B",
+          "label": "Perplexity burstiness index B",
+          "value": -0.8850971328487555,
+          "display": "-0.885",
+          "human_percentile": 12.9,
+          "human_median": -0.8292179809467716,
+          "ai_median": -0.8527764031347929,
+          "note": ""
+        },
+        {
+          "key": "bur_sent_len_cv",
+          "label": "Sentence-length variation (CV)",
+          "value": 0.34623457639851707,
+          "display": "0.346",
+          "human_percentile": 26.2,
+          "human_median": 0.4347638001709496,
+          "ai_median": 0.3264589521525795,
+          "note": ""
+        },
+        {
+          "key": "bur_sent_len_B",
+          "label": "Sentence-length burstiness B",
+          "value": -0.48562519122815406,
+          "display": "-0.486",
+          "human_percentile": 26.2,
+          "human_median": -0.3939576673666262,
+          "ai_median": -0.5077737586657722,
+          "note": ""
+        },
+        {
+          "key": "bur_syntax_cv",
+          "label": "Syntactic variation (CV of depth)",
+          "value": 0.37206148963056596,
+          "display": "0.372",
+          "human_percentile": 53.6,
+          "human_median": 0.36258121546411026,
+          "ai_median": 0.31180478223116176,
+          "note": ""
+        }
+      ]
+    },
+    "stylometry": {
+      "items": [
+        {
+          "key": "sty_sent_len_mean",
+          "label": "Average sentence length (words)",
+          "value": 27.555555555555557,
+          "display": "27.6",
+          "human_percentile": 87.6,
+          "human_median": 20.0,
+          "ai_median": 19.886752136752136,
+          "note": ""
+        },
+        {
+          "key": "sty_sent_len_median",
+          "label": "Median sentence length",
+          "value": 26.5,
+          "display": "26.5",
+          "human_percentile": 86.2,
+          "human_median": 19.0,
+          "ai_median": 19.5,
+          "note": ""
+        },
+        {
+          "key": "sty_word_len_mean",
+          "label": "Average word length",
+          "value": 5.073022312373225,
+          "display": "5.07",
+          "human_percentile": 68.0,
+          "human_median": 4.86252962085308,
+          "ai_median": 5.073364319288233,
+          "note": ""
+        },
+        {
+          "key": "sty_function_frac",
+          "label": "Function-word share",
+          "value": 0.4300202839756592,
+          "display": "0.430",
+          "human_percentile": 37.4,
+          "human_median": 0.45263157894736844,
+          "ai_median": 0.43507632718159034,
+          "note": ""
+        },
+        {
+          "key": "sty_contraction_rate",
+          "label": "Contractions per 100 words",
+          "value": 0.0,
+          "display": "0.00",
+          "human_percentile": 55.0,
+          "human_median": 0.0,
+          "ai_median": 0.0,
+          "note": ""
+        },
+        {
+          "key": "sty_pron1s_frac",
+          "label": "First-person singular share",
+          "value": 0.0,
+          "display": "0.0000",
+          "human_percentile": 55.0,
+          "human_median": 0.0,
+          "ai_median": 0.0,
+          "note": ""
+        },
+        {
+          "key": "sty_pos_adv_frac",
+          "label": "Adverb share",
+          "value": 0.018145161290322582,
+          "display": "0.018",
+          "human_percentile": 13.0,
+          "human_median": 0.03985163490361081,
+          "ai_median": 0.031399070218945994,
+          "note": ""
+        },
+        {
+          "key": "sty_pos_adj_frac",
+          "label": "Adjective share",
+          "value": 0.08870967741935484,
+          "display": "0.089",
+          "human_percentile": 56.9,
+          "human_median": 0.08333333333333333,
+          "ai_median": 0.09134615384615384,
+          "note": ""
+        }
+      ]
+    },
+    "punctuation": {
+      "items": [
+        {
+          "key": "pun_comma_rate",
+          "label": "Commas per 100 words",
+          "value": 4.032258064516129,
+          "display": "4.03",
+          "human_percentile": 38.9,
+          "human_median": 4.646652397581765,
+          "ai_median": 4.798989898989898,
+          "note": ""
+        },
+        {
+          "key": "pun_semicolon_rate",
+          "label": "Semicolons per 100 words",
+          "value": 0.0,
+          "display": "0.00",
+          "human_percentile": 80.0,
+          "human_median": 0.0,
+          "ai_median": 0.0,
+          "note": ""
+        },
+        {
+          "key": "pun_colon_rate",
+          "label": "Colons per 100 words",
+          "value": 0.0,
+          "display": "0.00",
+          "human_percentile": 65.0,
+          "human_median": 0.0,
+          "ai_median": 0.0,
+          "note": ""
+        },
+        {
+          "key": "pun_dash_rate",
+          "label": "Dashes per 100 words",
+          "value": 0.0,
+          "display": "0.00",
+          "human_percentile": 75.0,
+          "human_median": 0.0,
+          "ai_median": 0.0,
+          "note": ""
+        },
+        {
+          "key": "pun_paren_rate",
+          "label": "Parentheses per 100 words",
+          "value": 0.0,
+          "display": "0.00",
+          "human_percentile": 35.0,
+          "human_median": 0.4608294930875576,
+          "ai_median": 0.0,
+          "note": ""
+        },
+        {
+          "key": "pun_type_entropy",
+          "label": "Punctuation variety (entropy)",
+          "value": 0.46008488310185514,
+          "display": "0.460",
+          "human_percentile": 46.4,
+          "human_median": 0.47070017249509416,
+          "ai_median": 0.3855207255966542,
+          "note": ""
+        }
+      ],
+      "note": "No punctuation mark is treated as evidence on its own."
+    },
+    "vocabulary": {
+      "items": [
+        {
+          "key": "voc_mattr",
+          "label": "Moving-average type-token ratio",
+          "value": 0.810900900900901,
+          "display": "0.811",
+          "human_percentile": 64.4,
+          "human_median": 0.7962019568435498,
+          "ai_median": 0.7942307353103296,
+          "note": ""
+        },
+        {
+          "key": "voc_mtld",
+          "label": "MTLD lexical diversity",
+          "value": 102.34391799219412,
+          "display": "102.3",
+          "human_percentile": 80.3,
+          "human_median": 79.11506274229902,
+          "ai_median": 76.0,
+          "note": ""
+        },
+        {
+          "key": "voc_hapax_ratio",
+          "label": "Hapax legomena ratio",
+          "value": 0.8263961602906003,
+          "display": "0.826",
+          "human_percentile": 88.9,
+          "human_median": 0.7757273649482868,
+          "ai_median": 0.7740288389877554,
+          "note": ""
+        },
+        {
+          "key": "voc_zipf_mean",
+          "label": "Word commonness (Zipf)",
+          "value": 4.510335317974685,
+          "display": "4.51",
+          "human_percentile": 29.1,
+          "human_median": 4.642399555345863,
+          "ai_median": 4.581120957933033,
+          "note": ""
+        },
+        {
+          "key": "voc_rare_frac",
+          "label": "Rare-word share",
+          "value": 0.03914590747330961,
+          "display": "0.039",
+          "human_percentile": 37.3,
+          "human_median": 0.05194805194805195,
+          "ai_median": 0.044444444444444446,
+          "note": ""
+        },
+        {
+          "key": "voc_heaps_slope",
+          "label": "Vocabulary growth (Heaps)",
+          "value": 0.8081485671057543,
+          "display": "0.808",
+          "human_percentile": 49.0,
+          "human_median": 0.8092472991782218,
+          "ai_median": 0.8014076954545111,
+          "note": ""
+        }
+      ]
+    },
+    "syntax": {
+      "items": [
+        {
+          "key": "syn_depth_mean",
+          "label": "Dependency-tree depth",
+          "value": 7.333333333333333,
+          "display": "7.33",
+          "human_percentile": 88.3,
+          "human_median": 5.7,
+          "ai_median": 6.0,
+          "note": ""
+        },
+        {
+          "key": "syn_clauses_per_sent",
+          "label": "Clauses per sentence",
+          "value": 3.7777777777777777,
+          "display": "3.78",
+          "human_percentile": 94.7,
+          "human_median": 2.4166666666666665,
+          "ai_median": 2.35,
+          "note": ""
+        },
+        {
+          "key": "syn_subord_per_sent",
+          "label": "Subordinate clauses per sentence",
+          "value": 1.6111111111111112,
+          "display": "1.61",
+          "human_percentile": 86.8,
+          "human_median": 1.0,
+          "ai_median": 0.9333333333333333,
+          "note": ""
+        },
+        {
+          "key": "syn_passive_frac",
+          "label": "Passive-voice sentences",
+          "value": 0.3333333333333333,
+          "display": "0.333",
+          "human_percentile": 80.0,
+          "human_median": 0.17391304347826086,
+          "ai_median": 0.15,
+          "note": ""
+        },
+        {
+          "key": "syn_opening_entropy",
+          "label": "Sentence-opening variety",
+          "value": 0.5109926959435939,
+          "display": "0.511",
+          "human_percentile": 32.3,
+          "human_median": 0.5811493383077881,
+          "ai_median": 0.5252990700743871,
+          "note": ""
+        },
+        {
+          "key": "syn_pos_trigram_diversity",
+          "label": "Syntactic diversity",
+          "value": 0.6830129098170336,
+          "display": "0.683",
+          "human_percentile": 38.2,
+          "human_median": 0.7057345807345806,
+          "ai_median": 0.6611328570639421,
+          "note": ""
+        }
+      ]
+    },
+    "repetition": {
+      "items": [
+        {
+          "key": "rep_trigram",
+          "label": "Repeated 3-word phrases",
+          "value": 0.008213552361396304,
+          "display": "0.008",
+          "human_percentile": 26.7,
+          "human_median": 0.02127659574468085,
+          "ai_median": 0.036036036036036036,
+          "note": ""
+        },
+        {
+          "key": "rep_pos_trigram",
+          "label": "Repeated grammatical templates",
+          "value": 0.5102040816326531,
+          "display": "0.510",
+          "human_percentile": 66.3,
+          "human_median": 0.4724741275006167,
+          "ai_median": 0.53227602557655,
+          "note": ""
+        },
+        {
+          "key": "rep_sentence_template",
+          "label": "Repeated sentence structures",
+          "value": 0.08333333333333333,
+          "display": "0.083",
+          "human_percentile": 42.7,
+          "human_median": 0.125,
+          "ai_median": 0.1875,
+          "note": ""
+        },
+        {
+          "key": "tra_per_sent",
+          "label": "Transition words per sentence",
+          "value": 0.1111111111111111,
+          "display": "0.111",
+          "human_percentile": 53.9,
+          "human_median": 0.1,
+          "ai_median": 0.10714285714285714,
+          "note": ""
+        },
+        {
+          "key": "tra_diversity",
+          "label": "Transition diversity",
+          "value": 1.0,
+          "display": "1.000",
+          "human_percentile": 100.0,
+          "human_median": 1.0,
+          "ai_median": 1.0,
+          "note": ""
+        },
+        {
+          "key": "tra_initial_frac",
+          "label": "Sentence-initial transitions",
+          "value": 0.5,
+          "display": "0.500",
+          "human_percentile": 35.0,
+          "human_median": 0.75,
+          "ai_median": 0.8,
+          "note": ""
+        }
+      ]
+    },
+    "semantic": {
+      "items": [
+        {
+          "key": "sem_adj_mean",
+          "label": "Neighbouring-sentence similarity",
+          "value": 0.14994276050673375,
+          "display": "0.150",
+          "human_percentile": 70.7,
+          "human_median": 0.11564306324384079,
+          "ai_median": 0.1330431811138611,
+          "note": ""
+        },
+        {
+          "key": "sem_local_gain",
+          "label": "Local coherence gain",
+          "value": 0.0305332564594903,
+          "display": "0.031",
+          "human_percentile": 54.0,
+          "human_median": 0.026654890238956903,
+          "ai_median": 0.0021220419597516443,
+          "note": ""
+        },
+        {
+          "key": "sem_topic_jump_rate",
+          "label": "Topic-jump rate",
+          "value": 0.35294117647058826,
+          "display": "0.353",
+          "human_percentile": 17.4,
+          "human_median": 0.5,
+          "ai_median": 0.5714285714285714,
+          "note": ""
+        },
+        {
+          "key": "sem_redundancy",
+          "label": "Semantic redundancy",
+          "value": 0.2649077808218703,
+          "display": "0.265",
+          "human_percentile": 53.2,
+          "human_median": 0.25849197487344067,
+          "ai_median": 0.30182409262747856,
+          "note": ""
+        },
+        {
+          "key": "sem_compression",
+          "label": "Semantic compression",
+          "value": 0.09723633424658149,
+          "display": "0.097",
+          "human_percentile": 29.5,
+          "human_median": 0.12864565508052506,
+          "ai_median": 0.1505580388695132,
+          "note": ""
+        }
+      ],
+      "backend": "lexical"
+    },
+    "consistency": {
+      "items": [
+        {
+          "key": "style_drift_mean",
+          "label": "Style drift (mean JS divergence)",
+          "value": 0.011620384420575286,
+          "display": "0.012",
+          "human_percentile": 12.4,
+          "human_median": 0.018659488390298205,
+          "ai_median": 0.014046195168588077,
+          "note": ""
+        },
+        {
+          "key": "style_drift_max",
+          "label": "Largest style shift",
+          "value": 0.020889695652923097,
+          "display": "0.021",
+          "human_percentile": 21.5,
+          "human_median": 0.032903511062792073,
+          "ai_median": 0.025531710681746776,
+          "note": ""
+        }
+      ]
+    },
+    "paragraphs": {
+      "items": [
+        {
+          "key": "par_len_cv",
+          "label": "Paragraph-length variation (CV)",
+          "value": 0.7096774193548387,
+          "display": "0.710",
+          "human_percentile": null,
+          "human_median": null,
+          "ai_median": null,
+          "note": ""
+        },
+        {
+          "key": "par_ppl_std",
+          "label": "Paragraph perplexity variation",
+          "value": 0.3600362810268134,
+          "display": "0.360",
+          "human_percentile": null,
+          "human_median": null,
+          "ai_median": null,
+          "note": ""
+        }
+      ],
+      "note": "Descriptive only: paragraph formatting is not used by the classifiers."
+    }
+  },
+  "series": {
+    "sentence_probability": [
+      0.407715752939583,
+      0.407715752939583,
+      0.407715752939583,
+      0.3800874152526661,
+      0.5105721520717524,
+      0.6344077199468157,
+      0.5676314482873456,
+      0.29528922545988895,
+      0.2879651355380907,
+      0.21195157899789507,
+      0.17890216875612688,
+      0.26086883180585513,
+      0.17890216875612688,
+      0.21195157899789507,
+      0.4026230556772962,
+      0.407715752939583,
+      0.407715752939583,
+      0.407715752939583
+    ],
+    "sentence_surprisal": [
+      12.12134524820535,
+      12.254666939519996,
+      9.971275620802139,
+      11.426023017722214,
+      11.488159288206086,
+      10.907985462123204,
+      12.594255408543498,
+      11.665008109124635,
+      11.175302131175675,
+      11.476823932434128,
+      11.169982883256083,
+      10.282030524382021,
+      12.001756585111144,
+      11.572546095706576,
+      10.350915417572786,
+      12.121119385432381,
+      11.853337355348938,
+      11.890250276647192
+    ],
+    "rolling_perplexity_std": [
+      0.8107803438328901,
+      0.8107803438328901,
+      0.8107803438328901,
+      0.7537927703107127,
+      0.8535858882430545,
+      0.5501098284199363,
+      0.5759859066178028,
+      0.5763106004089189,
+      0.5238131193795662,
+      0.4746334234709606,
+      0.5588168370003406,
+      0.5746607197474572,
+      0.6735799446774198,
+      0.7965064486787381,
+      0.6412654000502546,
+      0.6280098644486752,
+      0.6280098644486752,
+      0.6280098644486752
+    ],
+    "rolling_length_cv": [
+      0.278421073515233,
+      0.278421073515233,
+      0.278421073515233,
+      0.2523360247522242,
+      0.2961500124282213,
+      0.1578827222371341,
+      0.1578827222371341,
+      0.18908036662105152,
+      0.4073233750040178,
+      0.40010815195547095,
+      0.45019745334583655,
+      0.4744104027100145,
+      0.41030187590515416,
+      0.27009692077805186,
+      0.32489314482696546,
+      0.29121725943980303,
+      0.29121725943980303,
+      0.29121725943980303
+    ],
+    "rolling_mattr": [
+      0.773781512605042,
+      0.773781512605042,
+      0.773781512605042,
+      0.77536,
+      0.7896610169491526,
+      0.8189898989898989,
+      0.8216161616161616,
+      0.8093203883495146,
+      0.8187179487179487,
+      0.8374683544303797,
+      0.860625,
+      0.868135593220339,
+      0.7907692307692308,
+      0.8051282051282052,
+      0.816,
+      0.8302702702702702,
+      0.8302702702702702,
+      0.8302702702702702
+    ],
+    "sentence_lengths": [
+      27,
+      32,
+      51,
+      24,
+      35,
+      33,
+      24,
+      32,
+      24,
+      39,
+      8,
+      26,
+      17,
+      19,
+      33,
+      34,
+      17,
+      21
+    ],
+    "style_drift": {
+      "centers": [
+        4.0,
+        6.0,
+        8.0,
+        10.0,
+        12.0,
+        14.0
+      ],
+      "values": [
+        0.008038251922373051,
+        0.007855762633529918,
+        0.016942304288826843,
+        0.010709636132960157,
+        0.005286655892838641,
+        0.020889695652923097
+      ]
+    },
+    "changepoint_statistic": [
+      null,
+      null,
+      null,
+      0.6842036524496039,
+      1.2850329133065925,
+      0.6466391490162166,
+      1.4360737457914396,
+      1.5455026317438754,
+      2.8326992001972653,
+      2.239054358061216,
+      2.5540970212126486,
+      1.1071452392722554,
+      0.48706187394974493,
+      0.983677542253489,
+      2.449433251832336,
+      2.1742331857576285,
+      null,
+      null
+    ],
+    "changepoint_threshold": 2.95709226346339
+  },
+  "transitions": {
+    "series": [
+      null,
+      null,
+      null,
+      0.6842036524496039,
+      1.2850329133065925,
+      0.6466391490162166,
+      1.4360737457914396,
+      1.5455026317438754,
+      2.8326992001972653,
+      2.239054358061216,
+      2.5540970212126486,
+      1.1071452392722554,
+      0.48706187394974493,
+      0.983677542253489,
+      2.449433251832336,
+      2.1742331857576285,
+      null,
+      null
+    ],
+    "threshold": 2.95709226346339,
+    "p_value": 0.07462686567164178,
+    "changepoints": []
+  },
+  "explanation": {
+    "document": {
+      "toward_ai": [
+        {
+          "feature": "pun_paren_rate",
+          "family": "stylometric",
+          "label": "parenthesis usage",
+          "contribution": 0.626,
+          "value": 0.0,
+          "human_percentile": 35.0,
+          "text": "few parentheses"
+        },
+        {
+          "feature": "voc_zipf_std",
+          "family": "vocabulary",
+          "label": "variation in word commonness",
+          "contribution": 0.2381,
+          "value": 0.8598878830091352,
+          "human_percentile": 38.5,
+          "text": "uniform word commonness"
+        },
+        {
+          "feature": "voc_dis_ratio",
+          "family": "vocabulary",
+          "label": "words used exactly twice",
+          "contribution": 0.2375,
+          "value": 0.09505833749024724,
+          "human_percentile": 11.9,
+          "text": "fewer words used twice"
+        },
+        {
+          "feature": "voc_oov_frac",
+          "family": "vocabulary",
+          "label": "unknown/misspelled word share",
+          "contribution": 0.2338,
+          "value": 0.0035587188612099642,
+          "human_percentile": 29.4,
+          "text": "few unknown words or misspellings"
+        },
+        {
+          "feature": "tra_comma_frac",
+          "family": "repetition",
+          "label": "transition followed by comma",
+          "contribution": 0.1871,
+          "value": 0.5,
+          "human_percentile": 60.0,
+          "text": "transitions consistently followed by commas"
+        }
+      ],
+      "toward_human": [
+        {
+          "feature": "syn_dep_dist_mean",
+          "family": "syntax",
+          "label": "dependency distance",
+          "contribution": -0.992,
+          "value": 2.727887239111829,
+          "human_percentile": 86.3,
+          "text": "long-distance syntactic dependencies"
+        },
+        {
+          "feature": "syn_subord_per_sent",
+          "family": "syntax",
+          "label": "subordinate clauses",
+          "contribution": -0.4871,
+          "value": 1.6111111111111112,
+          "human_percentile": 86.8,
+          "text": "many subordinate clauses"
+        }
+      ]
+    },
+    "summary": "Strongest signals toward AI-associated patterns (the overall score is not elevated):\n• few parentheses\n• uniform word commonness\n• fewer words used twice\n• few unknown words or misspellings\n• transitions consistently followed by commas\nThese are statistical indicators, not proof of AI authorship.",
+    "caveat": "These are statistical indicators, not proof of AI authorship.",
+    "family_contributions": {
+      "syntax": -1.36398699820545,
+      "vocabulary": 0.8163205219905108,
+      "stylometric": 0.35806732115548073,
+      "perplexity": 0.21753312658110913,
+      "burstiness": 0.1914697393656739,
+      "repetition": 0.1677497083738153,
+      "consistency": 0.10279681789339934,
+      "semantic": -0.06269832318255097
+    },
+    "method": "Baseline-replacement attribution on the deployed ensemble: each measurement is replaced by its median in human-written training documents and the change in the ensemble score is its contribution (interactions are ignored)."
+  },
+  "model": {
+    "version": "en-20261002-783106e4aa39-nonnative",
+    "feature_version": "2026.10-f3",
+    "profile": "lite",
+    "predictability_backend": "unigram",
+    "semantic_backend": "lexical",
+    "evidence_thresholds_derived": true,
+    "calibration": {
+      "document": "isotonic",
+      "window": "isotonic"
+    }
+  }
+}
