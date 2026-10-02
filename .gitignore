@@ -1,0 +1,23 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+*.egg-info/
+
+# Downloaded third-party corpora are never committed (see data/README.md)
+data/external/
+data/processed/
+data/cache/
+data/app.db
+data/app.db-*
+
+# Large / intermediate training artifacts
+models/**/cache/
+mlruns/
+experiments/runs/*.tmp
+reports/tmp/
+.install_ok
+
+# Experimental variant bundles (reproducible with train.py --tag/--include-nonnative)
+models/en_*/

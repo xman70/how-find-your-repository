@@ -1,0 +1,9 @@
+# Optional "full" profile: neural perplexity (GPT-2 family), sentence-transformer
+# embeddings and the fine-tuned transformer classifier.
+# Install with:  pip install -r requirements-optional.txt
+# For NVIDIA GPUs install the CUDA build of PyTorch first, following
+# https://pytorch.org/get-started/locally/ ; otherwise the CPU build is used.
+torch>=2.2
+transformers>=4.40
+sentence-transformers>=2.7
+shap>=0.45

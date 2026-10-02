@@ -1,0 +1,119 @@
+# Central configuration. Every value marked "derived" is overwritten by the
+# training / evaluation pipeline with values measured on held-out data and
+# stored inside the model bundle (models/<lang>/bundle.joblib). The values
+# here are only used before a model has been trained and evaluated.
+
+app:
+  host: 127.0.0.1
+  port: 8765
+  open_browser: true
+  privacy_mode: local            # all processing happens on this computer
+  store_text_in_history: false   # store only results + a hash of the text by default
+  database: data/app.db
+  max_upload_mb: 20
+
+runtime:
+  device: auto                   # auto | cpu | gpu  (only used by the optional "full" profile)
+  max_words: 20000               # longer documents are truncated with a warning
+  n_jobs: 1                      # feature-extraction worker processes at inference time
+  n_threads: 1                   # OpenMP threads for model prediction (1 is fastest for single documents)
+
+languages:
+  supported: [en, el]
+  spacy_models:
+    en: en_core_web_sm
+    el: el_core_news_sm
+
+# Feature backends. "lite" needs no neural network downloads and is what the
+# shipped model was trained with. "full" uses a causal language model for true
+# perplexity and a sentence-transformer for embeddings; a model trained with one
+# profile can only be used with the same profile (enforced by the bundle).
+profiles:
+  lite:
+    predictability: unigram      # unigram surprisal from the wordfreq corpus statistics
+    semantic: lexical            # hashed content-word + character n-gram vectors
+  full:
+    predictability: causal_lm
+    semantic: sentence_transformer
+    causal_lm:
+      en: gpt2
+      el: null                   # set to a Greek causal LM path/name to enable
+    sentence_transformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+
+features:
+  window_sentences: 5            # sentence-level scores use a centred 5-sentence context window
+  style_window: 5
+  style_stride: 2
+  chunk_tokens: 150              # length-normalised chunk size for repetition/hapax measures
+  mattr_window: 50
+
+training:
+  seed: 13
+  profile: lite
+  test_fraction: 0.2
+  calibration_fraction: 0.2
+  cv_folds: 5
+  windows_per_doc: 8
+  length_augmentation: true
+  near_duplicate_jaccard: 0.5
+  max_words_per_doc: 900
+  min_words_per_doc: 40
+
+calibration:
+  methods: [platt, isotonic]
+  n_bins: 10
+
+# Banding of sentence probabilities into AI-associated / uncertain / human-associated.
+# "derived": t_high is set so that at most `target_human_flag_rate` of human
+# sentences (by words) in the calibration split fall into the AI-associated band.
+bands:
+  target_human_flag_rate: 0.05
+  t_high: 0.70                   # derived
+  t_low: 0.30                    # derived
+
+heatmap:
+  levels:
+    - [0.0, 0.2, "very low indication"]
+    - [0.2, 0.4, "low indication"]
+    - [0.4, 0.6, "uncertain"]
+    - [0.6, 0.8, "elevated indication"]
+    - [0.8, 1.0001, "very high model indication"]
+
+# Evidence levels by length. "derived": evaluate.py --derive-thresholds measures
+# ROC-AUC and false-positive rate on truncated held-out documents and stores the
+# smallest word counts that satisfy each criterion.
+evidence:
+  # Criteria are requirements on held-out performance at a given length (ROC-AUC and the
+  # false-positive rate at the 0.5 threshold). The first release used AUC-only criteria
+  # (0.75 / 0.85 / 0.92); FPR limits were added after the length study showed a 16 % FPR at
+  # the length the AUC-only rule called "reliable" (both derivations are in the report).
+  criteria:
+    low:      {min_auc: 0.80}
+    moderate: {min_auc: 0.90, max_fpr: 0.20}
+    reliable: {min_auc: 0.95, max_fpr: 0.10}
+  thresholds_words:              # derived
+    low: 100
+    moderate: 250
+    reliable: 500
+
+confidence:
+  levels: {low: 0.40, high: 0.70}   # < low -> Low, >= high -> High
+
+# Operational definitions of the hybrid categories (by estimated AI-associated share).
+hybrid:
+  unknown_below_confidence: 0.35
+  human_max_share: 0.15
+  human_assisted_max_share: 0.50
+  ai_assisted_max_share: 0.85
+
+changepoint:
+  min_segment: 3
+  window: 4
+  permutations: 200
+  alpha: 0.05
+
+similarity:
+  shingle_size: 5
+  winnow_window: 4
+  min_match_words: 8
+  semantic_threshold: 0.80

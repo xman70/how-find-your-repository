@@ -1,0 +1,6 @@
+* text=auto
+*.bat text eol=crlf
+*.sh text eol=lf
+*.joblib binary
+*.pdf binary
+*.png binary

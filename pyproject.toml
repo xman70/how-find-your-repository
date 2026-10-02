@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aidetect"
+version = "1.0.0"
+description = "Research-grade, local-first, probabilistic AI-generated-text analysis system"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+aidetect = ["web/*", "templates/*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = [
+    "slow: tests that train small models (still < 1 minute)",
+    "optional: tests that need optional dependencies (torch/transformers)",
+]

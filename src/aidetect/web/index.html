@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Text Analysis</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Crect x=%273%27 y=%274%27 width=%2718%27 height=%273%27 rx=%271.5%27 fill=%27%232a78d6%27 opacity=%27.4%27/%3E%3Crect x=%273%27 y=%2710%27 width=%2713%27 height=%273%27 rx=%271.5%27 fill=%27%232a78d6%27 opacity=%27.7%27/%3E%3Crect x=%273%27 y=%2716%27 width=%2716%27 height=%273%27 rx=%271.5%27 fill=%27%232a78d6%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/static/styles.css">
+<script src="/vendor/plotly.min.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="3" rx="1.5" fill="currentColor" opacity=".35"/><rect x="3" y="10" width="13" height="3" rx="1.5" fill="currentColor" opacity=".7"/><rect x="3" y="16" width="16" height="3" rx="1.5" fill="currentColor"/></svg>
+    <span>AI Text Analysis</span>
+  </div>
+  <div class="topbar-right">
+    <span class="badge" id="privacy-badge" title="All processing happens on this computer">Privacy mode: Local processing</span>
+    <label class="select-label">Device
+      <select id="device-select" aria-label="Processing device">
+        <option value="auto">Automatic</option><option value="cpu">CPU</option><option value="gpu">GPU</option>
+      </select>
+    </label>
+    <button class="ghost" id="history-btn" type="button">History</button>
+    <button class="ghost" id="theme-btn" type="button" aria-label="Toggle dark mode">Theme</button>
+  </div>
+</header>
+
+<main>
+  <div class="disclaimer" role="note"><strong>Important:</strong> <span id="disclaimer-text">AI-text detection is probabilistic. The results should not be used as sole evidence for academic misconduct, disciplinary action, or authorship determination.</span></div>
+
+  <section class="card" id="input-card">
+    <div class="tabs" role="tablist">
+      <button class="tab active" role="tab" data-input="paste" type="button">Paste text</button>
+      <button class="tab" role="tab" data-input="upload" type="button">Upload DOCX / PDF / TXT</button>
+    </div>
+    <div class="input-pane" id="pane-paste">
+      <textarea id="text-input" placeholder="Paste the text to analyse (at least ~100 words; 500+ words gives more reliable statistics)" spellcheck="false"></textarea>
+    </div>
+    <div class="input-pane hidden" id="pane-upload">
+      <label class="dropzone" id="dropzone">
+        <input type="file" id="file-input" accept=".txt,.docx,.pdf,.md">
+        <span id="file-label">Choose a file or drop it here</span>
+      </label>
+    </div>
+    <div class="input-row">
+      <input type="text" id="title-input" placeholder="Document title (optional)">
+      <span class="muted small" id="word-count">0 words</span>
+      <button class="primary" id="analyze-btn" type="button">Analyze</button>
+    </div>
+    <div class="progress hidden" id="progress"><div class="spinner"></div><span>Analysing locally&hellip; parsing, extracting features, running detectors.</span></div>
+    <div class="error hidden" id="error-box" role="alert"></div>
+  </section>
+
+  <section id="results" class="hidden">
+    <div id="warnings"></div>
+    <div class="tiles" id="tiles"></div>
+    <div class="card interpretation" id="interpretation"></div>
+
+    <div class="tabs results-tabs" role="tablist">
+      <button class="tab active" data-tab="heatmap" type="button">Heatmap</button>
+      <button class="tab" data-tab="graphs" type="button">Graphs</button>
+      <button class="tab" data-tab="models" type="button">Model comparison</button>
+      <button class="tab" data-tab="stats" type="button">Statistics</button>
+      <button class="tab" data-tab="transitions" type="button">Style transitions</button>
+      <button class="tab" data-tab="similarity" type="button">Similarity (separate)</button>
+      <button class="tab" data-tab="export" type="button">Export</button>
+    </div>
+
+    <div class="tab-pane" id="tab-heatmap">
+      <div class="legend-row">
+        <span class="legend-swatch" style="--c:var(--div-low)"></span><span>human-associated</span>
+        <span class="legend-swatch" style="--c:var(--div-mid)"></span><span>uncertain</span>
+        <span class="legend-swatch" style="--c:var(--div-high)"></span><span>AI-associated</span>
+        <span class="muted small">Click or press Enter on a sentence to see its signals.</span>
+      </div>
+      <div class="heat-layout">
+        <div class="card doc-view" id="doc-view"></div>
+        <aside class="card detail" id="sentence-detail"><p class="muted">Select a sentence to see its AI likelihood, confidence and the statistical signals behind it.</p></aside>
+      </div>
+      <div class="card"><div id="chart-heatmap" class="chart"></div></div>
+    </div>
+
+    <div class="tab-pane hidden" id="tab-graphs">
+      <div class="chart-grid">
+        <div class="card"><div id="chart-sentprob" class="chart"></div></div>
+        <div class="card"><div id="chart-perplexity" class="chart"></div></div>
+        <div class="card"><div id="chart-burstiness" class="chart"></div></div>
+        <div class="card"><div id="chart-drift" class="chart"></div></div>
+        <div class="card"><div id="chart-vocab" class="chart"></div></div>
+        <div class="card"><div id="chart-lengths" class="chart"></div></div>
+        <div class="card"><div id="chart-disagreement-2" class="chart"></div></div>
+      </div>
+    </div>
+
+    <div class="tab-pane hidden" id="tab-models">
+      <div class="card"><p id="disagreement-note"></p><div id="chart-disagreement" class="chart"></div></div>
+      <div class="card"><table class="data" id="models-table"></table>
+        <p class="muted small">Each detector is calibrated separately; its error estimate is the spread of its cross-validation committee. Ensemble weights are learned by a meta-classifier from validation data, never fixed by hand.</p></div>
+    </div>
+
+    <div class="tab-pane hidden" id="tab-stats"><div id="stats-container"></div></div>
+    <div class="tab-pane hidden" id="tab-transitions">
+      <div class="card"><div id="chart-cp" class="chart"></div></div>
+      <div class="card" id="transitions-list"></div>
+    </div>
+
+    <div class="tab-pane hidden" id="tab-similarity">
+      <div class="card">
+        <p><strong>Similarity analysis is separate from AI detection.</strong> It compares the text with your local reference corpus (exact phrases, n-grams, document and sentence similarity). Overlap is not evidence of AI generation, and AI likelihood is not evidence of copying.</p>
+        <button class="primary" id="similarity-btn" type="button">Check similarity against reference corpus</button>
+        <div id="similarity-results"></div>
+      </div>
+      <div class="card">
+        <h3>Reference corpus</h3>
+        <div class="input-row">
+          <input type="text" id="ref-title" placeholder="Reference title">
+          <label class="ghost file-btn">Add file<input type="file" id="ref-file" accept=".txt,.docx,.pdf,.md"></label>
+          <button class="ghost" id="ref-add-current" type="button">Add current text</button>
+        </div>
+        <ul id="ref-list" class="plain-list"></ul>
+      </div>
+    </div>
+
+    <div class="tab-pane hidden" id="tab-export">
+      <div class="card">
+        <p>Download the full report (results, heatmap, statistics, model comparison, limitations).</p>
+        <div class="export-row">
+          <a class="primary btn-link" id="export-pdf" href="#">PDF report</a>
+          <a class="ghost btn-link" id="export-html" href="#">HTML report</a>
+          <a class="ghost btn-link" id="export-json" href="#">JSON data</a>
+        </div>
+      </div>
+    </div>
+
+    <section class="card limitations"><h3>Detection limitations and uncertainty</h3><ul id="limitations"></ul></section>
+  </section>
+</main>
+
+<div class="drawer hidden" id="history-drawer" role="dialog" aria-label="Analysis history">
+  <div class="drawer-head"><strong>History</strong><button class="ghost" id="history-close" type="button">Close</button></div>
+  <ul id="history-list" class="plain-list"></ul>
+</div>
+<script src="/static/app.js"></script>
+</body>
+</html>

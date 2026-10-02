@@ -1,0 +1,36 @@
+# Core runtime (CPU-only, works on Windows / Linux / macOS, Python 3.10-3.12)
+numpy>=1.26,<3
+scipy>=1.11
+pandas>=2.1
+scikit-learn>=1.4
+joblib>=1.3
+pyyaml>=6.0
+spacy>=3.8,<3.9
+wordfreq>=3.1
+nltk>=3.8
+
+# Web application
+fastapi>=0.110
+uvicorn>=0.29
+python-multipart>=0.0.9
+jinja2>=3.1
+httpx>=0.27
+
+# Visualization and reports
+plotly>=5.20
+matplotlib>=3.8
+reportlab>=4.1
+
+# Document input
+python-docx>=1.1
+pypdf>=4.2
+
+# Optional gradient boosting baseline (falls back to scikit-learn if missing)
+lightgbm>=4.3
+
+# Tests
+pytest>=8.0
+
+# spaCy language models (English + Greek), installed from the official release assets
+en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
+el_core_news_sm @ https://github.com/explosion/spacy-models/releases/download/el_core_news_sm-3.8.0/el_core_news_sm-3.8.0-py3-none-any.whl

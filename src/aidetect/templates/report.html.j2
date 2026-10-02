@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Document Analysis Report</title>
+<style>
+:root{--bg:#f9f9f7;--surface:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;--line:#e1e0d9;--accent:#2a78d6;--warn-bg:#fff7e6;--warn-line:#eda100}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0d0d0d;--surface:#1a1a19;--ink:#ffffff;--ink2:#c3c2b7;--muted:#898781;--line:#2c2c2a;--accent:#3987e5;--warn-bg:#2a2414;--warn-line:#c98500}}
+:root[data-theme="dark"]{--bg:#0d0d0d;--surface:#1a1a19;--ink:#ffffff;--ink2:#c3c2b7;--muted:#898781;--line:#2c2c2a;--accent:#3987e5;--warn-bg:#2a2414;--warn-line:#c98500}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:980px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:24px;margin:0 0 4px}h2{font-size:18px;margin:32px 0 10px;border-bottom:1px solid var(--line);padding-bottom:6px}h3{font-size:15px;margin:18px 0 6px}
+.muted{color:var(--ink2)}.small{font-size:13px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;margin:12px 0}
+.notice{background:var(--warn-bg);border-left:4px solid var(--warn-line);padding:12px 14px;border-radius:6px;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px}
+.tile .v{font-size:26px;font-weight:600}.tile .l{font-size:12px;color:var(--ink2)}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--ink2);font-weight:600}td.num{text-align:right;font-variant-numeric:tabular-nums}
+.chart svg{width:100%;height:auto}
+.doc p{margin:0 0 12px}.s{border-radius:3px;padding:1px 0}
+.s sup{font-size:9px;color:var(--muted);margin-right:2px}
+.legend{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--ink2);flex-wrap:wrap}
+.legend span.sw{display:inline-block;width:28px;height:12px;border-radius:2px}
+@media print{body{background:#fff}.card,.tile{break-inside:avoid}}
+</style>
+</head>
+<body>
+<main>
+<h1>Document analysis report</h1>
+<div class="muted small">{{ r.meta.title }} · {{ r.meta.date }} · {{ r.meta.word_count }} words · language: {{ r.meta.language }} · model {{ r.model.version }}</div>
+<div class="muted small">{{ r.privacy }}</div>
+<div class="notice"><strong>Important.</strong> {{ r.disclaimer }}</div>
+{% for w in r.warnings %}<div class="notice small">{{ w }}</div>{% endfor %}
+
+<h2>Result</h2>
+<div class="grid">
+  <div class="tile"><div class="v">{{ pct(res.ai_associated_share) }}</div><div class="l">AI-associated text</div></div>
+  <div class="tile"><div class="v">{{ pct(res.human_associated_share) }}</div><div class="l">Human-associated text</div></div>
+  <div class="tile"><div class="v">{{ pct(res.uncertain_share) }}</div><div class="l">Uncertain / mixed</div></div>
+  <div class="tile"><div class="v">{{ pct(res.document_probability) }}</div><div class="l">Document-level AI probability</div></div>
+  <div class="tile"><div class="v">{{ pct(res.confidence) }}</div><div class="l">Confidence ({{ res.confidence_level }})</div></div>
+  <div class="tile"><div class="v" style="font-size:18px">{{ res.hybrid.label }}</div><div class="l">Category · {{ res.evidence_text }}</div></div>
+</div>
+<div class="card"><strong>Interpretation.</strong> {{ res.interpretation }}<br><span class="small muted">{{ res.hybrid.rationale }} {{ res.share_definition }}</span></div>
+<div class="card small">
+  <strong>Confidence is reported separately from likelihood.</strong> A high AI likelihood with low confidence means the measured characteristics resemble AI-generated text but the available evidence is limited.
+  <table><tr><th>Component</th><th class="num">Value</th></tr>
+  {% for k, v in res.confidence_components.items() %}<tr><td>{{ k.replace('_',' ') }}</td><td class="num">{{ "%.2f"|format(v) }}</td></tr>{% endfor %}
+  </table>
+</div>
+
+<h2>Model disagreement</h2>
+<p class="small muted">{{ r.disagreement.note }} Weights are learned from validation data by the meta-classifier.</p>
+<div class="chart">{{ charts.disagreement|safe }}</div>
+<table><tr><th>Detector</th><th class="num">AI probability</th><th class="num">Error estimate (±)</th><th class="num">Confidence</th><th class="num">Ensemble weight</th><th class="num">Validation AUC</th></tr>
+{% for d in r.detectors %}<tr><td>{{ d.label }}</td><td class="num">{{ pct(d.probability) }}</td><td class="num">{{ "%.3f"|format(d.error_estimate) }}</td><td class="num">{{ pct(d.confidence) }}</td><td class="num">{{ "%.2f"|format(d.weight) }}</td><td class="num">{{ "%.3f"|format(d.validation_auc or 0) }}</td></tr>{% endfor %}
+<tr><td><strong>Ensemble (calibrated)</strong></td><td class="num"><strong>{{ pct(res.document_probability) }}</strong></td><td></td><td></td><td></td><td></td></tr>
+</table>
+
+<h2>Signals contributing to the estimate</h2>
+<div class="card" style="white-space:pre-line">{{ r.explanation.summary }}</div>
+{% if r.explanation.document.toward_human %}<p class="small muted">Signals pointing toward human-associated writing: {% for f in r.explanation.document.toward_human %}{{ f.text }}{% if not loop.last %}; {% endif %}{% endfor %}.</p>{% endif %}
+<p class="small muted">Method: {{ r.explanation.method }}</p>
+
+<h2>Heatmap</h2>
+<div class="legend"><span class="sw" style="background:#2a78d6"></span>human-associated<span class="sw" style="background:#f0efec;border:1px solid var(--line)"></span>uncertain<span class="sw" style="background:#e34948"></span>AI-associated</div>
+<div class="chart">{{ charts.heatmap|safe }}</div>
+<div class="card doc">
+{% for para in paragraphs %}<p>{% for s in para %}<span class="s" style="background:{{ hl(s.probability) }}" title="Sentence {{ s.number }} · AI likelihood {{ pct(s.probability) }} · confidence {{ s.confidence }}"><sup>{{ s.number }}</sup>{{ s.text }}</span> {% endfor %}</p>{% endfor %}
+</div>
+
+<h2>Statistical analysis</h2>
+<p class="small muted">Percentiles compare each value with the human-written reference documents used in training (50 = typical human value). Medians of the human and AI reference sets are shown for context.</p>
+{% for group, g in r.statistics.items() %}
+<h3>{{ group.capitalize() }}</h3>
+{% if g.summary %}<p class="small">{% for k, v in g.summary.items() %}{{ k.replace('_',' ') }}: <strong>{{ fmt(v) }}</strong>{% if not loop.last %} · {% endif %}{% endfor %}</p>{% endif %}
+<table><tr><th>Measure</th><th class="num">Value</th><th class="num">Human percentile</th><th class="num">Human median</th><th class="num">AI median</th></tr>
+{% for it in g["items"] %}<tr><td>{{ it.label }}</td><td class="num">{{ it.display }}</td><td class="num">{{ fmt(it.human_percentile) }}</td><td class="num">{{ fmt(it.human_median) }}</td><td class="num">{{ fmt(it.ai_median) }}</td></tr>{% endfor %}
+</table>
+{% if g.note %}<p class="small muted">{{ g.note }}</p>{% endif %}
+{% endfor %}
+
+<h2>Graphs</h2>
+{% for key in ["sentence_probability","perplexity","burstiness","style_drift","vocabulary","sentence_lengths"] %}{% if charts[key] %}<div class="chart card">{{ charts[key]|safe }}</div>{% endif %}{% endfor %}
+
+<h2>Potential authorship/style transitions</h2>
+{% if r.transitions.changepoints %}
+<table><tr><th>Before sentence</th><th class="num">p-value</th><th class="num">Style (JS)</th><th class="num">Perplexity Δ</th><th class="num">Vocabulary Δ</th><th class="num">Syntax Δ</th><th class="num">Semantic distance</th><th class="num">AI likelihood before → after</th></tr>
+{% for c in r.transitions.changepoints %}<tr><td>{{ c.boundary_before_sentence + 1 }}</td><td class="num">{{ "%.3f"|format(c.p_value) }}</td><td class="num">{{ fmt(c.differences.style_js) }}</td><td class="num">{{ fmt(c.differences.perplexity_bits) }}</td><td class="num">{{ fmt(c.differences.vocabulary_mattr) }}</td><td class="num">{{ fmt(c.differences.syntax_depth) }}</td><td class="num">{{ fmt(c.differences.semantic_distance) }}</td><td class="num">{{ pct(c.ai_probability_before) }} → {{ pct(c.ai_probability_after) }}</td></tr>{% endfor %}
+</table>
+<p class="small muted">A transition marks a statistically unusual change in writing characteristics (permutation test). It does not mean that AI use begins or ends there.</p>
+{% else %}<p class="small muted">No statistically significant style transition was detected.</p>{% endif %}
+
+<h2>Sentence-by-sentence analysis</h2>
+<table><tr><th>#</th><th>Sentence</th><th class="num">AI likelihood</th><th>Level</th><th>Confidence</th><th>Main signals</th></tr>
+{% for s in r.sentences %}<tr><td>{{ s.number }}</td><td>{{ s.text }}</td><td class="num">{{ pct(s.probability) }}</td><td>{{ s.level }}</td><td>{{ s.confidence }}</td><td class="small">{% for f in s.signals.toward_ai[:3] %}{{ f.text }}{% if not loop.last %}; {% endif %}{% endfor %}</td></tr>{% endfor %}
+</table>
+
+<h2>Method</h2>
+<p class="small">Feature profile: {{ r.model.profile }} (predictability: {{ r.model.predictability_backend }}, semantics: {{ r.model.semantic_backend }}). Calibration: {{ r.model.calibration.document }} (document), {{ r.model.calibration.window }} (sentence). Evidence thresholds derived experimentally: {{ 'yes' if r.model.evidence_thresholds_derived else 'no (defaults)' }}.</p>
+
+<h2>Limitations</h2>
+<ul class="small">{% for l in r.limitations %}<li>{{ l }}</li>{% endfor %}</ul>
+<div class="notice"><strong>Disclaimer.</strong> {{ r.disclaimer }}</div>
+</main>
+</body>
+</html>
