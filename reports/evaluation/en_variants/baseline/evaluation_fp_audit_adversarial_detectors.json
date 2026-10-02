@@ -1,0 +1,1208 @@
+{
+  "model_version": "en-20261002-783106e4aa39-baseline",
+  "date": "2026-10-02 22:51:09",
+  "test": {
+    "overall": {
+      "n": 3526,
+      "n_pos": 2108,
+      "n_neg": 1418,
+      "accuracy": 0.91038,
+      "balanced_accuracy": 0.90993,
+      "precision": 0.93622,
+      "recall": 0.91224,
+      "f1": 0.92407,
+      "fpr": 0.09238,
+      "fnr": 0.08776,
+      "roc_auc": 0.97476,
+      "pr_auc": 0.98322,
+      "brier_balanced": 0.06229,
+      "ece_balanced": 0.02058,
+      "tpr_at_fpr_1pct": 0.75047,
+      "tpr_at_fpr_5pct": 0.87049,
+      "ci95": {
+        "accuracy": [
+          0.90178,
+          0.91904
+        ],
+        "precision": [
+          0.92657,
+          0.94521
+        ],
+        "recall": [
+          0.90078,
+          0.92418
+        ],
+        "f1": [
+          0.91665,
+          0.9318
+        ],
+        "roc_auc": [
+          0.97076,
+          0.97889
+        ],
+        "pr_auc": [
+          0.97988,
+          0.98633
+        ],
+        "fpr": [
+          0.07885,
+          0.10749
+        ],
+        "fnr": [
+          0.07582,
+          0.09922
+        ]
+      }
+    },
+    "by_domain": {
+      "arxiv": {
+        "n": 476,
+        "n_pos": 298,
+        "n_neg": 178,
+        "accuracy": 0.83403,
+        "balanced_accuracy": 0.83578,
+        "precision": 0.89818,
+        "recall": 0.82886,
+        "f1": 0.86213,
+        "fpr": 0.1573,
+        "fnr": 0.17114,
+        "roc_auc": 0.93211,
+        "pr_auc": 0.96203,
+        "brier_balanced": 0.10501,
+        "ece_balanced": 0.04219,
+        "tpr_at_fpr_1pct": 0.61409,
+        "tpr_at_fpr_5pct": 0.71477,
+        "fpr_ci95": [
+          0.11113,
+          0.21796
+        ]
+      },
+      "essay": {
+        "n": 411,
+        "n_pos": 231,
+        "n_neg": 180,
+        "accuracy": 0.95134,
+        "balanced_accuracy": 0.94444,
+        "precision": 0.92032,
+        "recall": 1.0,
+        "f1": 0.95851,
+        "fpr": 0.11111,
+        "fnr": 0.0,
+        "roc_auc": 0.9975,
+        "pr_auc": 0.99811,
+        "brier_balanced": 0.03991,
+        "ece_balanced": 0.07977,
+        "tpr_at_fpr_1pct": 0.95238,
+        "tpr_at_fpr_5pct": 0.97835,
+        "fpr_ci95": [
+          0.07309,
+          0.16539
+        ]
+      },
+      "peerread": {
+        "n": 476,
+        "n_pos": 310,
+        "n_neg": 166,
+        "accuracy": 0.94958,
+        "balanced_accuracy": 0.9403,
+        "precision": 0.95253,
+        "recall": 0.97097,
+        "f1": 0.96166,
+        "fpr": 0.09036,
+        "fnr": 0.02903,
+        "roc_auc": 0.99009,
+        "pr_auc": 0.99522,
+        "brier_balanced": 0.04371,
+        "ece_balanced": 0.05702,
+        "tpr_at_fpr_1pct": 0.93226,
+        "tpr_at_fpr_5pct": 0.95484,
+        "fpr_ci95": [
+          0.05552,
+          0.14373
+        ]
+      },
+      "reddit": {
+        "n": 492,
+        "n_pos": 309,
+        "n_neg": 183,
+        "accuracy": 0.93293,
+        "balanced_accuracy": 0.94215,
+        "precision": 0.98592,
+        "recall": 0.90615,
+        "f1": 0.94435,
+        "fpr": 0.02186,
+        "fnr": 0.09385,
+        "roc_auc": 0.99036,
+        "pr_auc": 0.9947,
+        "brier_balanced": 0.04348,
+        "ece_balanced": 0.04627,
+        "tpr_at_fpr_1pct": 0.88673,
+        "tpr_at_fpr_5pct": 0.95146,
+        "fpr_ci95": [
+          0.00853,
+          0.05485
+        ]
+      },
+      "reuter": {
+        "n": 383,
+        "n_pos": 215,
+        "n_neg": 168,
+        "accuracy": 0.95561,
+        "balanced_accuracy": 0.95591,
+        "precision": 0.96698,
+        "recall": 0.95349,
+        "f1": 0.96019,
+        "fpr": 0.04167,
+        "fnr": 0.04651,
+        "roc_auc": 0.99499,
+        "pr_auc": 0.99608,
+        "brier_balanced": 0.0291,
+        "ece_balanced": 0.04285,
+        "tpr_at_fpr_1pct": 0.91628,
+        "tpr_at_fpr_5pct": 0.9814,
+        "fpr_ci95": [
+          0.02033,
+          0.0835
+        ]
+      },
+      "wikihow": {
+        "n": 443,
+        "n_pos": 258,
+        "n_neg": 185,
+        "accuracy": 0.86005,
+        "balanced_accuracy": 0.86302,
+        "precision": 0.90833,
+        "recall": 0.84496,
+        "f1": 0.8755,
+        "fpr": 0.11892,
+        "fnr": 0.15504,
+        "roc_auc": 0.9502,
+        "pr_auc": 0.96544,
+        "brier_balanced": 0.08989,
+        "ece_balanced": 0.02527,
+        "tpr_at_fpr_1pct": 0.53101,
+        "tpr_at_fpr_5pct": 0.75194,
+        "fpr_ci95": [
+          0.07986,
+          0.17349
+        ]
+      },
+      "wikipedia": {
+        "n": 439,
+        "n_pos": 250,
+        "n_neg": 189,
+        "accuracy": 0.87016,
+        "balanced_accuracy": 0.86793,
+        "precision": 0.88755,
+        "recall": 0.884,
+        "f1": 0.88577,
+        "fpr": 0.14815,
+        "fnr": 0.116,
+        "roc_auc": 0.94275,
+        "pr_auc": 0.95619,
+        "brier_balanced": 0.09553,
+        "ece_balanced": 0.03831,
+        "tpr_at_fpr_1pct": 0.592,
+        "tpr_at_fpr_5pct": 0.736,
+        "fpr_ci95": [
+          0.10453,
+          0.20579
+        ]
+      },
+      "wp": {
+        "n": 406,
+        "n_pos": 237,
+        "n_neg": 169,
+        "accuracy": 0.94089,
+        "balanced_accuracy": 0.94342,
+        "precision": 0.96916,
+        "recall": 0.92827,
+        "f1": 0.94828,
+        "fpr": 0.04142,
+        "fnr": 0.07173,
+        "roc_auc": 0.98507,
+        "pr_auc": 0.98349,
+        "brier_balanced": 0.04266,
+        "ece_balanced": 0.03629,
+        "tpr_at_fpr_1pct": 0.62447,
+        "tpr_at_fpr_5pct": 0.92827,
+        "fpr_ci95": [
+          0.02021,
+          0.08302
+        ]
+      }
+    },
+    "ai_detection_by_generator": {
+      "bloomz": {
+        "n": 262,
+        "detection_rate": 0.95802,
+        "detection_rate_ci95": [
+          0.9264,
+          0.9764
+        ],
+        "mean_probability": 0.92539
+      },
+      "chatgpt": {
+        "n": 732,
+        "detection_rate": 0.97541,
+        "detection_rate_ci95": [
+          0.96147,
+          0.98439
+        ],
+        "mean_probability": 0.93714
+      },
+      "claude": {
+        "n": 194,
+        "detection_rate": 0.89175,
+        "detection_rate_ci95": [
+          0.84019,
+          0.9281
+        ],
+        "mean_probability": 0.84907
+      },
+      "cohere": {
+        "n": 272,
+        "detection_rate": 0.9375,
+        "detection_rate_ci95": [
+          0.9022,
+          0.96062
+        ],
+        "mean_probability": 0.87749
+      },
+      "davinci": {
+        "n": 247,
+        "detection_rate": 0.79352,
+        "detection_rate_ci95": [
+          0.73873,
+          0.83932
+        ],
+        "mean_probability": 0.76282
+      },
+      "dolly": {
+        "n": 252,
+        "detection_rate": 0.73413,
+        "detection_rate_ci95": [
+          0.67636,
+          0.78486
+        ],
+        "mean_probability": 0.70321
+      },
+      "flant5": {
+        "n": 95,
+        "detection_rate": 1.0,
+        "detection_rate_ci95": [
+          0.96113,
+          1.0
+        ],
+        "mean_probability": 0.98135
+      },
+      "llama": {
+        "n": 54,
+        "detection_rate": 1.0,
+        "detection_rate_ci95": [
+          0.93358,
+          1.0
+        ],
+        "mean_probability": 0.99479
+      }
+    },
+    "hybrids_document_level": {
+      "n": 600,
+      "n_pos": 275,
+      "n_neg": 325,
+      "accuracy": 0.68833,
+      "balanced_accuracy": 0.67874,
+      "precision": 0.6982,
+      "recall": 0.56364,
+      "f1": 0.62374,
+      "fpr": 0.20615,
+      "fnr": 0.43636,
+      "roc_auc": 0.76683,
+      "pr_auc": 0.739,
+      "brier_balanced": 0.21892,
+      "ece_balanced": 0.13765,
+      "tpr_at_fpr_1pct": 0.12364,
+      "tpr_at_fpr_5pct": 0.34182
+    }
+  },
+  "fp_audit": {
+    "reference_in_distribution_fpr": 0.09238,
+    "groups": {
+      "gb_bawe": {
+        "n": 300,
+        "writer_group": "unknown",
+        "genre": "academic (university students)",
+        "fpr": 0.03,
+        "fpr_ci95": [
+          0.01586,
+          0.05602
+        ],
+        "mean_probability": 0.05561,
+        "mean_ai_associated_share": 0.06174,
+        "share_docs_with_ai_associated_majority": 0.01,
+        "fpr_ratio_vs_in_distribution": 0.32473,
+        "median_words": 1723.5
+      },
+      "gb_ets": {
+        "n": 146,
+        "writer_group": "non_native",
+        "genre": "student (non-native English)",
+        "fpr": 0.50685,
+        "fpr_ci95": [
+          0.42662,
+          0.58673
+        ],
+        "mean_probability": 0.49439,
+        "mean_ai_associated_share": 0.16599,
+        "share_docs_with_ai_associated_majority": 0.10959,
+        "fpr_ratio_vs_in_distribution": 5.48635,
+        "median_words": 314.5
+      },
+      "gb_lang8": {
+        "n": 139,
+        "writer_group": "non_native",
+        "genre": "informal (non-native English learners)",
+        "fpr": 0.28058,
+        "fpr_ci95": [
+          0.21256,
+          0.36039
+        ],
+        "mean_probability": 0.32849,
+        "mean_ai_associated_share": 0.02109,
+        "share_docs_with_ai_associated_majority": 0.01439,
+        "fpr_ratio_vs_in_distribution": 3.03707,
+        "median_words": 93.0
+      },
+      "gb_pelic": {
+        "n": 155,
+        "writer_group": "non_native",
+        "genre": "student (non-native English learners)",
+        "fpr": 0.52258,
+        "fpr_ci95": [
+          0.44435,
+          0.59971
+        ],
+        "mean_probability": 0.51439,
+        "mean_ai_associated_share": 0.19137,
+        "share_docs_with_ai_associated_majority": 0.14839,
+        "fpr_ratio_vs_in_distribution": 5.65664,
+        "median_words": 125.0
+      },
+      "gb_toefl91": {
+        "n": 91,
+        "writer_group": "non_native",
+        "genre": "student (non-native English)",
+        "fpr": 0.43956,
+        "fpr_ci95": [
+          0.34209,
+          0.54193
+        ],
+        "mean_probability": 0.44654,
+        "mean_ai_associated_share": 0.13236,
+        "share_docs_with_ai_associated_majority": 0.12088,
+        "fpr_ratio_vs_in_distribution": 4.75799,
+        "median_words": 104.0
+      },
+      "legal_licences": {
+        "n": 99,
+        "writer_group": "unknown",
+        "genre": "legal",
+        "fpr": 0.16162,
+        "fpr_ci95": [
+          0.102,
+          0.24651
+        ],
+        "mean_probability": 0.28128,
+        "mean_ai_associated_share": 0.09807,
+        "share_docs_with_ai_associated_majority": 0.0202,
+        "fpr_ratio_vs_in_distribution": 1.7494,
+        "median_words": 326.0
+      },
+      "liang_CS224N_real_145": {
+        "n": 145,
+        "writer_group": "unknown",
+        "genre": "academic (graduate students)",
+        "fpr": 0.43448,
+        "fpr_ci95": [
+          0.35652,
+          0.51583
+        ],
+        "mean_probability": 0.44812,
+        "mean_ai_associated_share": 0.16179,
+        "share_docs_with_ai_associated_majority": 0.13793,
+        "fpr_ratio_vs_in_distribution": 4.70303,
+        "median_words": 164.0
+      },
+      "liang_CollegeEssay_real_70": {
+        "n": 70,
+        "writer_group": "unknown",
+        "genre": "student (college applications)",
+        "fpr": 0.15714,
+        "fpr_ci95": [
+          0.09008,
+          0.25988
+        ],
+        "mean_probability": 0.22495,
+        "mean_ai_associated_share": 0.08542,
+        "share_docs_with_ai_associated_majority": 0.01429,
+        "fpr_ratio_vs_in_distribution": 1.70098,
+        "median_words": 635.0
+      },
+      "liang_HewlettStudentEssay_real_88": {
+        "n": 88,
+        "writer_group": "native",
+        "genre": "student (US 8th grade, native)",
+        "fpr": 0.34091,
+        "fpr_ci95": [
+          0.25039,
+          0.44474
+        ],
+        "mean_probability": 0.38142,
+        "mean_ai_associated_share": 0.0719,
+        "share_docs_with_ai_associated_majority": 0.03409,
+        "fpr_ratio_vs_in_distribution": 3.69015,
+        "median_words": 376.0
+      },
+      "liang_TOEFL_real_91": {
+        "n": 91,
+        "writer_group": "non_native",
+        "genre": "student (non-native English)",
+        "fpr": 0.43956,
+        "fpr_ci95": [
+          0.34209,
+          0.54193
+        ],
+        "mean_probability": 0.44582,
+        "mean_ai_associated_share": 0.13238,
+        "share_docs_with_ai_associated_majority": 0.12088,
+        "fpr_ratio_vs_in_distribution": 4.75799,
+        "median_words": 104.0
+      },
+      "test_arxiv_scientific": {
+        "n": 178,
+        "writer_group": "unknown",
+        "genre": "scientific",
+        "fpr": 0.1573,
+        "fpr_ci95": [
+          0.11113,
+          0.21796
+        ],
+        "mean_probability": 0.22704,
+        "in_distribution": true
+      },
+      "test_peerread_academic_reviews": {
+        "n": 166,
+        "writer_group": "unknown",
+        "genre": "academic review",
+        "fpr": 0.09036,
+        "fpr_ci95": [
+          0.05552,
+          0.14373
+        ],
+        "mean_probability": 0.14884,
+        "in_distribution": true
+      },
+      "test_wikipedia_highly_edited": {
+        "n": 189,
+        "writer_group": "unknown",
+        "genre": "encyclopedic (highly edited)",
+        "fpr": 0.14815,
+        "fpr_ci95": [
+          0.10453,
+          0.20579
+        ],
+        "mean_probability": 0.21454,
+        "in_distribution": true
+      },
+      "test_reuters_professional_news": {
+        "n": 168,
+        "writer_group": "unknown",
+        "genre": "news (professional)",
+        "fpr": 0.04167,
+        "fpr_ci95": [
+          0.02033,
+          0.0835
+        ],
+        "mean_probability": 0.07085,
+        "in_distribution": true
+      },
+      "test_student_essays": {
+        "n": 180,
+        "writer_group": "unknown",
+        "genre": "student",
+        "fpr": 0.11111,
+        "fpr_ci95": [
+          0.07309,
+          0.16539
+        ],
+        "mean_probability": 0.16086,
+        "in_distribution": true
+      }
+    },
+    "not_tested": [
+      "dyslexic writers (no accessible public corpus in this environment)"
+    ],
+    "excluded_nonnative_training_half": true
+  },
+  "adversarial": {
+    "gb_undetectable": {
+      "n": 100,
+      "n_ai": 100,
+      "n_human": 0,
+      "ai_detection_rate": 0.95,
+      "ai_detection_rate_ci95": [
+        0.88825,
+        0.97846
+      ],
+      "ai_mean_probability": 0.87984
+    },
+    "hybrid_spliced": {
+      "n": 600,
+      "n_ai": 275,
+      "n_human": 325,
+      "ai_detection_rate": 0.56364,
+      "ai_detection_rate_ci95": [
+        0.50454,
+        0.62098
+      ],
+      "ai_mean_probability": 0.57489,
+      "human_flag_rate": 0.20615,
+      "human_flag_rate_ci95": [
+        0.16573,
+        0.25345
+      ],
+      "roc_auc": 0.76683,
+      "reference_unperturbed_ai_detection_rate": 0.92547,
+      "reference_unperturbed_human_flag_rate": 0.085
+    },
+    "liang_CS224N_gpt3PromptEng_145": {
+      "n": 145,
+      "n_ai": 145,
+      "n_human": 0,
+      "ai_detection_rate": 0.95862,
+      "ai_detection_rate_ci95": [
+        0.91267,
+        0.9809
+      ],
+      "ai_mean_probability": 0.86536
+    },
+    "liang_CS224N_gpt3_145": {
+      "n": 145,
+      "n_ai": 145,
+      "n_human": 0,
+      "ai_detection_rate": 0.96552,
+      "ai_detection_rate_ci95": [
+        0.92182,
+        0.98518
+      ],
+      "ai_mean_probability": 0.86706
+    },
+    "liang_CollegeEssay_gpt3PromptEng_31": {
+      "n": 31,
+      "n_ai": 31,
+      "n_human": 0,
+      "ai_detection_rate": 0.96774,
+      "ai_detection_rate_ci95": [
+        0.83806,
+        0.99428
+      ],
+      "ai_mean_probability": 0.8644
+    },
+    "liang_CollegeEssay_gpt3_31": {
+      "n": 31,
+      "n_ai": 31,
+      "n_human": 0,
+      "ai_detection_rate": 0.87097,
+      "ai_detection_rate_ci95": [
+        0.71147,
+        0.94866
+      ],
+      "ai_mean_probability": 0.82007
+    },
+    "liang_HewlettStudentEssay_GPTsimplify_88": {
+      "n": 88,
+      "n_ai": 88,
+      "n_human": 0,
+      "ai_detection_rate": 0.92045,
+      "ai_detection_rate_ci95": [
+        0.8448,
+        0.96094
+      ],
+      "ai_mean_probability": 0.83324
+    },
+    "liang_TOEFL_gpt4polished_91": {
+      "n": 91,
+      "n_ai": 91,
+      "n_human": 0,
+      "ai_detection_rate": 0.76923,
+      "ai_detection_rate_ci95": [
+        0.67283,
+        0.84382
+      ],
+      "ai_mean_probability": 0.70391
+    },
+    "long_concatenated": {
+      "n": 300,
+      "n_ai": 0,
+      "n_human": 300,
+      "human_flag_rate": 0.0,
+      "human_flag_rate_ci95": [
+        0.0,
+        0.01264
+      ],
+      "reference_unperturbed_ai_detection_rate": 0.92547,
+      "reference_unperturbed_human_flag_rate": 0.06333
+    },
+    "perturb_char_basic_10": {
+      "n": 198,
+      "n_ai": 95,
+      "n_human": 103,
+      "ai_detection_rate": 0.98947,
+      "ai_detection_rate_ci95": [
+        0.94276,
+        0.99814
+      ],
+      "ai_mean_probability": 0.94071,
+      "human_flag_rate": 0.04854,
+      "human_flag_rate_ci95": [
+        0.02091,
+        0.10864
+      ],
+      "roc_auc": 0.99745,
+      "reference_unperturbed_ai_detection_rate": 0.98621,
+      "reference_unperturbed_human_flag_rate": 0.09032
+    },
+    "perturb_char_cap_10": {
+      "n": 198,
+      "n_ai": 95,
+      "n_human": 103,
+      "ai_detection_rate": 0.97895,
+      "ai_detection_rate_ci95": [
+        0.92646,
+        0.99421
+      ],
+      "ai_mean_probability": 0.95255,
+      "human_flag_rate": 0.04854,
+      "human_flag_rate_ci95": [
+        0.02091,
+        0.10864
+      ],
+      "roc_auc": 0.99755,
+      "reference_unperturbed_ai_detection_rate": 0.98621,
+      "reference_unperturbed_human_flag_rate": 0.09032
+    },
+    "perturb_char_space_10": {
+      "n": 198,
+      "n_ai": 95,
+      "n_human": 103,
+      "ai_detection_rate": 0.97895,
+      "ai_detection_rate_ci95": [
+        0.92646,
+        0.99421
+      ],
+      "ai_mean_probability": 0.93799,
+      "human_flag_rate": 0.03883,
+      "human_flag_rate_ci95": [
+        0.0152,
+        0.09563
+      ],
+      "roc_auc": 0.99601,
+      "reference_unperturbed_ai_detection_rate": 0.98621,
+      "reference_unperturbed_human_flag_rate": 0.09032
+    },
+    "perturb_para_adj_10": {
+      "n": 198,
+      "n_ai": 95,
+      "n_human": 103,
+      "ai_detection_rate": 0.97895,
+      "ai_detection_rate_ci95": [
+        0.92646,
+        0.99421
+      ],
+      "ai_mean_probability": 0.956,
+      "human_flag_rate": 0.05825,
+      "human_flag_rate_ci95": [
+        0.02697,
+        0.1213
+      ],
+      "roc_auc": 0.99734,
+      "reference_unperturbed_ai_detection_rate": 0.98621,
+      "reference_unperturbed_human_flag_rate": 0.09032
+    },
+    "perturb_para_paraph_10": {
+      "n": 198,
+      "n_ai": 95,
+      "n_human": 103,
+      "ai_detection_rate": 0.97895,
+      "ai_detection_rate_ci95": [
+        0.92646,
+        0.99421
+      ],
+      "ai_mean_probability": 0.88482,
+      "human_flag_rate": 0.17476,
+      "human_flag_rate_ci95": [
+        0.1135,
+        0.25941
+      ],
+      "roc_auc": 0.97537,
+      "reference_unperturbed_ai_detection_rate": 0.98621,
+      "reference_unperturbed_human_flag_rate": 0.09032
+    },
+    "perturb_sent_adj_10": {
+      "n": 115,
+      "n_ai": 69,
+      "n_human": 46,
+      "ai_detection_rate": 0.97101,
+      "ai_detection_rate_ci95": [
+        0.90033,
+        0.99201
+      ],
+      "ai_mean_probability": 0.94273,
+      "human_flag_rate": 0.1087,
+      "human_flag_rate_ci95": [
+        0.04733,
+        0.23038
+      ],
+      "roc_auc": 0.99401,
+      "reference_unperturbed_ai_detection_rate": 0.97826,
+      "reference_unperturbed_human_flag_rate": 0.13187
+    },
+    "perturb_sent_paraph_10": {
+      "n": 115,
+      "n_ai": 69,
+      "n_human": 46,
+      "ai_detection_rate": 0.95652,
+      "ai_detection_rate_ci95": [
+        0.87979,
+        0.9851
+      ],
+      "ai_mean_probability": 0.90306,
+      "human_flag_rate": 0.15217,
+      "human_flag_rate_ci95": [
+        0.07572,
+        0.28224
+      ],
+      "roc_auc": 0.98015,
+      "reference_unperturbed_ai_detection_rate": 0.97826,
+      "reference_unperturbed_human_flag_rate": 0.13187
+    },
+    "perturb_word_adj_10": {
+      "n": 198,
+      "n_ai": 95,
+      "n_human": 103,
+      "ai_detection_rate": 0.97895,
+      "ai_detection_rate_ci95": [
+        0.92646,
+        0.99421
+      ],
+      "ai_mean_probability": 0.95005,
+      "human_flag_rate": 0.02913,
+      "human_flag_rate_ci95": [
+        0.00995,
+        0.08216
+      ],
+      "roc_auc": 0.99745,
+      "reference_unperturbed_ai_detection_rate": 0.98621,
+      "reference_unperturbed_human_flag_rate": 0.09032
+    },
+    "perturb_word_syn_10": {
+      "n": 198,
+      "n_ai": 95,
+      "n_human": 103,
+      "ai_detection_rate": 0.97895,
+      "ai_detection_rate_ci95": [
+        0.92646,
+        0.99421
+      ],
+      "ai_mean_probability": 0.95092,
+      "human_flag_rate": 0.03883,
+      "human_flag_rate_ci95": [
+        0.0152,
+        0.09563
+      ],
+      "roc_auc": 0.99724,
+      "reference_unperturbed_ai_detection_rate": 0.98621,
+      "reference_unperturbed_human_flag_rate": 0.09032
+    },
+    "short_100_words": {
+      "n": 300,
+      "n_ai": 173,
+      "n_human": 127,
+      "ai_detection_rate": 0.84971,
+      "ai_detection_rate_ci95": [
+        0.7889,
+        0.89533
+      ],
+      "ai_mean_probability": 0.79184,
+      "human_flag_rate": 0.28346,
+      "human_flag_rate_ci95": [
+        0.21234,
+        0.36731
+      ],
+      "roc_auc": 0.87529,
+      "reference_unperturbed_ai_detection_rate": 0.91489,
+      "reference_unperturbed_human_flag_rate": 0.09917
+    },
+    "short_50_words": {
+      "n": 300,
+      "n_ai": 173,
+      "n_human": 127,
+      "ai_detection_rate": 0.80347,
+      "ai_detection_rate_ci95": [
+        0.73794,
+        0.85581
+      ],
+      "ai_mean_probability": 0.7436,
+      "human_flag_rate": 0.37008,
+      "human_flag_rate_ci95": [
+        0.29107,
+        0.45671
+      ],
+      "roc_auc": 0.81776,
+      "reference_unperturbed_ai_detection_rate": 0.91489,
+      "reference_unperturbed_human_flag_rate": 0.09917
+    },
+    "sim_casualize": {
+      "n": 300,
+      "n_ai": 173,
+      "n_human": 127,
+      "ai_detection_rate": 0.91908,
+      "ai_detection_rate_ci95": [
+        0.86876,
+        0.95119
+      ],
+      "ai_mean_probability": 0.88826,
+      "human_flag_rate": 0.11811,
+      "human_flag_rate_ci95": [
+        0.0729,
+        0.18575
+      ],
+      "roc_auc": 0.98116,
+      "reference_unperturbed_ai_detection_rate": 0.91489,
+      "reference_unperturbed_human_flag_rate": 0.09917
+    },
+    "sim_merge_split_restructure": {
+      "n": 300,
+      "n_ai": 173,
+      "n_human": 127,
+      "ai_detection_rate": 0.93064,
+      "ai_detection_rate_ci95": [
+        0.88268,
+        0.95988
+      ],
+      "ai_mean_probability": 0.88731,
+      "human_flag_rate": 0.11024,
+      "human_flag_rate_ci95": [
+        0.06681,
+        0.17655
+      ],
+      "roc_auc": 0.98011,
+      "reference_unperturbed_ai_detection_rate": 0.91489,
+      "reference_unperturbed_human_flag_rate": 0.09917
+    },
+    "sim_sentence_reorder": {
+      "n": 300,
+      "n_ai": 173,
+      "n_human": 127,
+      "ai_detection_rate": 0.91908,
+      "ai_detection_rate_ci95": [
+        0.86876,
+        0.95119
+      ],
+      "ai_mean_probability": 0.88522,
+      "human_flag_rate": 0.10236,
+      "human_flag_rate_ci95": [
+        0.0608,
+        0.16727
+      ],
+      "roc_auc": 0.98134,
+      "reference_unperturbed_ai_detection_rate": 0.91489,
+      "reference_unperturbed_human_flag_rate": 0.09917
+    },
+    "sim_typo_noise": {
+      "n": 300,
+      "n_ai": 173,
+      "n_human": 127,
+      "ai_detection_rate": 0.89595,
+      "ai_detection_rate_ci95": [
+        0.84154,
+        0.93317
+      ],
+      "ai_mean_probability": 0.85907,
+      "human_flag_rate": 0.07087,
+      "human_flag_rate_ci95": [
+        0.03773,
+        0.1292
+      ],
+      "roc_auc": 0.97838,
+      "reference_unperturbed_ai_detection_rate": 0.91489,
+      "reference_unperturbed_human_flag_rate": 0.09917
+    },
+    "sim_wordnet_synonyms": {
+      "n": 300,
+      "n_ai": 173,
+      "n_human": 127,
+      "ai_detection_rate": 0.88439,
+      "ai_detection_rate_ci95": [
+        0.82818,
+        0.9239
+      ],
+      "ai_mean_probability": 0.85658,
+      "human_flag_rate": 0.08661,
+      "human_flag_rate_ci95": [
+        0.04905,
+        0.14845
+      ],
+      "roc_auc": 0.97965,
+      "reference_unperturbed_ai_detection_rate": 0.91489,
+      "reference_unperturbed_human_flag_rate": 0.09917
+    }
+  },
+  "detectors": {
+    "per_detector": {
+      "perplexity": {
+        "test_roc_auc": 0.69631,
+        "mean_committee_std": 0.00375,
+        "weight": 0.0
+      },
+      "burstiness": {
+        "test_roc_auc": 0.74997,
+        "mean_committee_std": 0.00524,
+        "weight": 0.0
+      },
+      "stylometric": {
+        "test_roc_auc": 0.83277,
+        "mean_committee_std": 0.01132,
+        "weight": 0.0
+      },
+      "vocabulary": {
+        "test_roc_auc": 0.82553,
+        "mean_committee_std": 0.00677,
+        "weight": 0.0
+      },
+      "syntax": {
+        "test_roc_auc": 0.76876,
+        "mean_committee_std": 0.0084,
+        "weight": 0.0
+      },
+      "semantic": {
+        "test_roc_auc": 0.75216,
+        "mean_committee_std": 0.0047,
+        "weight": 0.0
+      },
+      "repetition": {
+        "test_roc_auc": 0.80785,
+        "mean_committee_std": 0.00724,
+        "weight": 0.0
+      },
+      "statistical": {
+        "test_roc_auc": 0.97146,
+        "mean_committee_std": 0.03568,
+        "weight": 0.66282
+      },
+      "neural": {
+        "test_roc_auc": 0.97273,
+        "mean_committee_std": 0.08859,
+        "weight": 0.33718
+      }
+    },
+    "correlation": {
+      "names": [
+        "perplexity",
+        "burstiness",
+        "stylometric",
+        "vocabulary",
+        "syntax",
+        "semantic",
+        "repetition",
+        "statistical",
+        "neural"
+      ],
+      "matrix": [
+        [
+          1.0,
+          0.62574,
+          0.45735,
+          0.53181,
+          0.39097,
+          0.40662,
+          0.32704,
+          0.41411,
+          0.40204
+        ],
+        [
+          0.62574,
+          1.0,
+          0.59671,
+          0.46123,
+          0.44497,
+          0.42341,
+          0.33273,
+          0.51546,
+          0.49999
+        ],
+        [
+          0.45735,
+          0.59671,
+          1.0,
+          0.51708,
+          0.61349,
+          0.4451,
+          0.44846,
+          0.68989,
+          0.67789
+        ],
+        [
+          0.53181,
+          0.46123,
+          0.51708,
+          1.0,
+          0.54608,
+          0.54484,
+          0.55952,
+          0.67355,
+          0.67045
+        ],
+        [
+          0.39097,
+          0.44497,
+          0.61349,
+          0.54608,
+          1.0,
+          0.57264,
+          0.60211,
+          0.54917,
+          0.53959
+        ],
+        [
+          0.40662,
+          0.42341,
+          0.4451,
+          0.54484,
+          0.57264,
+          1.0,
+          0.58023,
+          0.52051,
+          0.52243
+        ],
+        [
+          0.32704,
+          0.33273,
+          0.44846,
+          0.55952,
+          0.60211,
+          0.58023,
+          1.0,
+          0.6197,
+          0.63125
+        ],
+        [
+          0.41411,
+          0.51546,
+          0.68989,
+          0.67355,
+          0.54917,
+          0.52051,
+          0.6197,
+          1.0,
+          0.93361
+        ],
+        [
+          0.40204,
+          0.49999,
+          0.67789,
+          0.67045,
+          0.53959,
+          0.52243,
+          0.63125,
+          0.93361,
+          1.0
+        ]
+      ]
+    },
+    "accuracy_when_detectors_agree": 0.87635,
+    "accuracy_when_detectors_disagree": 0.94441,
+    "statistical_model_permutation_importance_top20": [
+      {
+        "feature": "pun_paren_rate",
+        "auc_drop": 0.01115
+      },
+      {
+        "feature": "rep_phrase5_per100",
+        "auc_drop": 0.00433
+      },
+      {
+        "feature": "tra_conclusive_rate",
+        "auc_drop": 0.00427
+      },
+      {
+        "feature": "sem_local_gain",
+        "auc_drop": 0.00384
+      },
+      {
+        "feature": "tra_causal_rate",
+        "auc_drop": 0.00359
+      },
+      {
+        "feature": "voc_mattr",
+        "auc_drop": 0.00349
+      },
+      {
+        "feature": "syn_fragment_frac",
+        "auc_drop": 0.00344
+      },
+      {
+        "feature": "tra_comma_frac",
+        "auc_drop": 0.00341
+      },
+      {
+        "feature": "voc_mtld",
+        "auc_drop": 0.00331
+      },
+      {
+        "feature": "sty_pos_propn_frac",
+        "auc_drop": 0.00275
+      },
+      {
+        "feature": "sty_pos_num_frac",
+        "auc_drop": 0.00264
+      },
+      {
+        "feature": "rep_trigram",
+        "auc_drop": 0.00242
+      },
+      {
+        "feature": "sem_compression",
+        "auc_drop": 0.00233
+      },
+      {
+        "feature": "pun_comma_rate",
+        "auc_drop": 0.00231
+      },
+      {
+        "feature": "voc_oov_frac",
+        "auc_drop": 0.00196
+      },
+      {
+        "feature": "syn_dep_dist_mean",
+        "auc_drop": 0.00188
+      },
+      {
+        "feature": "rep_opening_word",
+        "auc_drop": 0.00184
+      },
+      {
+        "feature": "sty_pron1s_frac",
+        "auc_drop": 0.00182
+      },
+      {
+        "feature": "sty_pos_verb_frac",
+        "auc_drop": 0.00171
+      },
+      {
+        "feature": "pun_transition_entropy",
+        "auc_drop": 0.00167
+      }
+    ]
+  }
+}

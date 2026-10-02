@@ -1,0 +1,120 @@
+{
+  "run_id": "20261002-225049-c3fec5",
+  "kind": "train",
+  "date": "2026-10-02 22:50:49",
+  "dataset_version": "783106e4aa39",
+  "feature_version": "2026.10-f3",
+  "model_version": "en-20261002-783106e4aa39-nonnative",
+  "hyperparameters": {
+    "folds": 5,
+    "max_windows": 60000,
+    "include_nonnative": true,
+    "detectors": {
+      "perplexity": "logreg",
+      "burstiness": "logreg",
+      "stylometric": "logreg",
+      "vocabulary": "logreg",
+      "syntax": "logreg",
+      "semantic": "logreg",
+      "repetition": "logreg",
+      "statistical": "hgb",
+      "neural": "mlp"
+    },
+    "window_sentences": 5,
+    "stacker": "logistic regression, non-negative weights by pruning",
+    "class_weight": "balanced"
+  },
+  "seed": 13,
+  "validation": {
+    "doc_oof": {
+      "perplexity": {
+        "oof_roc_auc": 0.6693323156365389,
+        "oof_brier_balanced": 0.22915636129416878
+      },
+      "burstiness": {
+        "oof_roc_auc": 0.7131496417500245,
+        "oof_brier_balanced": 0.21797387367896884
+      },
+      "stylometric": {
+        "oof_roc_auc": 0.8044171809913181,
+        "oof_brier_balanced": 0.1806455724632289
+      },
+      "vocabulary": {
+        "oof_roc_auc": 0.781375147780224,
+        "oof_brier_balanced": 0.1903893905806836
+      },
+      "syntax": {
+        "oof_roc_auc": 0.7353438564348619,
+        "oof_brier_balanced": 0.2090191249253117
+      },
+      "semantic": {
+        "oof_roc_auc": 0.709640263571688,
+        "oof_brier_balanced": 0.21661062198345943
+      },
+      "repetition": {
+        "oof_roc_auc": 0.7532871966777124,
+        "oof_brier_balanced": 0.2013033020695863
+      },
+      "statistical": {
+        "oof_roc_auc": 0.9383245944898072,
+        "oof_brier_balanced": 0.09879022786198874
+      },
+      "neural": {
+        "oof_roc_auc": 0.9205734450340497,
+        "oof_brier_balanced": 0.11184326317510584
+      }
+    },
+    "doc_calibration": {
+      "selected": "isotonic",
+      "results": {
+        "none": {
+          "brier": 0.08444251050280989,
+          "ece": 0.029451657428690926,
+          "log_loss": 0.2742395069127872
+        },
+        "platt": {
+          "brier": 0.08395855463649672,
+          "ece": 0.02336155899049709,
+          "log_loss": 0.2705042713945337
+        },
+        "isotonic": {
+          "brier": 0.08393682665990473,
+          "ece": 0.00874278691544909,
+          "log_loss": 0.2701006825270384
+        }
+      }
+    },
+    "window_calibration": {
+      "selected": "isotonic",
+      "results": {
+        "none": {
+          "brier": 0.13749844712832257,
+          "ece": 0.024187727103473586,
+          "log_loss": 0.4246424237751513
+        },
+        "platt": {
+          "brier": 0.1369444258083802,
+          "ece": 0.009911389523601363,
+          "log_loss": 0.42204531423881125
+        },
+        "isotonic": {
+          "brier": 0.1367341389833406,
+          "ece": 0.0026037576258820428,
+          "log_loss": 0.421335519490267
+        }
+      }
+    },
+    "bands": {
+      "t_high": 0.7324200911316123,
+      "t_low": 0.17890216875612688,
+      "target_human_flag_rate": 0.05,
+      "derivation": "t_high: at most target share of human sentence words (calibration split) above it; t_low: at most target share of AI sentence words below it"
+    }
+  },
+  "test": {},
+  "environment": {
+    "python": "3.11.15",
+    "platform": "Linux-6.18.44-fc-v51-x86_64-with-glibc2.39"
+  },
+  "notes": ""
+}

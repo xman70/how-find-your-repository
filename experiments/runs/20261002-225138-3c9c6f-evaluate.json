@@ -1,0 +1,29 @@
+{
+  "run_id": "20261002-225138-3c9c6f",
+  "kind": "evaluate",
+  "date": "2026-10-02 22:51:38",
+  "dataset_version": "783106e4aa39",
+  "feature_version": "2026.10-f3",
+  "model_version": "en-20261002-783106e4aa39-nonnative",
+  "hyperparameters": {
+    "quick": false,
+    "only": "fp_audit,adversarial,detectors"
+  },
+  "seed": 13,
+  "validation": {},
+  "test": {
+    "accuracy": 0.90669,
+    "precision": 0.93624,
+    "recall": 0.9056,
+    "f1": 0.92067,
+    "roc_auc": 0.97228,
+    "pr_auc": 0.97886,
+    "fpr": 0.09168,
+    "fnr": 0.0944
+  },
+  "environment": {
+    "python": "3.11.15",
+    "platform": "Linux-6.18.44-fc-v51-x86_64-with-glibc2.39"
+  },
+  "notes": ""
+}
