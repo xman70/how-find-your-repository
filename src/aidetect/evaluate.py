@@ -311,7 +311,10 @@ class Evaluator:
         table = [[0, 0.0]] + [[r["words"], float(np.clip((r["roc_auc"] - 0.5) / max(best - 0.5, 1e-6), 0, 1))] for r in rows]
         for i in range(1, len(table)):  # monotone non-decreasing reliability
             table[i][1] = max(table[i][1], table[i - 1][1])
+        auc_only = {"low": {"min_auc": 0.75}, "moderate": {"min_auc": 0.85}, "reliable": {"min_auc": 0.92}}
         self.results["length"] = {"rows": rows, "derived_thresholds": thresholds, "criteria": crit,
+                                  "initial_derivation": {"criteria": auc_only,
+                                                         "derived_thresholds": derive_thresholds(rows, auc_only)},
                                   "length_reliability_table": table}
 
     def write_back_thresholds(self):
@@ -365,8 +368,10 @@ class Evaluator:
         self.log("[5] cross-generator generalisation (leave-one-family-out)")
         ts, _ = self._set("test")
         fams = sorted({m["generator_family"] for m in ts.values() if m["label"] == 1})
-        out = {}
+        out = self.results.setdefault("cross_generator", {"_partial": True})
         for fam in fams:
+            if fam in out:
+                continue
             t0 = time.time()
             r = self._retrain_eval(lambda m, f=fam: m["label"] == 1 and m["generator_family"] == f,
                                    lambda m, f=fam: m["label"] == 0 or m["generator_family"] == f)
@@ -375,13 +380,15 @@ class Evaluator:
                 self.log(f"    held out {fam:11s}: AUC={r['held_out']['roc_auc']:.3f} TPR={r['held_out']['recall']:.3f} "
                          f"FPR={r['held_out']['fpr']:.3f} (in-distribution AUC {r['in_distribution_reference']['roc_auc']:.3f}) "
                          f"[{time.time() - t0:.0f}s]")
-        self.results["cross_generator"] = out
+                self.checkpoint()
 
     def study_cross_domain(self):
         self.log("[6] cross-domain generalisation (leave-one-domain-out)")
         ts, _ = self._set("test")
-        out = {}
+        out = self.results.setdefault("cross_domain", {"_partial": True})
         for dom in sorted({m["domain"] for m in ts.values()}):
+            if dom in out:
+                continue
             t0 = time.time()
             r = self._retrain_eval(lambda m, d=dom: m["domain"] == d, lambda m, d=dom: m["domain"] == d)
             if r:
@@ -389,7 +396,7 @@ class Evaluator:
                 self.log(f"    held out {dom:10s}: AUC={r['held_out']['roc_auc']:.3f} FPR={r['held_out']['fpr']:.3f} "
                          f"FNR={r['held_out']['fnr']:.3f} (in-distribution AUC {r['in_distribution_reference']['roc_auc']:.3f}) "
                          f"[{time.time() - t0:.0f}s]")
-        self.results["cross_domain"] = out
+                self.checkpoint()
 
     # ---------------------------------------------------------------- 7
     def study_baselines(self):
@@ -555,22 +562,29 @@ class Evaluator:
                                                   "reviewed (see evaluation report)."}
 
     # ---------------------------------------------------------------- run
+    def checkpoint(self):
+        if getattr(self, "checkpoint_path", None):
+            self.checkpoint_path.write_text(json.dumps(_clean(self.results), indent=2), encoding="utf-8")
+
     def run(self, quick=False, derive=True):
+        """Runs every study, checkpointing after each one so an interrupted run can resume."""
         t0 = time.time()
-        self.study_test()
-        self.study_calibration()
-        self.study_detectors()
-        self.study_adversarial()
-        self.study_fp_audit()
-        self.study_shortcuts()
-        self.study_baselines()
+        self.study_test()  # always recomputed: later studies reuse its predictions
+        steps = [("calibration", self.study_calibration), ("detectors", self.study_detectors),
+                 ("adversarial", self.study_adversarial), ("fp_audit", self.study_fp_audit),
+                 ("shortcut_audit", self.study_shortcuts), ("baselines", self.study_baselines)]
         if derive:
-            self.study_length()
-            self.write_back_thresholds()
-        self.study_end_to_end()
+            steps.append(("length", lambda: (self.study_length(), self.write_back_thresholds())))
+        steps.append(("end_to_end", self.study_end_to_end))
         if not quick:
-            self.study_cross_generator()
-            self.study_cross_domain()
+            steps += [("cross_generator", self.study_cross_generator), ("cross_domain", self.study_cross_domain)]
+        for key, fn in steps:
+            if key in self.results and not self.results[key].get("_partial", False):
+                self.log(f"[resume] {key} already done")
+                continue
+            fn()
+            self.results[key].pop("_partial", None)
+            self.checkpoint()
         self.results["seconds"] = round(time.time() - t0, 1)
         self.results["training"] = self.bundle["training"]
         self.results["bands"] = self.bundle["bands"]
@@ -588,6 +602,7 @@ def main(argv=None):
     ap.add_argument("--no-derive", action="store_true", help="do not derive/write length thresholds")
     ap.add_argument("--only", default=None, help="comma-separated study names, e.g. fp_audit,test")
     ap.add_argument("--jobs", type=int, default=4)
+    ap.add_argument("--fresh", action="store_true", help="ignore an existing checkpoint")
     ap.add_argument("--rederive-thresholds", action="store_true",
                     help="only re-derive evidence thresholds from saved length-study results")
     args = ap.parse_args(argv)
@@ -605,6 +620,12 @@ def main(argv=None):
                 getattr(ev, f"study_{name}")()
         res = ev.results
     else:
+        ev.checkpoint_path = out_dir / "evaluation_checkpoint.json"
+        if ev.checkpoint_path.exists() and not args.fresh:
+            prev = json.loads(ev.checkpoint_path.read_text(encoding="utf-8"))
+            if prev.get("model_version") == ev.bundle["model_version"]:
+                ev.results.update({k: v for k, v in prev.items() if k not in ("date", "model_version")})
+                print(f"Resuming from checkpoint: {sorted(k for k in prev if isinstance(prev[k], dict))}")
         res = ev.run(quick=args.quick, derive=not args.no_derive)
     res = _clean(res)
     fname = "evaluation_results.json" if not args.only else f"evaluation_{args.only.replace(',', '_')}.json"

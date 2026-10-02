@@ -181,15 +181,20 @@ def ablation_contributions(ens: Ensemble, X: np.ndarray, text_logits: dict[str, 
     n, F = X.shape
     base = human_baseline(ens)
     ref = _stack_logit(ens, X, text_logits)
-    big = np.repeat(X, F, axis=0)
-    rows = np.arange(n * F)
-    cols = np.tile(np.arange(F), n)
-    vals = np.tile(base, n)
-    keep = ~np.isnan(vals)
-    big[rows[keep], cols[keep]] = vals[keep]
-    fixed = {k: np.repeat(v, F) for k, v in (text_logits or {}).items()}
-    alt = _stack_logit(ens, big, fixed).reshape(n, F)
-    return ref[:, None] - alt
+    out = np.zeros((n, F))
+    chunk = 64  # bounds memory for very long documents
+    for s in range(0, n, chunk):
+        Xc = X[s:s + chunk]
+        m = len(Xc)
+        big = np.repeat(Xc, F, axis=0)
+        rows = np.arange(m * F)
+        cols = np.tile(np.arange(F), m)
+        vals = np.tile(base, m)
+        keep = ~np.isnan(vals)
+        big[rows[keep], cols[keep]] = vals[keep]
+        fixed = {k: np.repeat(v[s:s + chunk], F) for k, v in (text_logits or {}).items()}
+        out[s:s + m] = ref[s:s + m, None] - _stack_logit(ens, big, fixed).reshape(m, F)
+    return out
 
 
 def family_contributions(ens: Ensemble, contrib: np.ndarray) -> dict[str, float]:
