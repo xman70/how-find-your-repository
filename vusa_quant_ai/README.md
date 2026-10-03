@@ -143,7 +143,7 @@ score. The risk engine gives a separate **Risk** score. The final signal then ap
 The build sandbox had **no outbound access** to Yahoo, Stooq, FRED or news feeds. Everything below was verified with
 the clearly-labelled synthetic generator, which uses the same code paths as live data:
 
-* `python -m pytest` runs 67 tests: calendar/holidays, point-in-time with revisions, US/EU close alignment, data
+* `python -m pytest` runs 68 tests: calendar/holidays, point-in-time with revisions, US/EU close alignment, data
   validation, feature causality, the audit catching a centred moving average and an injected future return, purging,
   backtest **stopped** on leakage, next-open execution and costs, hysteresis, confirmation, low-confidence suppression,
   calibration, conformal coverage, Monte Carlo, the fabrication guard, the provider fallback chain, the no-data

@@ -293,11 +293,10 @@ class DailyPipeline:
         stress = stress_test(target, bundle.assets, s.currency)
         art.stress = stress
         state["stress"] = stress.to_dict("records")
-        if prim and prim.final_models:
+        def _cf_shap():
             x_now = fsvc.design_matrix(fs, reg).loc[[as_of_ts]]
             cf = run_counterfactuals(prim.final_models, x_now, prim.ensemble_weights)
             art.counterfactuals = cf
-            state["counterfactuals"] = cf.to_dict("records") if not cf.empty else []
             for nm in ("lightgbm", "xgboost", "hist_gb", "random_forest"):
                 if nm in prim.final_models:
                     sv = shap_today(prim.final_models[nm], x_now)
@@ -305,17 +304,38 @@ class DailyPipeline:
                         art.shap_now = sv
                         state["shap_today"] = {"model": nm, "values": sv.head(15).round(6).to_dict()}
                     break
-        an = find_analogues(fs.frame, target["close"], reg["regime_rule"], as_of=as_of_ts) if prof["analogues"] else {}
-        art.analogues = an.get("analogues")
-        state["analogues"] = {k: (v.to_dict("records") if isinstance(v, pd.DataFrame) else v) for k, v in an.items()}
-        ev_db = build_event_database(target["close"], bundle.assets, bundle.pit, fs.decision_times)
-        outcomes = conditional_outcomes(ev_db, target["close"], as_of_ts)
-        art.event_outcomes = outcomes
-        state["event_study"] = outcomes.round(5).to_dict("records")
-        state["news_memory"] = match_news_events(news.get("events", []), outcomes)
-        lead = leading_indicator_table(fs.frame, target["close"])
-        art.leading = lead
-        state["leading_indicators"] = lead.round(4).to_dict("records") if not lead.empty else []
+            return cf.to_dict("records") if not cf.empty else []
+
+        if prim and prim.final_models:
+            self._optional(state, "counterfactuals", _cf_shap)
+        an: dict = {}
+
+        def _analogues():
+            nonlocal an
+            an = find_analogues(fs.frame, target["close"], reg["regime_rule"], as_of=as_of_ts)
+            art.analogues = an.get("analogues")
+            return {k: (v.to_dict("records") if isinstance(v, pd.DataFrame) else v) for k, v in an.items()}
+
+        if prof["analogues"]:
+            self._optional(state, "analogues", _analogues)
+        state.setdefault("analogues", {})
+        state["news_memory"] = []
+
+        def _events():
+            ev_db = build_event_database(target["close"], bundle.assets, bundle.pit, fs.decision_times)
+            outcomes = conditional_outcomes(ev_db, target["close"], as_of_ts)
+            art.event_outcomes = outcomes
+            state["news_memory"] = match_news_events(news.get("events", []), outcomes)
+            return outcomes.round(5).to_dict("records")
+
+        self._optional(state, "event_study", _events)
+
+        def _leading():
+            lead = leading_indicator_table(fs.frame, target["close"])
+            art.leading = lead
+            return lead.round(4).to_dict("records") if not lead.empty else []
+
+        self._optional(state, "leading_indicators", _leading)
         step(14, "ok", f"Monte Carlo {mc_paths:,} paths x {len(mc)} methods; {len(stress)} stress scenarios; "
              f"{len(an.get('analogues', [])) if an else 0} analogues")
 
@@ -337,22 +357,11 @@ class DailyPipeline:
                                                     s.portfolio.risk_tolerance)
             state["risk_tolerance"] = s.portfolio.risk_tolerance
         if mode == "deep":
-            state["position_sizing"] = position_sizing_research(target["close"])
+            self._optional(state, "position_sizing", lambda: position_sizing_research(target["close"]))
             if prim is not None and prim.selected_features:
-                from ..explainability.importance import importance_stability
-                from ..labeling.labels import build_labels
-                from ..models.tree.models import HistGBForecaster
+                self._optional(state, "importance_stability",
+                               lambda: self._importance_stability(state, art, fs, fsvc, reg, prim, target, as_of_ts))
 
-                lab = build_labels(target, [prim.horizon])[prim.horizon]
-                Xi = fs.frame[prim.selected_features].iloc[252:]
-                le = lab["label_end"].reindex(Xi.index)
-                stab = importance_stability(lambda: HistGBForecaster(prim.horizon, s.models.random_seed), Xi,
-                                            lab["fwd_ret"].reindex(Xi.index), lab["direction"].reindex(Xi.index),
-                                            le.where(le <= as_of_ts), reg["regime_rule"], 4, s.models.random_seed)
-                art.importance_stability = stab["table"]
-                state["importance_stability"] = stab["table"].round(5).reset_index().rename(
-                    columns={"index": "feature"}).to_dict("records")
-                state["importance_by_regime"] = stab["by_regime"]
         step(15, "ok", f"risk score {rscore:.0f}/100")
 
         # drift monitors (feed confidence penalties) -----------------------------
@@ -456,6 +465,35 @@ class DailyPipeline:
                                          "environment": json.dumps(state["environment"]),
                                          "summary": f"{decision.label} opp {decision.opportunity} risk {decision.risk}"})
         return PipelineResult(True, run_id, state, art, steps)
+
+    # ------------------------------------------------------------------ optional analyses
+    @staticmethod
+    def _optional(state: dict, key: str, fn):
+        """Run an optional analysis; on failure record it as unavailable instead of failing the run."""
+        try:
+            res = fn()
+            if res is not None:
+                state[key] = res
+        except Exception as exc:  # noqa: BLE001
+            log.exception("optional analysis %s failed", key)
+            state[key] = {"unavailable": f"{type(exc).__name__}: {exc}"[:300]}
+            state["warnings"].append(f"Optional analysis '{key}' failed and was skipped: {exc}"[:300])
+
+    def _importance_stability(self, state, art, fs, fsvc, reg, prim, target, as_of_ts):
+        from ..explainability.importance import importance_stability
+        from ..labeling.labels import build_labels
+        from ..models.tree.models import HistGBForecaster
+
+        s = self.s
+        lab = build_labels(target, [prim.horizon])[prim.horizon]
+        Xi = fsvc.design_matrix(fs, reg)[prim.selected_features].iloc[252:]
+        le = lab["label_end"].reindex(Xi.index)
+        stab = importance_stability(lambda: HistGBForecaster(prim.horizon, s.models.random_seed), Xi,
+                                    lab["fwd_ret"].reindex(Xi.index), lab["direction"].reindex(Xi.index),
+                                    le.where(le <= as_of_ts), reg["regime_rule"], 4, s.models.random_seed)
+        art.importance_stability = stab["table"]
+        state["importance_by_regime"] = stab["by_regime"]
+        return stab["table"].round(5).reset_index().rename(columns={"index": "feature"}).to_dict("records")
 
     # ------------------------------------------------------------------ persistence
     def _persist(self, run_id: str, state: dict, decision, fc: ForecastResult) -> None:
