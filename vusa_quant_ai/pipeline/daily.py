@@ -168,7 +168,11 @@ class DailyPipeline:
 
         # 05-07 news ----------------------------------------------------------
         news = {"available": False, "reason": "disabled in Fast mode"}
-        if prof["news"] and not bundle.is_synthetic:
+        historical_run = as_of is not None and pd.Timestamp(as_of).normalize() < pd.Timestamp(ms["last_complete_session"])
+        if historical_run:
+            news = {"available": False, "reason": f"historical as-of run ({pd.Timestamp(as_of).date()}): live news would be "
+                                                  "future information and is not used"}
+        elif prof["news"] and not bundle.is_synthetic:
             news = MarketResearchAgent(s, ds.health).run(offline=offline)
             if news.get("available"):
                 self.db.upsert_many("news_articles", [{k: a[k] for k in ("article_id", "title", "summary", "url", "source",
@@ -256,6 +260,11 @@ class DailyPipeline:
                                hpo_trials=hpo_trials)
         fc = fsvc.run(fs, target, reg, horizons, models, as_of_ts, pit=bundle.pit, full_validation=prof["full_validation"])
         art.forecast = fc
+        if fc.audit is not None:
+            from ..validation.leakage import check_news_leakage
+
+            used = pd.DataFrame(news.get("articles", []))
+            fc.audit.checks.append(check_news_leakage(used if not used.empty else None, pd.Timestamp.now(tz="UTC")))
         state["leakage_audit"] = fc.audit.to_dict() if fc.audit else {}
         state["training_window"] = {"chosen": fc.training_window, "comparison": fc.window_comparison}
         state["feature_selection_stability"] = fc.selection.head(40).reset_index().rename(columns={"index": "feature"}) \

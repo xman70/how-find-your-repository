@@ -31,6 +31,11 @@ In the GUI:
 * *Synthetic DEMO data* lets you explore the app without internet. It is labelled in red on every screen and in
   every report.
 
+Typical runtimes on a 4-core CPU (about 25 years of history): **Fast** about 1-2 min, **Balanced** about 5-10 min,
+**Deep Research** about 45-90 min. Deep Research trains 5 deep-learning models in every walk-forward fold of
+every horizon up to 60D, plus nested Optuna tuning. A CUDA GPU is used automatically when present. Everything
+runs in a background thread, so the GUI stays responsive and shows step-by-step progress.
+
 Headless use:
 
 ```bat
@@ -138,7 +143,7 @@ score. The risk engine gives a separate **Risk** score. The final signal then ap
 The build sandbox had **no outbound access** to Yahoo, Stooq, FRED or news feeds. Everything below was verified with
 the clearly-labelled synthetic generator, which uses the same code paths as live data:
 
-* `python -m pytest` runs 50+ tests: calendar/holidays, point-in-time with revisions, US/EU close alignment, data
+* `python -m pytest` runs 67 tests: calendar/holidays, point-in-time with revisions, US/EU close alignment, data
   validation, feature causality, the audit catching a centred moving average and an injected future return, purging,
   backtest **stopped** on leakage, next-open execution and costs, hysteresis, confirmation, low-confidence suppression,
   calibration, conformal coverage, Monte Carlo, the fabrication guard, the provider fallback chain, the no-data

@@ -359,4 +359,4 @@ def self_audit(state: dict) -> dict:
 
 
 def new_run_id(prefix: str = "RUN") -> str:
-    return f"{prefix}_{pd.Timestamp.now(tz="UTC").strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"
+    return f"{prefix}_{pd.Timestamp.now(tz='UTC').strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:6]}"

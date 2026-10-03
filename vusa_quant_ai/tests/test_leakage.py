@@ -96,3 +96,11 @@ def test_preprocessor_fitted_on_train_only():
     p = Preprocessor().fit(X.iloc[:100])
     assert p.fit_last_index_ == 99
     assert p.med_["a"] == 0.0
+
+
+def test_news_leakage_check():
+    from vusa_quant_ai.validation.leakage import check_news_leakage
+
+    arts = pd.DataFrame({"published_at": ["2026-10-01T10:00:00+00:00", "2026-10-02T10:00:00+00:00"]})
+    assert check_news_leakage(arts, pd.Timestamp("2026-10-03", tz="UTC")).status == "PASS"
+    assert check_news_leakage(arts, pd.Timestamp("2026-10-01T12:00", tz="UTC")).status == "FAIL"

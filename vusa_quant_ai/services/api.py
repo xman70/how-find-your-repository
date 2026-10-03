@@ -53,7 +53,7 @@ class Backend:
         a = self.last.artifacts
         bt = run_walkforward_backtest(a.features, a.bundle.target, a.regimes, self.s, a.bundle.pit, horizon, start,
                                       progress, retrain_every=retrain_every)
-        bt_id = f"BT_{pd.Timestamp.now(tz="UTC").strftime('%Y%m%d_%H%M%S')}"
+        bt_id = f"BT_{pd.Timestamp.now(tz='UTC').strftime('%Y%m%d_%H%M%S')}"
         tr = bt.result.trades
         if not tr.empty:
             self.db.upsert_many("trades", [{"backtest_id": bt_id, "trade_no": i, "signal_date": str(r["signal_date"]),
