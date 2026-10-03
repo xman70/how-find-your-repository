@@ -50,6 +50,10 @@ def build_report(st: dict) -> tuple[str, str]:
         L.append(f"| {h}D | {_p(f.get('expected_return'))} | {_p(f.get('p_up'), 0, False)} | {_p(iv[0])} .. {_p(iv[1])} | "
                  f"{_p(f.get('p_gt5'), 0, False)} | {_p(f.get('p_lt5'), 0, False)} | {_p(f.get('p_dd10'), 0, False)} | "
                  f"{_p(f.get('confidence'), 0, False)} |")
+    fw = [f"{h}D: {w}" for h, f in sorted(st.get("forecasts", {}).items(), key=lambda kv: int(kv[0])) for w in f.get("warnings", [])]
+    if fw:
+        L.append("\n**Forecast warnings:**")
+        L += [f"- {w}" for w in fw]
     if fc and st.get("price"):
         iv = fc.get("interval", [np.nan, np.nan])
         L.append(f"\n{fc.get('horizon')}D price range ({int(100 * fc.get('interval_level', 0.8))}%): "

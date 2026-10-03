@@ -308,10 +308,13 @@ class ForecastService:
             if dd_ok.sum() > 200 else None
 
         # ----------------------------------------------- conformal (OOS residuals, coverage checked honestly)
-        cbt = rolling_conformal_backtest(yr[idx_ok], ens_r[idx_ok], self.s.models.conformal_alpha, window=750,
+        # residual window grows with the horizon: overlapping h-day residuals carry ~window/h independent
+        # observations, so long horizons need (much) longer windows to avoid one regime biasing the interval
+        cwin = max(750, 12 * h)
+        cbt = rolling_conformal_backtest(yr[idx_ok], ens_r[idx_ok], self.s.models.conformal_alpha, window=cwin,
                                          min_n=150, gap=h + 1)
         hr.conformal = interval_metrics(cbt["y"], cbt["lo"], cbt["hi"], 1 - self.s.models.conformal_alpha)
-        conf = ConformalRegressor(self.s.models.conformal_alpha, window=750).fit(yr[idx_ok].values, ens_r[idx_ok].values)
+        conf = ConformalRegressor(self.s.models.conformal_alpha, window=cwin).fit(yr[idx_ok].values, ens_r[idx_ok].values)
 
         hr.oos = pd.DataFrame({"y_ret": yr, "y_up": yu, "ens_ret": ens_r, "ens_up": ens_u,
                                "ens_up_cal": pd.Series(final_cal.transform(ens_u.fillna(0.5).values), index=ens_u.index)
@@ -366,6 +369,17 @@ class ForecastService:
         hr.p_up = float(final_cal.transform([hr.p_up_raw])[0])
         hr.p_down = 1 - hr.p_up
         hr.interval = tuple(float(v) for v in conf.interval(hr.expected_return))
+        med_res = float(np.median(conf.resid_)) if conf.n else 0.0
+        if np.isfinite(hr.interval[0]) and not (hr.interval[0] <= hr.expected_return <= hr.interval[1]):
+            hr.warnings.append(
+                f"Residual bias: the ensemble has systematically {'under' if med_res > 0 else 'over'}-predicted "
+                f"{h}D returns out-of-sample (median residual {med_res:+.1%}, n_eff~{conf.n // max(h, 1)}); the point "
+                "forecast lies outside its own conformal interval - treat the point forecast as unreliable.")
+        if conf.n and conf.n // max(h, 1) < 20:
+            hr.warnings.append(f"Only ~{conf.n // max(h, 1)} independent {h}D outcomes support the interval "
+                               "(overlapping labels): interval and probabilities are imprecise.")
+        hr.conformal["median_residual"] = med_res
+        hr.conformal["effective_independent_residuals"] = int(conf.n // max(h, 1))
         hr.quantiles = conf.quantiles(hr.expected_return)
         hr.p_gt5 = conf.prob_above(hr.expected_return, 0.05)
         hr.p_lt5 = conf.prob_below(hr.expected_return, -0.05)
@@ -399,6 +413,8 @@ class ForecastService:
         agree = sign_agree if not np.isnan(sign_agree) else 0.5
         disp_pen = np.clip(1 - (epi_ratio if np.isfinite(epi_ratio) else 0.5), 0.2, 1)
         hr.confidence = float(np.clip(0.15 + 0.35 * skill + 0.2 * calq + 0.2 * (agree - 0.5) * 2 * disp_pen, 0.05, 0.9))
+        if any(w.startswith("Residual bias") for w in hr.warnings):
+            hr.confidence *= 0.5
         if hr.n_oos < 300:
             hr.warnings.append(f"Only {hr.n_oos} OOS observations - statistics have wide error bars.")
         return hr
