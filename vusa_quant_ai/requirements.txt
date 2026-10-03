@@ -1,0 +1,35 @@
+# VUSA AI Quant Terminal - Python 3.10+ (Windows / Linux / macOS)
+# Core numerics & ML
+numpy>=1.26
+pandas>=2.2
+scipy>=1.11
+scikit-learn>=1.4
+statsmodels>=0.14
+joblib>=1.3
+tzdata>=2024.1        # required on Windows for exchange time zones (zoneinfo)
+hmmlearn>=0.3
+xgboost>=2.0
+lightgbm>=4.3
+catboost>=1.2
+optuna>=3.5
+shap>=0.44
+
+# Data sources
+requests>=2.31
+yfinance>=0.2.40
+feedparser>=6.0
+
+# GUI & charts
+PySide6>=6.6
+plotly>=5.20
+
+# Optional LLM explanation layer (structured JSON -> text, fabrication-guarded)
+anthropic>=0.40
+
+# Tests
+pytest>=8.0
+
+# Deep learning (CPU wheel works everywhere; CUDA is used automatically if present).
+# install.bat installs the CPU build from the official PyTorch index. If PyTorch is not
+# installed, the deep-learning models are reported as unavailable (never faked).
+# torch>=2.2
