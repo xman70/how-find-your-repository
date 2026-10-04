@@ -1,45 +1,46 @@
 @echo off
 REM ============================================================================
-REM  VUSA AI Quant Terminal - one-time installer (Windows, Python 3.10+)
+REM  VUSA AI Quant Terminal - installer (Windows, 64-bit Python 3.10 - 3.14)
+REM  Finds a suitable Python, then bootstrap.py does the rest:
+REM   - creates the environment at a short path (C:\ProgramData\VUSA-Quant\venv)
+REM   - installs essential packages, then optional ones (skipped if unavailable)
+REM   - repairs a broken environment from an earlier attempt automatically
 REM ============================================================================
-setlocal
+setlocal EnableExtensions
 cd /d "%~dp0"
-
-where py >nul 2>nul
-if %errorlevel%==0 (set PY=py -3) else (set PY=python)
-
-%PY% -c "import sys; assert sys.version_info >= (3,10), sys.version" 2>nul
-if errorlevel 1 (
-  echo Python 3.10 or newer is required. Install it from https://www.python.org/downloads/ and tick "Add to PATH".
-  pause
-  exit /b 1
-)
-
-if not exist .venv (
-  echo Creating virtual environment...
-  %PY% -m venv .venv || goto :fail
-)
-call .venv\Scripts\activate.bat || goto :fail
-
-python -m pip install --upgrade pip wheel
-echo Installing core requirements...
-pip install -r requirements.txt || goto :fail
-
-echo Installing PyTorch (CPU build - deep-learning models; skip-safe)...
-pip install torch --index-url https://download.pytorch.org/whl/cpu
-if errorlevel 1 echo [WARN] PyTorch could not be installed. Deep-learning models will be reported as unavailable.
-
-if not exist .env copy .env.example .env >nul
-
+title VUSA AI Quant Terminal - installer
 echo.
-echo Running a quick self-test (synthetic data, no network needed)...
-python -m pytest tests\test_data_quality.py tests\test_leakage.py -q
+echo  VUSA AI Quant Terminal - installation
+echo  =====================================
 echo.
-echo Installation complete. Start the application with run.bat
+call :find_python
+if not defined PYEXE goto :no_python
+%PYEXE% "%~dp0bootstrap.py" --install
+set "RC=%ERRORLEVEL%"
+echo.
+if "%RC%"=="0" echo  Start the application with run.bat
 pause
+exit /b %RC%
+
+REM ---------------------------------------------------------------------------
+:find_python
+REM Prefer 64-bit 3.12 (best tested), then 3.13, 3.11, 3.10, 3.14.
+set "PYEXE="
+set "PYCHECK=import sys,struct; sys.exit(0 if (3,10) <= sys.version_info[:2] <= (3,14) and struct.calcsize('P') == 8 else 1)"
+for %%V in (3.12 3.13 3.11 3.10 3.14) do (
+  if not defined PYEXE (
+    py -%%V -c "%PYCHECK%" >nul 2>nul && set "PYEXE=py -%%V"
+  )
+)
+if not defined PYEXE (
+  python -c "%PYCHECK%" >nul 2>nul && set "PYEXE=python"
+)
 exit /b 0
 
-:fail
-echo Installation failed. See the messages above.
+:no_python
+echo  [ERROR] No 64-bit Python 3.10 - 3.14 was found.
+echo          Install Python 3.12 (64-bit) from https://www.python.org/downloads/windows/
+echo          and tick "Add python.exe to PATH" during setup. Then run this file again.
+echo.
 pause
 exit /b 1

@@ -20,8 +20,15 @@ import pandas as pd
 
 from ..base import BaseForecaster, ModelInfo, Preprocessor
 
-TORCH = importlib.util.find_spec("torch") is not None
-_REASON = "" if TORCH else "PyTorch not installed (pip install torch) - deep learning skipped"
+try:  # a half-installed torch or missing DLLs (WinError 126/1114) must never crash start-up
+    import torch
+    from torch import nn
+
+    TORCH, _REASON = True, ""
+except Exception as _exc:  # noqa: BLE001
+    TORCH = False
+    _REASON = (f"PyTorch could not be loaded ({type(_exc).__name__}: {_exc})"[:300]
+               if importlib.util.find_spec("torch") else "PyTorch not installed - deep learning skipped")
 
 
 def device():
@@ -31,9 +38,6 @@ def device():
 
 
 if TORCH:
-    import torch
-    from torch import nn
-
     class _Head(nn.Module):
         def __init__(self, d):
             super().__init__()

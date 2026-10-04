@@ -1,3 +1,5 @@
+# Full dependency list. Windows users: use install.bat, which installs
+# requirements-core.txt (required) and requirements-optional.txt (best effort) separately.
 # VUSA AI Quant Terminal - Python 3.10+ (Windows / Linux / macOS)
 # Core numerics & ML
 numpy>=1.26

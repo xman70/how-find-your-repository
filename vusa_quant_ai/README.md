@@ -15,12 +15,34 @@ would change it.
 
 ---
 
-## Quick start (Windows, Python 3.10+)
+## Quick start (Windows, 64-bit Python 3.10-3.14; 3.12 recommended)
+
+1. Install Python 3.12 (64-bit) from https://www.python.org/downloads/windows/ if you do not have it
+   (tick "Add python.exe to PATH").
+2. Unzip the project anywhere and double-click **`run.bat`**. The first start installs everything
+   automatically (several minutes), then the app opens. Later starts open the app directly.
 
 ```bat
-install.bat          :: one time: creates .venv, installs requirements + PyTorch CPU, runs a self-test
-run.bat              :: starts the GUI
+run.bat              :: installs on first start (or repairs an unfinished install), then starts the GUI
+install.bat          :: (optional) install / repair only
 ```
+
+Where things are installed, and why: the Python environment is created at
+**`C:\ProgramData\VUSA-Quant\venv`**, not inside the project folder. The GUI library (PySide6) contains
+files with very long names, and Windows by default cannot create paths longer than 260 characters, so an
+install inside a deep folder (e.g. `Desktop\New folder\how-find-your-repository-<long id>\...`) fails.
+Some libraries also cannot handle non-ASCII (e.g. Greek) folder names; the location is always plain ASCII.
+Optional packages (XGBoost, LightGBM, CatBoost, Optuna, SHAP, hmmlearn, PyTorch, Anthropic) are installed
+one by one and are skipped if no pre-built package exists for your Python version. The app reports a missing
+model as "unavailable" and keeps working (e.g. regime detection uses a scikit-learn fallback if hmmlearn is missing).
+
+**Troubleshooting**
+* `ModuleNotFoundError: No module named 'PySide6'`: the installation did not finish (or `main.py` was
+  started with a different Python). Double-click `run.bat`; it installs or repairs automatically.
+* "No 64-bit Python 3.10 - 3.14 was found": install the 64-bit Python 3.12 from python.org.
+* "the GUI library (PySide6) cannot be loaded": install the Microsoft Visual C++ Redistributable (x64)
+  from https://aka.ms/vs/17/release/vc_redist.x64.exe.
+* To reinstall from scratch, delete `C:\ProgramData\VUSA-Quant` and run `run.bat` again.
 
 In the GUI:
 * **ANALYZE VUSA NOW** runs the 20-step daily pipeline in the selected mode (Fast / Balanced / Deep / Continuous).

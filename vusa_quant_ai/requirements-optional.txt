@@ -1,0 +1,11 @@
+# Optional packages - each one is installed separately and may be skipped if no
+# pre-built wheel exists for your Python version. The application reports any
+# missing model/library as "unavailable" instead of failing.
+xgboost
+lightgbm
+catboost
+optuna
+shap
+hmmlearn
+anthropic
+# torch is installed separately by install.bat (CPU build)

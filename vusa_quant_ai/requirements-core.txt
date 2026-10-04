@@ -1,0 +1,14 @@
+# Essential packages - the application cannot start without these.
+numpy>=1.26
+pandas>=2.2
+scipy>=1.11
+scikit-learn>=1.4
+statsmodels>=0.14
+joblib>=1.3
+tzdata>=2024.1
+requests>=2.31
+yfinance>=0.2.40
+feedparser>=6.0
+PySide6>=6.6
+plotly>=5.20
+pytest>=8.0

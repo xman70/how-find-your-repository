@@ -61,18 +61,41 @@ class CausalGaussianHMM:
         self.n_states, self.seed = n_states, seed
 
     def fit(self, Z: np.ndarray) -> "CausalGaussianHMM":
-        from hmmlearn.hmm import GaussianHMM
+        try:
+            from hmmlearn.hmm import GaussianHMM
+        except ImportError:  # e.g. no hmmlearn wheel for this Python version
+            return self._fit_gmm_fallback(Z)
 
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             m = GaussianHMM(self.n_states, covariance_type="full", n_iter=200, random_state=self.seed, tol=1e-3)
             m.fit(Z)
-        order = np.argsort(m.means_[:, 1])  # sort states by volatility feature: 0 calm .. n-1 stressed
-        self.startprob_ = m.startprob_[order]
-        self.transmat_ = m.transmat_[np.ix_(order, order)]
-        self.means_ = m.means_[order]
-        self.covars_ = m.covars_[order]
+        self.method_ = "hmmlearn EM"
+        return self._store(m.startprob_, m.transmat_, m.means_, m.covars_)
+
+    def _store(self, startprob, transmat, means, covars) -> "CausalGaussianHMM":
+        order = np.argsort(means[:, 1])  # sort states by volatility feature: 0 calm .. n-1 stressed
+        self.startprob_ = startprob[order]
+        self.transmat_ = transmat[np.ix_(order, order)]
+        self.means_ = means[order]
+        self.covars_ = covars[order]
         return self
+
+    def _fit_gmm_fallback(self, Z: np.ndarray) -> "CausalGaussianHMM":
+        """Fallback without hmmlearn: Gaussian-mixture emissions (scikit-learn) and a transition
+        matrix estimated from consecutive state assignments (Laplace-smoothed). Still evaluated
+        with the causal forward filter."""
+        from sklearn.mixture import GaussianMixture
+
+        g = GaussianMixture(self.n_states, covariance_type="full", random_state=self.seed, n_init=3).fit(Z)
+        lab = g.predict(Z)
+        K = self.n_states
+        counts = np.ones((K, K))
+        for a, b in zip(lab[:-1], lab[1:]):
+            counts[a, b] += 1
+        transmat = counts / counts.sum(axis=1, keepdims=True)
+        self.method_ = "GMM + empirical transitions (hmmlearn unavailable)"
+        return self._store(g.weights_, transmat, g.means_, g.covariances_)
 
     def filter(self, Z: np.ndarray) -> np.ndarray:
         """P(state_t | z_1..z_t) for every t (no look-ahead)."""
@@ -98,10 +121,6 @@ def hmm_state_features(close: pd.Series, n_states: int = 3, refit_every: int = 2
     Z = pd.DataFrame({"r": r * 100, "v": np.log(vol + 1e-4)}).dropna()
     out = pd.DataFrame(np.nan, index=close.index, columns=[f"hmm_p{k}" for k in range(n_states)])
     if len(Z) < min_train + 20:
-        return out
-    try:
-        import hmmlearn  # noqa: F401
-    except ImportError:
         return out
     for start in range(min_train, len(Z), refit_every):
         model = CausalGaussianHMM(n_states, seed).fit(Z.values[:start])
