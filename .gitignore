@@ -21,3 +21,6 @@ reports/tmp/
 
 # Experimental variant bundles (reproducible with train.py --tag/--include-nonnative)
 models/en_*/
+
+# Locally built download archives
+dist/
