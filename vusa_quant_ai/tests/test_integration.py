@@ -41,6 +41,11 @@ def test_pipeline_runs_all_20_steps(pipeline_result):
     com = st["committee"]
     assert "bull_case" in com and "bear_case" in com and "neutral_case" in com
     assert d["what_would_change"]
+    assert set(st["terms"]) == {"short", "long"}
+    for t in st["terms"].values():
+        assert t["signal"] in ("BUY", "HOLD", "SELL") and t["headline"] is not None
+        assert t["track_record"]["available"], t["track_record"]
+    assert "## Traffic lights" in st["report_markdown"]
     assert set(st["self_audit"]) >= {"MODEL STRENGTHS", "MODEL WEAKNESSES", "POSSIBLE LEAKAGE", "RESEARCH RISKS"}
 
 
@@ -145,6 +150,7 @@ def test_gui_smoke(pipeline_result, settings):
     w.backend.db = pipeline_result[0].db
     w.populate(pipeline_result[1])
     assert "SYNTHETIC" in w.banner.text()
-    assert w.tabs.count() == 16
+    assert w.tabs.count() == 17
+    assert w.simple.panels['short'].word.text() and 'Past record' in w.simple.panels['long'].track.text()
     w.close()
     app.processEvents()

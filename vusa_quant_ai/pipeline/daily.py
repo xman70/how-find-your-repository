@@ -403,6 +403,26 @@ class DailyPipeline:
                                       "p_up": prim.p_up if prim else None, "p_lt5": prim.p_lt5 if prim else None})
         state["decision"] = decision.to_dict()
 
+        # short-term and long-term traffic lights (own weights, own history, own track record)
+        from ..signals import terms as T
+
+        th = self.db.query_df("SELECT * FROM term_signals ORDER BY as_of")
+        th = th[th["as_of"] < state["as_of"]] if not th.empty else th
+        mc_stats = mc["Block bootstrap"].stats
+        state["terms"] = {}
+        for term in T.TERMS:
+            hist_t = th[th["term"] == term] if not th.empty else None
+            td = T.decide_term(term, comps, fc, rscore, s.signals, hist_t, penalties,
+                               {"price": state["price"], "sma200": sma200, "vix_now": state["features_now"].get("vix_level")},
+                               analogue_fn=lambda t: C.analogue_component(an, 20 if t == "short" else 60),
+                               risk_reward_fn=lambda hr, t=term: C.risk_reward_component(hr, mc_stats if t == "short" else None))
+            try:
+                td["track_record"] = T.light_track_record(term, fc, fs.frame, reg, s.signals)
+            except Exception as exc:  # noqa: BLE001
+                log.exception("track record failed")
+                td["track_record"] = {"available": False, "reason": f"{type(exc).__name__}: {exc}"[:200]}
+            state["terms"][term] = td
+
         # 16 committee + skeptic ---------------------------------------------------
         state["source_health"] = ds.health.table().to_dict("records") if not ds.health.table().empty else []
         outputs, committee = run_committee(state)
@@ -506,6 +526,12 @@ class DailyPipeline:
                               "data_current": int(bool(state.get("data_current"))), "created_at": utcnow_iso()})
         # keep only the latest run per as_of date in the signal history used for hysteresis
         db.execute("DELETE FROM signals WHERE as_of=? AND run_id<>?", [state["as_of"], run_id])
+        for term, td in state.get("terms", {}).items():
+            db.execute("DELETE FROM term_signals WHERE as_of=? AND term=? AND run_id<>?", [state["as_of"], term, run_id])
+            db.upsert("term_signals", {"run_id": run_id, "term": term, "as_of": state["as_of"], "signal": td["signal"],
+                                       "strength": td["strength"], "opportunity": td["opportunity"], "risk": td["risk"],
+                                       "confidence": td["confidence"], "final_score": td["final_score"],
+                                       "duration_days": td["duration_days"], "created_at": utcnow_iso()})
         db.upsert_many("signal_components", [{"run_id": run_id, "component": k, "score": v.get("score"),
                                               "weight": self.s.signals.weights.get(k), "contribution": decision.contributions.get(k),
                                               "evidence": json.dumps(v.get("evidence"))} for k, v in decision.components.items()])

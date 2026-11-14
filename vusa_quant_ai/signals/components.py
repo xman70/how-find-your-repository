@@ -222,18 +222,19 @@ def ml_component(hr) -> Component:
     return Component("ml_forecast", float(s), ev, {"p_up": hr.p_up, "exp_ret": hr.expected_return, "width": width})
 
 
-def analogue_component(an: dict) -> Component:
+def analogue_component(an: dict, h: int = 20) -> Component:
     if not an or not an.get("summary"):
         return Component("analogues", np.nan, ["Analogue search unavailable"], {}, 0.0)
-    s20 = an["summary"]["ret_20d"]
-    base_m, base_p = an["base_rates"].get("base_20d_mean", 0), an["base_rates"].get("base_20d_p_pos", 0.5)
-    rel = s20["weighted_mean"] - base_m
-    s = 0.5 * squash(rel, 0.03) + 0.5 * (100 * s20["p_positive"] if s20["p_positive"] is not None else 50)
-    s = 50 + (s - 50) * 0.8
-    ev = [f"Top analogues: 20D weighted mean {s20['weighted_mean']:+.1%} vs unconditional {base_m:+.1%}",
-          f"Analogues positive after 20D: {s20['p_positive']:.0%} (base rate {base_p:.0%})",
+    sh = an["summary"][f"ret_{h}d"]
+    base_m, base_p = an["base_rates"].get(f"base_{h}d_mean", 0), an["base_rates"].get(f"base_{h}d_p_pos", 0.5)
+    rel = sh["weighted_mean"] - base_m
+    pp = sh["p_positive"] if sh["p_positive"] is not None else base_p
+    s = 0.5 * squash(rel, 0.03 * np.sqrt(h / 20)) + 0.5 * (50 + 100 * (pp - base_p))
+    s = 50 + (np.clip(s, 0, 100) - 50) * 0.8
+    ev = [f"Top analogues: {h}D weighted mean {sh['weighted_mean']:+.1%} vs unconditional {base_m:+.1%}",
+          f"Analogues positive after {h}D: {pp:.0%} (base rate {base_p:.0%})",
           f"Worst 60D drawdown among analogues: {an['summary']['max_dd_60d']['min']:.1%}"]
-    return Component("analogues", float(s), ev, {"rel_20d": rel})
+    return Component("analogues", float(s), ev, {f"rel_{h}d": rel})
 
 
 def risk_reward_component(hr, mc: dict | None) -> Component:

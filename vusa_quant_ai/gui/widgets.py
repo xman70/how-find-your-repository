@@ -204,6 +204,7 @@ QPushButton { background:#1f6feb; color:white; border:none; padding:7px 14px; bo
 QPushButton:hover { background:#388bfd; } QPushButton:disabled { background:#30363d; color:#8b949e; }
 QPushButton#deep { background:#8957e5; } QPushButton#secondary { background:#30363d; }
 QFrame#kpi { background:#161b22; border:1px solid #30363d; border-radius:6px; }
+QFrame#kpi QLabel { background:transparent; }
 QLabel#kpiTitle { color:#8b949e; font-size:8pt; } QLabel#kpiSub { color:#8b949e; font-size:8pt; }
 QLabel#banner { padding:6px; border-radius:4px; font-weight:bold; }
 QTableView { background:#0d1117; alternate-background-color:#161b22; gridline-color:#30363d; }

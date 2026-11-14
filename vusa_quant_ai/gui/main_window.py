@@ -35,7 +35,7 @@ def _scroll(inner: QWidget) -> QScrollArea:
 
 
 class MainWindow(QMainWindow):
-    TABS = ["Dashboard", "Forecasts", "Signals", "Technical", "Macro", "News AI", "Market Regime", "Machine Learning",
+    TABS = ["Overview", "Dashboard", "Forecasts", "Signals", "Technical", "Macro", "News AI", "Market Regime", "Machine Learning",
             "Model Lab", "Backtesting", "Monte Carlo", "Risk", "Explainability", "Prediction Journal", "Data Quality",
             "Settings"]
 
@@ -63,7 +63,10 @@ class MainWindow(QMainWindow):
             w = builder()
             self.pages[t] = w
             self.tabs.addTab(w if t in ("Settings",) else _scroll(w), t)
-        self.statusBar().showMessage(f"Hardware: {detect_hardware()}")
+        self._set_advanced(False)
+        hw = detect_hardware()
+        self.statusBar().showMessage(f"Ready - {hw.get('cpu_count')} CPU cores, "
+                                     f"{'GPU: ' + str(hw['gpu']) if hw.get('gpu') else 'no GPU (CPU mode)'}")
         self.timer = QTimer(self)
         self.timer.timeout.connect(self._tick)
         self.timer.start(60_000)
@@ -91,7 +94,10 @@ class MainWindow(QMainWindow):
         self.llm = QCheckBox("LLM explanation")
         self.llm.setToolTip("Uses Claude (ANTHROPIC_API_KEY) to phrase the explanation from structured JSON; "
                             "a fabrication guard rejects any untraceable number.")
-        for c in (self.offline, self.demo, self.llm):
+        self.advanced = QCheckBox("Advanced view")
+        self.advanced.setToolTip("Show all analysis tabs (forecasts, models, risk, backtesting, ...).")
+        self.advanced.toggled.connect(self._set_advanced)
+        for c in (self.offline, self.demo, self.llm, self.advanced):
             lay.addWidget(c)
         self.btn_analyze = QPushButton("ANALYZE VUSA NOW")
         self.btn_analyze.clicked.connect(lambda: self.run_analysis(self.mode.currentText()))
@@ -184,7 +190,23 @@ class MainWindow(QMainWindow):
         except Exception:
             self.sched_lbl.setText("")
 
+    def _set_advanced(self, on: bool):
+        """Simple view shows only Overview and Settings; Advanced view shows every tab."""
+        keep = {"Overview", "Settings"}
+        for i, t in enumerate(self.TABS):
+            self.tabs.setTabVisible(i, on or t in keep)
+        for w in (self.llm, self.offline, self.btn_repro) if hasattr(self, "btn_repro") else ():
+            w.setVisible(on)
+        if not on:
+            self.tabs.setCurrentIndex(0)
+
     # ================================================================== tab builders
+    def _build_overview(self):
+        from .simple_view import SimpleView
+
+        self.simple = SimpleView()
+        return self.simple
+
     def _build_dashboard(self):
         w = QWidget()
         lay = QVBoxLayout(w)
@@ -508,6 +530,7 @@ class MainWindow(QMainWindow):
     # ================================================================== population
     def populate(self, res):
         st, a = res.state, res.artifacts
+        self.simple.populate(st)
         d, fc, rg = st["decision"], st.get("forecast_primary", {}), st.get("regime", {})
         cur = "€" if st.get("currency") == "EUR" else ""
         sig_col = {"BUY": "#2ecc71", "HOLD": "#f1c40f", "SELL": "#e74c3c"}[d["signal"]]

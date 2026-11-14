@@ -44,6 +44,21 @@ model as "unavailable" and keeps working (e.g. regime detection uses a scikit-le
   from https://aka.ms/vs/17/release/vc_redist.x64.exe.
 * To reinstall from scratch, delete `C:\ProgramData\VUSA-Quant` and run `run.bat` again.
 
+**The screen you see first (Overview)** shows two traffic lights:
+
+| Light | Time frame | Built mostly from |
+|---|---|---|
+| **SHORT TERM** | next 1-4 weeks | 5/10/20-day forecasts, momentum, volatility, market mood, event risk |
+| **LONG TERM** | next 6-12 months | 60/120/252-day forecasts, trend, valuation, economy, market regime |
+
+🟢 GREEN = BUY, 🟡 YELLOW = HOLD, 🔴 RED = SELL. Under each light: confidence, the expected move and likely
+range, the chance of a rise **compared with what is normal for that period** (stocks rise in most years, so
+"75 % chance of being up in a year" is ordinary and does not turn the light green by itself), the main reasons
+for and against in plain words, and the light's **past record**: what actually happened after it was green,
+yellow or red in out-of-sample history, with an honest verdict (proven / within the range of chance / did not
+work). A light is shown as YELLOW "low confidence" when the evidence leans one way but is too weak to trust.
+Tick **Advanced view** to see all 16 analysis tabs.
+
 In the GUI:
 * **ANALYZE VUSA NOW** runs the 20-step daily pipeline in the selected mode (Fast / Balanced / Deep / Continuous).
 * **RUN DEEP RESEARCH** runs every model including deep learning, nested Optuna tuning, all horizons, full

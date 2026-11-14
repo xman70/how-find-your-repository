@@ -33,7 +33,35 @@ def build_report(st: dict) -> tuple[str, str]:
         L.append("\n> **🟡 DATA NOT CURRENT** - the assessment is based on the latest available (cached/delayed) data.")
     L.append(f"\n**Date (last session):** {st.get('as_of')}  |  **Run:** {st.get('run_id')}  |  **Mode:** {st.get('mode')}")
     L.append(f"\n**Current price:** {sym}{_n(st.get('price'), 2)} ({st.get('symbol')})  |  **Data:** {st.get('data_status')}")
-    L.append("\n## Decision")
+    EM = {"BUY": "🟢", "HOLD": "🟡", "SELL": "🔴"}
+    if st.get("terms"):
+        L.append("\n## Traffic lights")
+        L.append("| Time frame | Light | Confidence | Expected | Likely range | Chance of rise (normal) |\n|---|---|---|---|---|---|")
+        for t in st["terms"].values():
+            hl = t.get("headline") or {}
+            iv = hl.get("interval") or [None, None]
+            L.append(f"| **{t['title']}** ({t['subtitle']}) | {EM[t['signal']]} **{t['signal']}** ({t['strength']}) | "
+                     f"{_p(t.get('confidence'), 0, False)} | {_p(hl.get('expected_return'))} over {hl.get('horizon', '?')}D | "
+                     f"{_p(iv[0])} .. {_p(iv[1])} | {_p(hl.get('p_up'), 0, False)} ({_p(hl.get('base_rate'), 0, False)}) |")
+        for t in st["terms"].values():
+            L.append(f"\n**{t['title']}** - for: {'; '.join(t.get('reasons_for') or ['nothing notable'])}. "
+                     f"Against: {'; '.join(t.get('reasons_against') or ['nothing notable'])}.")
+            for nte in t.get("notes", []):
+                L.append(f"- {nte}")
+            tr = t.get("track_record") or {}
+            if tr.get("available"):
+                parts = []
+                for col in ("GREEN", "YELLOW", "RED"):
+                    b = tr["by_light"].get(col, {})
+                    if b.get("n"):
+                        parts.append(f"{col}: up {_p(b['p_up'], 0, False)} of the time, average {_p(b['mean_return'])} "
+                                     f"({_p(b['share'], 0, False)} of days)")
+                L.append(f"- Track record over {tr['horizon']}D ({tr['from']} to {tr['to']}; all days: up "
+                         f"{_p(tr['base_p_up'], 0, False)}, average {_p(tr['base_mean'])}): " + " | ".join(parts))
+                L.append(f"- {tr['verdict']} {tr['note']}")
+            else:
+                L.append(f"- Track record unavailable: {tr.get('reason')}")
+    L.append("\n## Decision (all horizons combined)")
     L.append(f"| Signal | Opportunity | Risk | Confidence | Model agreement | Final score |\n|---|---|---|---|---|---|\n"
              f"| **{d.get('label')}** | {_n(d.get('opportunity'), 0)}/100 | {_n(d.get('risk'), 0)}/100 | "
              f"{_p(d.get('confidence'), 0, False)} | {_p((fc.get('disagreement') or {}).get('sign_agreement'), 0, False)} | "

@@ -283,11 +283,11 @@ def save_api_keys(keys: ApiKeys, path: Path | None = None) -> None:
 
 
 MODE_PROFILES = {
-    "fast": {"models": ["naive_drift", "elastic_net", "hist_gb", "lightgbm"], "horizons": [1, 5, 20],
+    "fast": {"models": ["naive_drift", "elastic_net", "hist_gb", "lightgbm"], "horizons": [5, 20, 60, 252],
              "news": False, "macro": False, "deep": False, "mc_paths": 2000, "analogues": True,
              "stress": True, "full_validation": False},
     "balanced": {"models": ["naive_drift", "elastic_net", "random_forest", "hist_gb", "xgboost", "lightgbm", "arima"],
-                 "horizons": [1, 5, 10, 20, 60, 252], "news": True, "macro": True, "deep": False,
+                 "horizons": [1, 5, 10, 20, 60, 120, 252], "news": True, "macro": True, "deep": False,
                  "mc_paths": 10000, "analogues": True, "stress": True, "full_validation": False},
     "deep": {"models": None, "horizons": None, "news": True, "macro": True, "deep": True,
              "mc_paths": None, "analogues": True, "stress": True, "full_validation": True},
