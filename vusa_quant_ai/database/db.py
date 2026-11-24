@@ -82,6 +82,8 @@ SCHEMA = [
     """CREATE TABLE IF NOT EXISTS signal_components (
         run_id TEXT NOT NULL, component TEXT NOT NULL, score REAL, weight REAL, contribution REAL,
         evidence TEXT, PRIMARY KEY (run_id, component))""",
+    """CREATE TABLE IF NOT EXISTS fetch_meta (
+        symbol TEXT PRIMARY KEY, source TEXT, last_full_refresh TEXT, last_fetch TEXT)""",
     """CREATE TABLE IF NOT EXISTS term_signals (
         run_id TEXT NOT NULL, term TEXT NOT NULL, as_of TEXT, signal TEXT, strength TEXT, opportunity REAL,
         risk REAL, confidence REAL, final_score REAL, duration_days INTEGER, created_at TEXT,

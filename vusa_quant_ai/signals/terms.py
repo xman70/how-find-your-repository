@@ -142,6 +142,9 @@ def historical_term_scores(term: str, forecast, features: pd.DataFrame, regimes:
         return pd.DataFrame()
     wts = np.array([max(0.05, h.confidence if np.isfinite(h.confidence) else 0.05) for h in hrs])
     edge = (ml * wts).sum(axis=1) / wts.sum()
+    # every 5th session is enough: outcomes span 20-252 overlapping days, so daily rows add
+    # almost no information but cost 5x the time
+    edge = edge.iloc[::5]
     idx = edge.index
     w = spec["weights"]
     rows = []
@@ -176,8 +179,9 @@ def light_track_record(term: str, forecast, features: pd.DataFrame, regimes: pd.
         return {"available": False, "reason": f"only {len(d)} historical observations"}
     d["light"] = np.where(d["score"] >= cfg.buy_threshold, "GREEN", np.where(d["score"] <= cfg.sell_threshold, "RED", "YELLOW"))
     base_up, base_mean = float((d["y"] > 0).mean()), float(d["y"].mean())
+    step = max(1, int(np.median(np.diff(np.searchsorted(forecast.horizons[h].oos.index, d.index)))) if len(d) > 1 else 1)
     out = {"available": True, "horizon": h, "n": int(len(d)), "from": str(d.index[0].date()), "to": str(d.index[-1].date()),
-           "independent_periods": int(len(d) // h), "base_p_up": base_up, "base_mean": base_mean, "by_light": {}}
+           "independent_periods": int(len(d) * step // h), "base_p_up": base_up, "base_mean": base_mean, "by_light": {}}
     for col in ("GREEN", "YELLOW", "RED"):
         g = d[d["light"] == col]
         if len(g) == 0:
@@ -185,14 +189,15 @@ def light_track_record(term: str, forecast, features: pd.DataFrame, regimes: pd.
             continue
         out["by_light"][col] = {"n": int(len(g)), "share": float(len(g) / len(d)), "p_up": float((g["y"] > 0).mean()),
                                 "mean_return": float(g["y"].mean()), "worst": float(g["y"].min()),
-                                "independent_periods": int(max(1, len(g) // h))}
+                                "independent_periods": int(max(1, len(g) * step // h))}
     g, r = out["by_light"]["GREEN"], out["by_light"]["RED"]
     # Is GREEN really better than RED (or than average)? Judge against the noise level, counting
     # only independent (non-overlapping) periods.
     sd = float(d["y"].std())
     useful, diff, se = None, None, None
-    if g.get("n", 0) >= 3 * h:
-        if r.get("n", 0) >= 3 * h:
+    need = max(3, 3 * h // step)  # at least ~3 independent periods
+    if g.get("n", 0) >= need:
+        if r.get("n", 0) >= need:
             diff = g["mean_return"] - r["mean_return"]
             se = sd * np.sqrt(1 / g["independent_periods"] + 1 / r["independent_periods"])
         else:

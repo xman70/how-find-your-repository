@@ -69,14 +69,65 @@ class DataService:
         return [(n, (lambda p=provs[n]: p.history(symbol, start, None, exchange)))
                 for n in self.s.providers.market_priority if n in provs]
 
+    FULL_REFRESH_DAYS = 7      # re-download the whole history weekly (provider corrections, adjustments)
+    INCREMENTAL_OVERLAP = 15   # calendar days re-fetched before the last cached bar
+
+    def _incremental(self, key: str, symbol: str, exchange: str) -> tuple[pd.DataFrame, FetchResult] | None:
+        """Fetch only recent bars when a recent full download from the same provider is cached.
+
+        Returns None (-> full download) unless: the cache came from one provider, its full refresh
+        is less than FULL_REFRESH_DAYS old, that same provider answers, and the re-fetched overlap
+        matches the cached closes (so differently-adjusted series are never spliced together)."""
+        if not self.db:
+            return None
+        meta = self.db.query("SELECT * FROM fetch_meta WHERE symbol=?", [symbol])
+        if not meta or not meta[0]["last_full_refresh"]:
+            return None
+        src = meta[0]["source"]
+        age = pd.Timestamp.now(tz="UTC") - pd.Timestamp(meta[0]["last_full_refresh"])
+        if age > pd.Timedelta(days=self.FULL_REFRESH_DAYS):
+            return None
+        cached = self.db.load_prices(symbol, source=src)
+        if cached.empty:
+            return None
+        start = (cached.index[-1] - pd.Timedelta(days=self.INCREMENTAL_OVERLAP)).strftime("%Y-%m-%d")
+        attempts = [(n, fn) for n, fn in self._market_attempts(symbol, start, exchange) if n == src]
+        if not attempts:
+            return None
+        res, _ = run_with_fallback(key, attempts, self.health)
+        if not res.ok:
+            return None
+        new = res.data
+        common = new.index.intersection(cached.index)
+        if len(common) == 0:
+            return None
+        rel = (new.loc[common, "close"] / cached.loc[common, "close"] - 1).abs()
+        if rel.max() > 0.005:  # provider re-adjusted history -> full refresh
+            return None
+        cols = ["open", "high", "low", "close", "adj_close", "volume", "available_at"]
+        merged = pd.concat([cached[cols].loc[cached.index < new.index[0]], new[cols]])
+        merged = merged[~merged.index.duplicated(keep="last")].sort_index()
+        self.db.save_prices(symbol, new, src)
+        self.db.upsert("fetch_meta", {"symbol": symbol, "source": src, "last_full_refresh": meta[0]["last_full_refresh"],
+                                      "last_fetch": utcnow_iso()})
+        res.data, res.rows = merged, len(merged)
+        res.last_date = str(merged.index[-1].date())
+        return merged, res
+
     def fetch_symbol(self, key: str, symbol: str, start: str, exchange: str, offline: bool = False
                      ) -> tuple[pd.DataFrame, FetchResult]:
         res = FetchResult(key, "none", False, error="offline mode")
         if not offline:
+            inc = self._incremental(key, symbol, exchange)
+            if inc is not None:
+                return inc
             res, attempts = run_with_fallback(key, self._market_attempts(symbol, start, exchange), self.health)
             if res.ok:
                 if self.db:
                     self.db.save_prices(symbol, res.data, res.source)
+                    now = utcnow_iso()
+                    self.db.upsert("fetch_meta", {"symbol": symbol, "source": res.source, "last_full_refresh": now,
+                                                  "last_fetch": now})
                 return res.data, res
         if self.db:
             cached = self.db.load_prices(symbol)

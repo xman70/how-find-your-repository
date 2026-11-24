@@ -17,14 +17,23 @@ def coverage_filter(X: pd.DataFrame, min_cov: float = 0.8) -> list[str]:
     return [c for c in X.columns if X[c].notna().mean() >= min_cov and X[c].nunique(dropna=True) > 5]
 
 
-def correlation_filter(X: pd.DataFrame, cols: list[str], thr: float = 0.92, priority: pd.Series | None = None) -> list[str]:
-    order = list(priority.reindex(cols).sort_values(ascending=False).index) if priority is not None else cols
-    C = X[order].corr(method="spearman").abs().fillna(0)
-    keep: list[str] = []
-    for c in order:
-        if all(C.loc[c, k] < thr for k in keep):
-            keep.append(c)
-    return keep
+def correlation_filter(X: pd.DataFrame, cols: list[str], thr: float = 0.92, priority: pd.Series | None = None,
+                       max_keep: int | None = None) -> list[str]:
+    """Greedy redundancy filter in priority order: keep a feature only if its absolute rank
+    correlation with every already-kept feature is below ``thr``.
+
+    Spearman correlation is computed as Pearson correlation of per-column ranks (pandas' fast
+    pairwise C routine), and the greedy pass runs on a NumPy matrix. ``max_keep`` stops once
+    enough features are kept (the caller only uses the first ``k``)."""
+    order = list(priority.reindex(cols).sort_values(ascending=False).index) if priority is not None else list(cols)
+    C = np.abs(X[order].rank().corr(method="pearson").fillna(0.0).to_numpy())
+    keep_idx: list[int] = []
+    for i in range(len(order)):
+        if not keep_idx or C[i, keep_idx].max() < thr:
+            keep_idx.append(i)
+            if max_keep and len(keep_idx) >= max_keep:
+                break
+    return [order[i] for i in keep_idx]
 
 
 def mutual_info_rank(X: pd.DataFrame, y: pd.Series, seed: int = 0) -> pd.Series:
@@ -32,7 +41,10 @@ def mutual_info_rank(X: pd.DataFrame, y: pd.Series, seed: int = 0) -> pd.Series:
 
     Z = X.fillna(X.median())
     m = y.notna().values
-    mi = mutual_info_regression(Z.values[m], y.values[m], random_state=seed, n_neighbors=5)
+    try:  # n_jobs (scikit-learn >= 1.5) parallelises across features; results are identical
+        mi = mutual_info_regression(Z.values[m], y.values[m], random_state=seed, n_neighbors=5, n_jobs=-1)
+    except TypeError:
+        mi = mutual_info_regression(Z.values[m], y.values[m], random_state=seed, n_neighbors=5)
     return pd.Series(mi, index=X.columns)
 
 
@@ -92,7 +104,7 @@ def select_features(X: pd.DataFrame, y: pd.Series, k: int = 40, seed: int = 0, u
         scores["stability"] = stability_selection(Xc, yy, seed=seed)
     ranks = scores.rank(pct=True).mean(axis=1)
     scores["rank_score"] = ranks
-    keep = correlation_filter(Xc, cols, priority=ranks)
+    keep = correlation_filter(Xc, cols, priority=ranks, max_keep=k)
     sel = list(ranks.reindex(keep).sort_values(ascending=False).index[:k])
     return sel, scores.sort_values("rank_score", ascending=False)
 

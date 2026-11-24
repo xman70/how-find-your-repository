@@ -281,7 +281,7 @@ class ForecastService:
         # ----------------------------------------------- ensemble comparison (OOS, non-overlapping)
         state = regimes[[c for c in REGIME_FEATURES if c in regimes]].reindex(oos_rows) if regimes is not None else None
         cmp_ = walk_forward_ensembles(oos_ret.loc[oos_rows, good], oos_up.loc[oos_rows, good], yr, yu,
-                                      le_t.reindex(oos_rows), state, step=max(21, h), min_hist=250)
+                                      le_t.reindex(oos_rows), state, step=max(42, h), min_hist=250)
         hr.ensemble_comparison = {m: {k: v for k, v in d.items() if not k.startswith("pred_")} for m, d in cmp_.items()}
         scored = {m: _composite(d) for m, d in cmp_.items() if d.get("n", 0) > 50}
         if scored:

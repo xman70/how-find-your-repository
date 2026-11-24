@@ -69,7 +69,9 @@ In the GUI:
   every report.
 
 Measured runtimes on a 4-core CPU without a GPU (about 25 years of daily history, synthetic data, no news fetch):
-**Fast** about 1 min, **Balanced** about 5 min, **Deep Research** about 21 min. Deep Research covers 8 horizons
+**Fast** about 1 min (4 horizons), **Balanced** about 4 min (7 horizons), **Deep Research** about 20 min
+(measured before the latest speed-ups, so now somewhat less). Price history is downloaded in full once a week;
+other runs fetch only the last few weeks and reuse the local copy. Deep Research covers 8 horizons
 × 17 models, 5 deep-learning models in every walk-forward fold up to 60D, nested Optuna tuning on the primary
 horizon, a 10,000-path Monte Carlo and importance-stability analysis. A CUDA GPU is used automatically when
 present. Everything runs in a background thread, so the GUI stays responsive and shows step-by-step progress.

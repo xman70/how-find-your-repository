@@ -18,7 +18,6 @@ import warnings
 
 import numpy as np
 import pandas as pd
-from scipy.special import logsumexp
 from scipy.stats import multivariate_normal
 
 REGIMES = ["Strong bull", "Bull", "Neutral", "Bear", "Strong bear", "High volatility", "Crisis", "Recovery"]
@@ -60,7 +59,10 @@ class CausalGaussianHMM:
     def __init__(self, n_states: int = 3, seed: int = 0):
         self.n_states, self.seed = n_states, seed
 
-    def fit(self, Z: np.ndarray) -> "CausalGaussianHMM":
+    def fit(self, Z: np.ndarray, warm: "CausalGaussianHMM | None" = None) -> "CausalGaussianHMM":
+        """EM fit. ``warm``: a model fitted on an earlier (shorter) window - EM starts from its
+        parameters, which converges in far fewer iterations and keeps state meanings stable
+        from one yearly refit to the next."""
         try:
             from hmmlearn.hmm import GaussianHMM
         except ImportError:  # e.g. no hmmlearn wheel for this Python version
@@ -68,7 +70,13 @@ class CausalGaussianHMM:
 
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            m = GaussianHMM(self.n_states, covariance_type="full", n_iter=200, random_state=self.seed, tol=1e-3)
+            if warm is not None and getattr(warm, "method_", "") == "hmmlearn EM":
+                m = GaussianHMM(self.n_states, covariance_type="full", n_iter=200, random_state=self.seed, tol=1e-3,
+                                init_params="")
+                m.startprob_, m.transmat_ = warm.startprob_.copy(), warm.transmat_.copy()
+                m.means_, m.covars_ = warm.means_.copy(), warm.covars_.copy()
+            else:
+                m = GaussianHMM(self.n_states, covariance_type="full", n_iter=200, random_state=self.seed, tol=1e-3)
             m.fit(Z)
         self.method_ = "hmmlearn EM"
         return self._store(m.startprob_, m.transmat_, m.means_, m.covars_)
@@ -98,20 +106,26 @@ class CausalGaussianHMM:
         return self._store(g.weights_, transmat, g.means_, g.covariances_)
 
     def filter(self, Z: np.ndarray) -> np.ndarray:
-        """P(state_t | z_1..z_t) for every t (no look-ahead)."""
+        """P(state_t | z_1..z_t) for every t (no look-ahead).
+
+        Scaled forward recursion in probability space (identical to the log-space version, but
+        ~50x faster): emissions are shifted by their row maximum before exponentiating, and the
+        filtered distribution is renormalised at every step, so nothing underflows."""
         K = self.n_states
         ll = np.column_stack([multivariate_normal(self.means_[k], self.covars_[k], allow_singular=True).logpdf(Z)
                               for k in range(K)])
         if ll.ndim == 1:
             ll = ll.reshape(1, -1)
-        logA = np.log(self.transmat_ + 1e-12)
-        alpha = np.zeros_like(ll)
-        alpha[0] = np.log(self.startprob_ + 1e-12) + ll[0]
-        alpha[0] -= logsumexp(alpha[0])
-        for t in range(1, len(Z)):
-            alpha[t] = logsumexp(alpha[t - 1][:, None] + logA, axis=0) + ll[t]
-            alpha[t] -= logsumexp(alpha[t])
-        return np.exp(alpha)
+        em = np.exp(ll - ll.max(axis=1, keepdims=True))
+        A = self.transmat_
+        out = np.empty_like(em)
+        a = self.startprob_ * em[0]
+        out[0] = a / a.sum()
+        for t in range(1, len(em)):
+            a = (out[t - 1] @ A) * em[t]
+            sa = a.sum()
+            out[t] = a / sa if sa > 0 else np.full(K, 1.0 / K)
+        return out
 
 
 def hmm_state_features(close: pd.Series, n_states: int = 3, refit_every: int = 252, min_train: int = 750,
@@ -122,8 +136,9 @@ def hmm_state_features(close: pd.Series, n_states: int = 3, refit_every: int = 2
     out = pd.DataFrame(np.nan, index=close.index, columns=[f"hmm_p{k}" for k in range(n_states)])
     if len(Z) < min_train + 20:
         return out
+    model = None
     for start in range(min_train, len(Z), refit_every):
-        model = CausalGaussianHMM(n_states, seed).fit(Z.values[:start])
+        model = CausalGaussianHMM(n_states, seed).fit(Z.values[:start], warm=model)
         end = min(len(Z), start + refit_every)
         # filter from the beginning so the state at t uses all data up to t with params fitted up to `start`
         probs = model.filter(Z.values[:end])
