@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Band Insights</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--fg:#1b1f24;--mut:#5b6470;--acc:#ff6a00;--ok:#1a7f4b;--warn:#b26a00;--bad:#c0392b;--line:#e3e6ea}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121417;--card:#1c2026;--fg:#e8eaed;--mut:#9aa3ad;--line:#2c323a}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,sans-serif}
+main{max-width:1000px;margin:auto;padding:16px}
+h1{margin:.2em 0}h2{font-size:1.1em;margin:0 0 .5em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px}
+.kpi b{font-size:1.5em;display:block}.kpi span{color:var(--mut);font-size:.85em}
+button,label.btn{background:var(--acc);color:#fff;border:0;border-radius:8px;padding:9px 14px;cursor:pointer;font:inherit;display:inline-block}
+button.sec{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.adv{padding:10px 12px;border-left:4px solid var(--mut);margin:8px 0;background:var(--bg);border-radius:6px}
+.adv.ok{border-color:var(--ok)}.adv.warn{border-color:var(--warn)}.adv.bad{border-color:var(--bad)}
+.mut{color:var(--mut);font-size:.9em}canvas{max-height:260px}
+input,select{font:inherit;padding:6px;border-radius:6px;border:1px solid var(--line);background:var(--card);color:var(--fg)}
+</style>
+</head>
+<body><main>
+<h1>⌚ Band Insights</h1>
+<p class="mut">For Xiaomi Smart Band 11 (Mi Fitness / Zepp Life exports). Everything runs in your browser — your data never leaves your device. Not medical advice.</p>
+
+<div class="card">
+<h2>1. Load your data</h2>
+<label class="btn">Import CSV file(s)<input type="file" id="file" accept=".csv,.json" multiple hidden></label>
+<button class="sec" id="demo">Try demo data</button>
+<details class="mut" style="margin-top:8px"><summary>How do I get my data?</summary>
+<ol><li><b>Mi Fitness:</b> account.xiaomi.com → Privacy → <i>Manage your data</i> → Export data → choose Mi Fitness. You get a zip; import <code>*_hlth_center_aggregated_fitness_data.csv</code> (and optionally the sport records file).</li>
+<li><b>Zepp Life:</b> App → Profile → Settings → Account → Export data. Import ACTIVITY, SLEEP, HEARTRATE_AUTO CSVs.</li>
+<li><b>Simple format:</b> any CSV with columns <code>date,steps,sleep_hours,deep_sleep_hours,resting_hr,spo2,stress,calories</code>.</li></ol></details>
+<p id="status" class="mut"></p>
+</div>
+
+<div class="card">
+<h2>2. About you (improves the advice)</h2>
+<div class="grid">
+<label>Age<br><input id="age" type="number" value="35"></label>
+<label>Step goal<br><input id="goal" type="number" value="8000"></label>
+<label>Sleep goal (h)<br><input id="sgoal" type="number" step="0.5" value="7.5"></label>
+<label>Main goal<br><select id="aim"><option value="health">General health</option><option value="weight">Lose weight</option><option value="sleep">Sleep better</option><option value="fitness">Get fitter</option><option value="stress">Less stress</option></select></label>
+</div>
+<button style="margin-top:10px" id="re">Re-analyse</button>
+</div>
+
+<div id="out" hidden>
+<div class="grid" id="kpis"></div>
+<div class="card"><h2>Conclusions & advice</h2><div id="advice"></div></div>
+<div class="card"><h2>Steps</h2><canvas id="cSteps"></canvas></div>
+<div class="card"><h2>Sleep</h2><canvas id="cSleep"></canvas></div>
+<div class="card"><h2>Resting heart rate</h2><canvas id="cHr"></canvas></div>
+<div class="card"><h2>Weekday pattern</h2><canvas id="cWeek"></canvas></div>
+</div>
+</main>
+<script>
+const days={}; // date -> metrics
+const day=d=>days[d]??=( {date:d} );
+const iso=t=>new Date(t*1000).toISOString().slice(0,10);
+function parseCSV(text){const rows=[];let r=[],f='',q=false;for(let i=0;i<text.length;i++){const c=text[i];
+ if(q){if(c=='"'&&text[i+1]=='"'){f+='"';i++}else if(c=='"')q=false;else f+=c}
+ else if(c=='"')q=true;else if(c==','){r.push(f);f=''}else if(c=='\n'||c=='\r'){if(c=='\r'&&text[i+1]=='\n')i++;r.push(f);rows.push(r);r=[];f=''}else f+=c}
+ if(f||r.length){r.push(f);rows.push(r)}return rows.filter(x=>x.length>1)}
+function ingest(text,name){
+ const rows=parseCSV(text);if(!rows.length)return 0;const h=rows[0].map(s=>s.trim().toLowerCase());const ix=k=>h.indexOf(k);let n=0;
+ if(ix('key')>=0&&ix('value')>=0&&ix('time')>=0){ // Mi Fitness aggregated
+  for(const r of rows.slice(1)){let v;try{v=JSON.parse(r[ix('value')])}catch{continue}const k=r[ix('key')],d=day(iso(+r[ix('time')]));n++;
+   if(k=='steps')d.steps=v.steps??d.steps,d.calories=v.calories??d.calories;
+   else if(k=='sleep'){const tot=(v.total_duration??v.duration??0);d.sleep=tot/60;if(v.sleep_deep_duration!=null)d.deep=v.sleep_deep_duration/60;if(v.sleep_score)d.sleepScore=v.sleep_score}
+   else if(k=='heart_rate'||k=='resting_heart_rate'){if(v.avg_rhr)d.rhr=v.avg_rhr;else if(v.resting_heart_rate)d.rhr=v.resting_heart_rate}
+   else if(k=='spo2')d.spo2=v.avg_spo2??v.avg;else if(k=='stress')d.stress=v.avg_stress??v.avg;else if(k=='calories')d.calories=v.calories;else n--}
+ }else if(ix('date')>=0&&ix('steps')>=0&&ix('distance')>=0){ // Zepp ACTIVITY
+  for(const r of rows.slice(1)){const d=day(r[ix('date')]);d.steps=+r[ix('steps')];if(ix('calories')>=0)d.calories=+r[ix('calories')];n++}
+ }else if(ix('deepsleeptime')>=0){ // Zepp SLEEP (minutes)
+  for(const r of rows.slice(1)){const d=day(r[ix('date')]);d.deep=+r[ix('deepsleeptime')]/60;d.sleep=d.deep+ +r[ix('shallowsleeptime')]/60+(ix('remtime')>=0?+r[ix('remtime')]/60:0);n++}
+ }else if(ix('heartrate')>=0&&ix('date')>=0){ // Zepp HR: take 10th percentile per day as resting estimate
+  const by={};for(const r of rows.slice(1))(by[r[ix('date')]]??=[]).push(+r[ix('heartrate')]);
+  for(const[k,a]of Object.entries(by)){a.sort((x,y)=>x-y);day(k).rhr=a[Math.floor(a.length*.1)];n++}
+ }else if(ix('date')>=0){ // simple format
+  const map={steps:'steps',sleep_hours:'sleep',deep_sleep_hours:'deep',resting_hr:'rhr',spo2:'spo2',stress:'stress',calories:'calories'};
+  for(const r of rows.slice(1)){const d=day(r[ix('date')].slice(0,10));for(const[c,k]of Object.entries(map))if(ix(c)>=0&&r[ix(c)]!=='')d[k]=+r[ix(c)];n++}
+ }
+ return n}
+const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;
+const sd=a=>{const m=avg(a);return Math.sqrt(avg(a.map(x=>(x-m)**2)))};
+function corr(xs,ys){const mx=avg(xs),my=avg(ys);let s=0,a=0,b=0;xs.forEach((x,i)=>{s+=(x-mx)*(ys[i]-my);a+=(x-mx)**2;b+=(ys[i]-my)**2});return s/Math.sqrt(a*b)}
+const charts={};
+function chart(id,type,labels,sets,opt={}){charts[id]?.destroy();charts[id]=new Chart(document.getElementById(id),{type,data:{labels,datasets:sets},options:{responsive:true,plugins:{legend:{display:sets.length>1}},...opt}})}
+function analyse(){
+ const all=Object.values(days).filter(d=>/^\d{4}-\d\d-\d\d$/.test(d.date)).sort((a,b)=>a.date<b.date?-1:1);
+ if(!all.length)return;document.getElementById('out').hidden=false;
+ const goal=+document.getElementById('goal').value,sg=+document.getElementById('sgoal').value,age=+document.getElementById('age').value,aim=document.getElementById('aim').value;
+ const L=all.slice(-30),pick=k=>L.filter(d=>d[k]>0).map(d=>d[k]);
+ const st=pick('steps'),sl=pick('sleep'),hr=pick('rhr'),dp=L.filter(d=>d.deep>0&&d.sleep>0),sp=pick('spo2'),ss=pick('stress');
+ const k=[];const kp=(v,l)=>k.push(`<div class="kpi"><b>${v}</b><span>${l}</span></div>`);
+ if(st.length)kp(Math.round(avg(st)).toLocaleString(),'avg steps / day (30d)');
+ if(sl.length)kp(avg(sl).toFixed(1)+' h','avg sleep');
+ if(hr.length)kp(Math.round(avg(hr))+' bpm','avg resting HR');
+ if(sp.length)kp(Math.round(avg(sp))+'%','avg SpO₂');
+ if(ss.length)kp(Math.round(avg(ss)),'avg stress (0–100)');
+ kp(L.length,'days analysed');document.getElementById('kpis').innerHTML=k.join('');
+ const A=[];const add=(lvl,t)=>A.push(`<div class="adv ${lvl}">${t}</div>`);
+ if(st.length){const m=avg(st),hit=st.filter(x=>x>=goal).length/st.length;
+  add(m>=goal?'ok':m>=goal*.7?'warn':'bad',`<b>Activity:</b> you average ${Math.round(m).toLocaleString()} steps and reach your ${goal.toLocaleString()} goal on ${Math.round(hit*100)}% of days. `+(m<goal?`Add a ${Math.ceil((goal-m)/100)*1}-minute brisk walk per day (~100 steps/min) to close the gap.`:`Great — research links ~7,000–10,000 steps/day with lower mortality risk; keep it up.`));
+  const w=L.slice(-7).filter(d=>d.steps).map(d=>d.steps),p=L.slice(-14,-7).filter(d=>d.steps).map(d=>d.steps);
+  if(w.length&&p.length){const ch=(avg(w)-avg(p))/avg(p)*100;if(Math.abs(ch)>10)add(ch>0?'ok':'warn',`<b>Trend:</b> steps ${ch>0?'up':'down'} ${Math.abs(ch).toFixed(0)}% this week vs. last week.`)}
+  const sed=st.filter(x=>x<5000).length;if(sed>st.length*.3)add('warn',`<b>Sedentary days:</b> ${sed} of ${st.length} days under 5,000 steps. Turn on the band's idle alert (Mi Fitness → Band → Idle alert).`)}
+ if(sl.length){const m=avg(sl),v=sd(sl);
+  add(m>=7&&m<=9?'ok':m>=6?'warn':'bad',`<b>Sleep duration:</b> ${m.toFixed(1)} h average (goal ${sg} h). `+(m<7?`Adults need 7–9 h. Try moving bedtime ${Math.round((sg-m)*60)} min earlier.`:m>9?`Regularly sleeping >9 h can signal poor sleep quality — mention it to a doctor if you feel tired.`:`Within the recommended 7–9 h.`));
+  if(v>1)add('warn',`<b>Irregular sleep:</b> your sleep varies by ±${v.toFixed(1)} h night to night. A fixed wake-up time (even on weekends) is one of the most effective sleep fixes.`);
+  if(dp.length){const r=avg(dp.map(d=>d.deep/d.sleep))*100;add(r>=15?'ok':'warn',`<b>Deep sleep:</b> ${r.toFixed(0)}% of sleep. `+(r<15?'Typical is ~15–25%. Avoid alcohol and heavy meals within 3 h of bed, keep the room cool.':'Healthy proportion.'))}}
+ if(hr.length){const m=avg(hr);add(m<=70?'ok':m<=80?'warn':'bad',`<b>Resting heart rate:</b> ${Math.round(m)} bpm. `+(m>80?'Above typical range; regular aerobic exercise usually lowers it. If it stays >90–100 at rest, see a doctor.':m<=60?'Low — usually a sign of good fitness.':'Normal range (60–100).'));
+  const r7=L.slice(-3).filter(d=>d.rhr).map(d=>d.rhr);if(r7.length&&avg(r7)>m+5)add('warn',`<b>Recovery alert:</b> resting HR in the last 3 days is ${Math.round(avg(r7)-m)} bpm above your average — possible stress, illness, poor sleep or overtraining. Take an easier day.`);
+  add('',`<b>Heart-rate zones:</b> estimated max HR ≈ ${220-age} bpm. Fat-burn/aerobic zone ≈ ${Math.round((220-age)*.6)}–${Math.round((220-age)*.7)} bpm; cardio ≈ ${Math.round((220-age)*.7)}–${Math.round((220-age)*.8)} bpm.`)}
+ if(sp.length&&avg(sp)<95)add('bad',`<b>SpO₂:</b> average ${Math.round(avg(sp))}%. Below 95% repeatedly (especially at night) can relate to sleep apnea — worth discussing with a doctor.`);
+ if(ss.length&&avg(ss)>50)add('warn',`<b>Stress:</b> average ${Math.round(avg(ss))}. Try the band's Breathing exercise 2–3× a day.`);
+ const both=L.filter(d=>d.steps&&d.sleep);if(both.length>=10){const c=corr(both.map(d=>d.steps),both.map(d=>d.sleep));if(Math.abs(c)>.3)add('',`<b>Pattern found:</b> on your more active days you sleep ${c>0?'longer':'less'} (correlation ${c.toFixed(2)}).`)}
+ const nxt=L.filter((d,i)=>L[i+1]&&d.sleep&&L[i+1].steps);if(nxt.length>=10){const c=corr(nxt.map(d=>d.sleep),nxt.map(d=>L[L.indexOf(d)+1].steps));if(c>.3)add('',`<b>Pattern found:</b> after better nights you move more the next day (correlation ${c.toFixed(2)}). Sleep is your activity lever.`)}
+ const tips={weight:'For weight loss: aim for 150–300 min/week of moderate activity plus a modest calorie deficit; steps alone rarely suffice.',sleep:'For better sleep: same wake time daily, morning daylight, no screens 30–60 min before bed.',fitness:`For fitness: 2–3 sessions/week in the cardio zone (${Math.round((220-age)*.7)}–${Math.round((220-age)*.8)} bpm) plus 2 strength sessions.`,stress:'For stress: short walks after meals and breathing exercises measurably lower stress scores.',health:'For general health: WHO recommends 150 min/week of moderate activity and muscle-strengthening on 2 days.'};
+ add('ok','<b>Your goal:</b> '+tips[aim]);
+ document.getElementById('advice').innerHTML=A.join('');
+ const lab=L.map(d=>d.date.slice(5));
+ chart('cSteps','bar',lab,[{label:'Steps',data:L.map(d=>d.steps??null),backgroundColor:'#ff6a00'},{type:'line',label:'Goal',data:L.map(()=>goal),borderColor:'#888',pointRadius:0}]);
+ chart('cSleep','bar',lab,[{label:'Deep',data:L.map(d=>d.deep??null),backgroundColor:'#3b5bdb',stack:'s'},{label:'Other',data:L.map(d=>d.sleep?d.sleep-(d.deep||0):null),backgroundColor:'#91a7ff',stack:'s'}],{scales:{x:{stacked:true},y:{stacked:true}}});
+ chart('cHr','line',lab,[{label:'Resting HR',data:L.map(d=>d.rhr??null),borderColor:'#c0392b',spanGaps:true}]);
+ const wd=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],bw=wd.map((_,i)=>avg(all.filter(d=>d.steps&&new Date(d.date).getDay()==i).map(d=>d.steps)));
+ chart('cWeek','bar',wd,[{label:'Avg steps',data:bw,backgroundColor:'#1a7f4b'}]);
+ try{localStorage.setItem('band-prefs',JSON.stringify({age,goal,sg,aim}))}catch{}
+}
+document.getElementById('file').onchange=async e=>{let n=0;for(const f of e.target.files)n+=ingest(await f.text(),f.name);document.getElementById('status').textContent=`Imported ${n} records from ${e.target.files.length} file(s).`+(n?'':' Format not recognised — see "How do I get my data?".');analyse()};
+document.getElementById('demo').onclick=()=>{for(const k in days)delete days[k];const t=Date.now();for(let i=45;i>=0;i--){const dt=new Date(t-i*864e5),we=[0,6].includes(dt.getDay()),d=day(dt.toISOString().slice(0,10));d.steps=Math.round((we?5500:8200)+Math.random()*4000-1500);d.sleep=+(6.2+Math.random()*1.8+(we?.8:0)).toFixed(2);d.deep=+(d.sleep*(.12+Math.random()*.1)).toFixed(2);d.rhr=Math.round(64+Math.random()*5+(i<3?6:0));d.spo2=96+Math.round(Math.random()*2);d.stress=Math.round(30+Math.random()*30)}document.getElementById('status').textContent='Demo data loaded (46 days).';analyse()};
+document.getElementById('re').onclick=analyse;
+try{const p=JSON.parse(localStorage.getItem('band-prefs'));if(p){age.value=p.age;goal.value=p.goal;sgoal.value=p.sg;aim.value=p.aim}}catch{}
+</script>
+</body></html>
