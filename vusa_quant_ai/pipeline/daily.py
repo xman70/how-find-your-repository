@@ -412,15 +412,19 @@ class DailyPipeline:
         state["terms"] = {}
         for term in T.TERMS:
             hist_t = th[th["term"] == term] if not th.empty else None
+            hrs_now = [fc.horizons.get(h) for h in T.TERMS[term]["horizons"]]
+            ml_now = T.ml_term_component([h for h in hrs_now if h is not None and np.isfinite(h.p_up)])
+            try:
+                cal = T.calibrate_light(term, fc, fs.frame, reg, s.signals, as_of_ts, ml_now.inputs.get("edge", np.nan))
+            except Exception as exc:  # noqa: BLE001 - optional: fall back to the hand-set light
+                log.exception("light calibration failed")
+                cal = {"alpha": 0.0, "track_record": {"available": False, "reason": f"{type(exc).__name__}: {exc}"[:200]}}
             td = T.decide_term(term, comps, fc, rscore, s.signals, hist_t, penalties,
                                {"price": state["price"], "sma200": sma200, "vix_now": state["features_now"].get("vix_level")},
                                analogue_fn=lambda t: C.analogue_component(an, 20 if t == "short" else 60),
-                               risk_reward_fn=lambda hr, t=term: C.risk_reward_component(hr, mc_stats if t == "short" else None))
-            try:
-                td["track_record"] = T.light_track_record(term, fc, fs.frame, reg, s.signals)
-            except Exception as exc:  # noqa: BLE001
-                log.exception("track record failed")
-                td["track_record"] = {"available": False, "reason": f"{type(exc).__name__}: {exc}"[:200]}
+                               risk_reward_fn=lambda hr, t=term: C.risk_reward_component(hr, mc_stats if t == "short" else None),
+                               learned=cal)
+            td["track_record"] = cal.get("track_record", {"available": False, "reason": "not computed"})
             state["terms"][term] = td
 
         # 16 committee + skeptic ---------------------------------------------------

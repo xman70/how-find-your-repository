@@ -53,6 +53,7 @@ PLAIN = {  # component -> (bullish phrase, bearish phrase)
     "ml_forecast": ("The forecasting models lean up", "The forecasting models lean down"),
     "analogues": ("Similar past situations ended well", "Similar past situations ended badly"),
     "risk_reward": ("Upside outweighs downside", "Downside outweighs upside"),
+    "history_model": ("Similar setups did better than normal in the past", "Similar setups did worse than normal in the past"),
 }
 COLOR = {"BUY": "GREEN", "HOLD": "YELLOW", "SELL": "RED"}
 
@@ -95,7 +96,7 @@ def plain_reasons(components: dict, contributions: dict, n: int = 3) -> tuple[li
 
 
 def decide_term(term: str, comps: dict[str, Component], forecast, risk: float, cfg: SignalSettings, history: pd.DataFrame | None,
-                penalties: dict, ctx: dict, analogue_fn=None, risk_reward_fn=None) -> dict:
+                penalties: dict, ctx: dict, analogue_fn=None, risk_reward_fn=None, learned: dict | None = None) -> dict:
     spec = TERMS[term]
     hrs = [forecast.horizons.get(h) for h in spec["horizons"]] if forecast is not None else []
     hrs = [h for h in hrs if h is not None and np.isfinite(h.p_up)]
@@ -108,8 +109,19 @@ def decide_term(term: str, comps: dict[str, Component], forecast, risk: float, c
         c["analogues"] = analogue_fn(term)
     tcfg = deepcopy(cfg)
     tcfg.weights = dict(spec["weights"])
+    if learned and learned.get("alpha", 0) > 0 and np.isfinite(learned.get("learned_score", np.nan)):
+        a = learned["alpha"]
+        c["history_model"] = Component("history_model", learned["learned_score"],
+                                       [f"Model trained on past outcomes: P(better than normal) "
+                                        f"{learned['p_better_than_normal']:.0%} (weight {a:.0%} of the light)"])
+        tcfg.weights["history_model"] = a / (1 - a) * sum(tcfg.weights.values())
     conf = float(np.mean([h.confidence for h in hrs if np.isfinite(h.confidence)])) if hrs else 0.2
     r = term_risk(term, risk, c)
+    no_skill = False
+    hold_auc = ((learned or {}).get("selection") or {}).get("holdout_auc_chosen")
+    if hold_auc is not None and np.isfinite(hold_auc) and hold_auc < 0.5:
+        penalties = {**penalties, "light_without_proven_skill": 0.3}  # do not show confidence the light has not earned
+        no_skill = True
     d = decide(c, r, tcfg, conf, history, penalties, {**ctx, "p_up": main.p_up if main else None,
                                                       "p_lt5": main.p_lt5 if main else None}).to_dict()
     why, against = plain_reasons(d["components"], d["contributions"])
@@ -119,58 +131,116 @@ def decide_term(term: str, comps: dict[str, Component], forecast, risk: float, c
                   "horizon": main.horizon, "expected_return": main.expected_return, "p_up": main.p_up,
                   "base_rate": base_rate(main), "interval": list(main.interval), "interval_level": main.interval_level,
                   "warnings": main.warnings}})
+    if learned:
+        d["calibration"] = {k: v for k, v in learned.items() if k != "track_record"}
+    if no_skill:
+        d["notes"].append(f"On unseen recent years this light ranked outcomes no better than chance (skill {hold_auc:.2f}); "
+                          "its confidence is reduced.")
     if not hrs:
         d["notes"].append(f"No ML forecast available for horizons {spec['horizons']} in this mode.")
     return d
 
 
 # ---------------------------------------------------------------------------------------- track record
-def historical_term_scores(term: str, forecast, features: pd.DataFrame, regimes: pd.DataFrame) -> pd.DataFrame:
-    """Reconstruct the light's score on past dates from information available then.
+RECON = ["ml_forecast", "trend", "momentum", "volatility", "breadth", "macro", "sentiment", "regime"]
+
+
+def _row_components(f: pd.Series, rv_pct: float, regime_score: float, edge: float) -> dict[str, float]:
+    reg = {"vol_percentile": rv_pct}
+    return {"ml_forecast": 50 + 50 * np.tanh(2 * edge / 0.25) * 0.75 if np.isfinite(edge) else np.nan,
+            "trend": trend_component(f).score, "momentum": momentum_component(f).score,
+            "volatility": volatility_component(f, reg).score, "breadth": breadth_component(f).score,
+            "macro": macro_component(f).score, "sentiment": sentiment_component(None, f).score,
+            "regime": regime_score}
+
+
+def _heuristic(row: dict, w: dict) -> float:
+    ok = {k: v for k, v in row.items() if v is not None and np.isfinite(v)}
+    return sum(w[k] * v for k, v in ok.items()) / sum(w[k] for k in ok) if ok else np.nan
+
+
+def _term_hrs(term: str, forecast) -> list:
+    hrs = [forecast.horizons.get(h) for h in TERMS[term]["horizons"]]
+    return [h for h in hrs if h is not None and h.oos is not None and "ens_up" in h.oos]
+
+
+def historical_components(term: str, forecast, features: pd.DataFrame, regimes: pd.DataFrame, step: int = 5) -> pd.DataFrame:
+    """Reconstruct the light's evidence on past dates from information available then.
 
     Uses out-of-sample ensemble probabilities (walk-forward) and the causal components that can be
     rebuilt historically (trend, momentum, volatility, breadth, macro, regime, volatility
     sentiment). News, valuation inputs, analogues and risk/reward are not reconstructable and are
-    left out, so this is a simplified version of the live light."""
-    spec = TERMS[term]
-    hrs = [forecast.horizons.get(h) for h in spec["horizons"]]
-    hrs = [h for h in hrs if h is not None and h.oos is not None and "ens_up" in h.oos]
+    left out. Every ``step``-th session is used (outcomes span 20-252 overlapping days, so daily
+    rows add little information). Returns one column per component plus ``heuristic``."""
+    hrs = _term_hrs(term, forecast)
     if not hrs:
         return pd.DataFrame()
     ml = pd.DataFrame({h.horizon: ml_edge(h.oos["ens_up"], base_rate(h)) for h in hrs}).dropna()
     if ml.empty:
         return pd.DataFrame()
     wts = np.array([max(0.05, h.confidence if np.isfinite(h.confidence) else 0.05) for h in hrs])
-    edge = (ml * wts).sum(axis=1) / wts.sum()
-    # every 5th session is enough: outcomes span 20-252 overlapping days, so daily rows add
-    # almost no information but cost 5x the time
-    edge = edge.iloc[::5]
+    edge = ((ml * wts).sum(axis=1) / wts.sum()).iloc[::step]
     idx = edge.index
-    w = spec["weights"]
-    rows = []
-    F = features.reindex(idx)
-    R = regimes.reindex(idx)
-    for d in idx:
-        f = F.loc[d]
-        reg = {"vol_percentile": R.at[d, "rv_pct"] if "rv_pct" in R else np.nan}
-        sc = {"ml_forecast": 50 + 50 * np.tanh(2 * edge.at[d] / 0.25) * 0.75,
-              "trend": trend_component(f).score, "momentum": momentum_component(f).score,
-              "volatility": volatility_component(f, reg).score, "breadth": breadth_component(f).score,
-              "macro": macro_component(f).score, "sentiment": sentiment_component(None, f).score,
-              "regime": R.at[d, "regime_score"] if "regime_score" in R else np.nan}
-        ok = {k: v for k, v in sc.items() if v is not None and np.isfinite(v)}
-        rows.append(sum(w[k] * v for k, v in ok.items()) / sum(w[k] for k in ok))
-    return pd.DataFrame({"score": rows}, index=idx)
+    F, R = features.reindex(idx), regimes.reindex(idx)
+    rv = R["rv_pct"] if "rv_pct" in R else pd.Series(np.nan, index=idx)
+    rs = R["regime_score"] if "regime_score" in R else pd.Series(np.nan, index=idx)
+    rows = [_row_components(F.loc[d], rv.at[d], rs.at[d], edge.at[d]) for d in idx]
+    out = pd.DataFrame(rows, index=idx)[RECON]
+    w = TERMS[term]["weights"]
+    out["heuristic"] = [_heuristic(r, w) for r in rows]
+    return out
 
 
-def light_track_record(term: str, forecast, features: pd.DataFrame, regimes: pd.DataFrame, cfg: SignalSettings) -> dict:
+def historical_term_scores(term: str, forecast, features: pd.DataFrame, regimes: pd.DataFrame) -> pd.DataFrame:
+    hc = historical_components(term, forecast, features, regimes)
+    return pd.DataFrame() if hc.empty else hc[["heuristic"]].rename(columns={"heuristic": "score"})
+
+
+def calibrate_light(term: str, forecast, features: pd.DataFrame, regimes: pd.DataFrame, cfg: SignalSettings,
+                    today: pd.Timestamp, today_edge: float) -> dict:
+    """Learn (walk-forward) how the evidence relates to better-than-normal outcomes, choose the
+    blend with the hand-set light on early history, and build the track record of the chosen light."""
+    from . import light_model as LM
+
+    hrs = _term_hrs(term, forecast)
+    out = {"alpha": 0.0, "selection": {"alpha": 0.0, "reason": "no out-of-sample history", "candidates": {}}}
+    if not hrs:
+        out["track_record"] = {"available": False, "reason": "no out-of-sample history for this term"}
+        return out
+    h = max(x.horizon for x in hrs)
+    hc = historical_components(term, forecast, features, regimes)
+    if hc.empty:
+        out["track_record"] = {"available": False, "reason": "no out-of-sample history for this term"}
+        return out
+    y = forecast.horizons[h].oos["y_ret"].reindex(hc.index)
+    p_oos, final, coefs = LM.walk_forward(hc[RECON], y, h, step=5)
+    learned = pd.Series(LM.learned_score(p_oos), index=hc.index)
+    sel = LM.select_blend(hc["heuristic"], learned, y, h=h, step=5)
+    a = sel["alpha"]
+    blended = hc["heuristic"] if a == 0 else ((1 - a) * hc["heuristic"] + a * learned).fillna(hc["heuristic"])
+    out.update({"alpha": a, "selection": sel, "coefficients": coefs})
+    # today's learned score from today's reconstructable evidence
+    if final is not None and today in features.index:
+        f = features.loc[today]
+        rv = regimes["rv_pct"].get(today, np.nan) if "rv_pct" in regimes else np.nan
+        rs = regimes["regime_score"].get(today, np.nan) if "regime_score" in regimes else np.nan
+        row = pd.DataFrame([_row_components(f, rv, rs, today_edge)])[RECON]
+        p_now = float(final.predict_proba(LM._design(row))[:, 1][0])
+        out.update({"p_better_than_normal": p_now, "learned_score": float(LM.learned_score(p_now))})
+    out["track_record"] = light_track_record(term, forecast, features, regimes, cfg, scores=blended.to_frame("score"),
+                                             label="learned blend" if a else "hand-set weights")
+    return out
+
+
+def light_track_record(term: str, forecast, features: pd.DataFrame, regimes: pd.DataFrame, cfg: SignalSettings,
+                       scores: pd.DataFrame | None = None, label: str = "hand-set weights") -> dict:
     """What happened after each colour in the past (out-of-sample)."""
     spec = TERMS[term]
     avail = [h for h in spec["horizons"] if forecast.horizons.get(h) is not None and forecast.horizons[h].oos is not None]
     if not avail:
         return {"available": False, "reason": "no out-of-sample history for this term"}
     h = max(avail)
-    sc = historical_term_scores(term, forecast, features, regimes)
+    sc = scores if scores is not None else historical_term_scores(term, forecast, features, regimes)
     if sc.empty:
         return {"available": False, "reason": "no out-of-sample history for this term"}
     y = forecast.horizons[h].oos["y_ret"].reindex(sc.index)
@@ -214,7 +284,8 @@ def light_track_record(term: str, forecast, features: pd.DataFrame, regimes: pd.
     else:
         out["verdict"] = ("In the past GREEN did somewhat better, but the difference is within the range of chance - "
                           "the light is unproven.")
-    out["note"] = ("Simplified historical reconstruction (ML + trend, momentum, volatility, breadth, macro, regime); "
+    out["light_version"] = label
+    out["note"] = (f"Simplified historical reconstruction ({label}; ML + trend, momentum, volatility, breadth, macro, regime); "
                    f"overlapping {h}-day periods mean only ~{out['independent_periods']} independent observations. "
                    "Past results do not guarantee future results.")
     return out

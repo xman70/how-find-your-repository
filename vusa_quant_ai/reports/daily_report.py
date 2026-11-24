@@ -48,6 +48,13 @@ def build_report(st: dict) -> tuple[str, str]:
                      f"Against: {'; '.join(t.get('reasons_against') or ['nothing notable'])}.")
             for nte in t.get("notes", []):
                 L.append(f"- {nte}")
+            cal = t.get("calibration") or {}
+            sel = cal.get("selection") or {}
+            if sel:
+                hs, hc = sel.get("holdout_auc_handset"), sel.get("holdout_auc_chosen")
+                L.append(f"- Light version: {'learned blend (' + format(cal.get('alpha', 0), '.0%') + ' learned)' if cal.get('alpha') else 'hand-set weights'}"
+                         f" - {sel.get('reason')}." + (f" Hold-out ranking skill (AUC, 0.5 = chance): hand-set {_n(hs, 3)}, "
+                                                        f"chosen {_n(hc, 3)}." if hs is not None else ""))
             tr = t.get("track_record") or {}
             if tr.get("available"):
                 parts = []

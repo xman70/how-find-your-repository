@@ -63,3 +63,12 @@ def test_track_record_detects_informative_and_useless_lights(monkeypatch):
         assert tr["available"] and tr["horizon"] == 20
         assert (tr["informative"] is True) == informative
         assert tr["by_light"]["GREEN"]["n"] > 0 and "independent" in tr["note"]
+
+
+def test_light_without_proven_skill_gets_lower_confidence():
+    fc = SimpleNamespace(horizons={20: hr(20, 0.72, 0.58)})
+    cfg = SignalSettings()
+    ok = T.decide_term("short", comps(70), fc, 30, cfg, None, {}, {}, learned={"alpha": 0.0, "selection": {"holdout_auc_chosen": 0.6}})
+    bad = T.decide_term("short", comps(70), fc, 30, cfg, None, {}, {}, learned={"alpha": 0.0, "selection": {"holdout_auc_chosen": 0.4}})
+    assert bad["confidence"] < ok["confidence"]
+    assert any("no better than chance" in n for n in bad["notes"])

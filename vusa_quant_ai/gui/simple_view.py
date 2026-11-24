@@ -105,6 +105,14 @@ class LightPanel(QFrame):
         a_ = "".join(f"<div style='color:#e74c3c'>− {x}</div>" for x in t.get("reasons_against", [])) or "<div>− nothing notable</div>"
         self.reasons.setText(f"<b>Why:</b>{f_}{a_}")
         tr = t.get("track_record") or {}
+        cal = t.get("calibration") or {}
+        sel = cal.get("selection") or {}
+        acc = ""
+        if sel.get("holdout_auc_handset") is not None:
+            hc = sel.get("holdout_auc_chosen")
+            acc = (f"<br><b>Accuracy check</b> on unseen recent years: ranking skill {hc:.2f} "
+                   f"(0.50 = coin flip). {'Learned from history' if cal.get('alpha') else 'Hand-set weights'}: "
+                   f"{sel.get('reason')}.")
         if tr.get("available"):
             rows = []
             for col, name in (("GREEN", "green"), ("YELLOW", "yellow"), ("RED", "red")):
@@ -115,7 +123,7 @@ class LightPanel(QFrame):
                     rows.append(f"{name}: never shown")
             self.track.setText(f"<b>Past record</b> ({tr['horizon']}-day results, {tr['from'][:4]}–{tr['to'][:4]}; "
                                f"all days: up {_pct(tr['base_p_up'], 0, False)}, average {_pct(tr['base_mean'])}):<br>"
-                               + "<br>".join(rows) + f"<br><i>{tr['verdict']}</i>")
+                               + "<br>".join(rows) + f"<br><i>{tr['verdict']}</i>" + acc)
         else:
             self.track.setText(f"<b>Past record:</b> not available ({tr.get('reason', 'n/a')}).")
 

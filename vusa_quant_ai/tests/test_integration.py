@@ -45,6 +45,7 @@ def test_pipeline_runs_all_20_steps(pipeline_result):
     for t in st["terms"].values():
         assert t["signal"] in ("BUY", "HOLD", "SELL") and t["headline"] is not None
         assert t["track_record"]["available"], t["track_record"]
+        assert t["calibration"]["selection"]["reason"]
     assert "## Traffic lights" in st["report_markdown"]
     assert set(st["self_audit"]) >= {"MODEL STRENGTHS", "MODEL WEAKNESSES", "POSSIBLE LEAKAGE", "RESEARCH RISKS"}
 

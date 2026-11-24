@@ -57,6 +57,13 @@ range, the chance of a rise **compared with what is normal for that period** (st
 for and against in plain words, and the light's **past record**: what actually happened after it was green,
 yellow or red in out-of-sample history, with an honest verdict (proven / within the range of chance / did not
 work). A light is shown as YELLOW "low confidence" when the evidence leans one way but is too weak to trust.
+
+**Self-checking accuracy.** For each light, a regularised model is trained walk-forward on past outcomes to learn how
+much each piece of evidence really mattered ("was the next period better than normal?"). It replaces part of the
+hand-set weights only if it beats them in *both* halves of the earlier history and there are at least 40
+independent outcome periods to learn from; the most recent third of history is kept unseen and reported as the
+**accuracy check** (ranking skill, 0.50 = coin flip). A light whose skill on unseen years is below chance has its
+confidence cut automatically, so it cannot show a confident colour it has not earned.
 Tick **Advanced view** to see all 16 analysis tabs.
 
 In the GUI:
