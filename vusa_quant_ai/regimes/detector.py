@@ -68,16 +68,31 @@ class CausalGaussianHMM:
         except ImportError:  # e.g. no hmmlearn wheel for this Python version
             return self._fit_gmm_fallback(Z)
 
+        def cold():
+            return GaussianHMM(self.n_states, covariance_type="full", n_iter=200, random_state=self.seed, tol=1e-3)
+
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
+            m = None
             if warm is not None and getattr(warm, "method_", "") == "hmmlearn EM":
-                m = GaussianHMM(self.n_states, covariance_type="full", n_iter=200, random_state=self.seed, tol=1e-3,
-                                init_params="")
-                m.startprob_, m.transmat_ = warm.startprob_.copy(), warm.transmat_.copy()
-                m.means_, m.covars_ = warm.means_.copy(), warm.covars_.copy()
-            else:
-                m = GaussianHMM(self.n_states, covariance_type="full", n_iter=200, random_state=self.seed, tol=1e-3)
-            m.fit(Z)
+                try:
+                    m = GaussianHMM(self.n_states, covariance_type="full", n_iter=200, random_state=self.seed, tol=1e-3,
+                                    init_params="")
+                    m.startprob_, m.transmat_ = warm.startprob_.copy(), warm.transmat_.copy()
+                    # small ridge keeps a previously degenerate state's covariance positive-definite
+                    m.covars_ = warm.covars_ + 1e-6 * np.eye(warm.covars_.shape[-1])[None]
+                    m.means_ = warm.means_.copy()
+                    m.fit(Z)
+                except (ValueError, np.linalg.LinAlgError):
+                    m = None  # warm start failed -> cold start
+            if m is None:
+                try:
+                    m = cold()
+                    m.fit(Z)
+                except (ValueError, np.linalg.LinAlgError):
+                    return self._fit_gmm_fallback(Z)
+            if not np.all(np.isfinite(m.means_)) or not np.all(np.isfinite(m.transmat_)):
+                return self._fit_gmm_fallback(Z)
         self.method_ = "hmmlearn EM"
         return self._store(m.startprob_, m.transmat_, m.means_, m.covars_)
 

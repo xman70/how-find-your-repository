@@ -67,7 +67,7 @@ class ModelSettings:
     n_splits: int = 5
     embargo_days: int = 5
     conformal_alpha: float = 0.2  # 80 % interval
-    max_features: int = 40
+    max_features: int = 15  # fewer inputs = less overfitting (validated out-of-sample)
     random_seed: int = 42
     optuna_trials: int = 0  # 0 disables HPO (fast); Deep Research sets this
     deep_learning_epochs: int = 30

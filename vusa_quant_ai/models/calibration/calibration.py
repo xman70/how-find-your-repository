@@ -13,10 +13,22 @@ from ...validation.metrics import brier, ece, log_loss
 
 
 class ProbabilityCalibrator:
-    def __init__(self, method: str = "auto"):
+    """Drift-robust probability calibration.
+
+    * Fitted on the most recent ``window`` out-of-sample predictions only, so a shift in the
+      base rate (e.g. a long bull market) does not pull every probability towards an old average.
+    * The method (none / Platt / isotonic) is chosen by rolling-origin evaluation on three
+      successive time windows; a method must beat "no calibration" on average AND in most windows,
+      otherwise the probabilities are left unchanged. Isotonic (flexible) must additionally beat
+      Platt (2 parameters) by a margin, because it overfits easily.
+    """
+
+    def __init__(self, method: str = "auto", window: int = 1000):
         self.method = method
+        self.window = window
         self.model_ = None
         self.chosen_ = "none"
+        self.cv_ = {}
 
     def fit(self, p: np.ndarray, y: np.ndarray) -> "ProbabilityCalibrator":
         p, y = np.asarray(p, float), np.asarray(y, float)
@@ -26,17 +38,34 @@ class ProbabilityCalibrator:
             self.chosen_ = "none (insufficient OOS data)"
             return self
         methods = ["platt", "isotonic"] if self.method == "auto" else [self.method]
-        # choose method on a time-ordered split of the OOS predictions
-        cut = int(len(p) * 0.6)
-        best, best_m = brier(y[cut:], p[cut:]), "none"
-        for meth in methods:
-            mdl = self._fit_one(meth, p[:cut], y[:cut])
-            b = brier(y[cut:], self._apply(mdl, meth, p[cut:]))
-            if b < best - 1e-5:
-                best, best_m = b, meth
-        self.chosen_ = best_m
-        if best_m != "none":
-            self.model_ = self._fit_one(best_m, p, y)
+        n = len(p)
+        scores = {k: [] for k in ["none", *methods]}
+        for frac in (0.55, 0.7, 0.85):
+            cut, end = int(n * frac), min(n, int(n * frac) + max(60, int(n * 0.15)))
+            lo = max(0, cut - self.window)
+            if cut - lo < 80 or end - cut < 30 or len(np.unique(y[lo:cut])) < 2:
+                continue
+            yt = y[cut:end]
+            scores["none"].append(brier(yt, p[cut:end]))
+            for meth in methods:
+                mdl = self._fit_one(meth, p[lo:cut], y[lo:cut])
+                scores[meth].append(brier(yt, self._apply(mdl, meth, p[cut:end])))
+        self.cv_ = {k: float(np.mean(v)) if v else np.nan for k, v in scores.items()}
+        best = "none"
+        if scores["none"]:
+            base = np.array(scores["none"])
+            for meth in methods:
+                sc = np.array(scores[meth])
+                if len(sc) != len(base):
+                    continue
+                wins = (sc < base - 1e-4).mean()
+                margin = 0.002 if meth == "isotonic" and best == "platt" else 1e-4
+                if sc.mean() < self.cv_[best] - margin and wins >= 2 / 3:
+                    best = meth
+        self.chosen_ = best
+        if best != "none":
+            lo = max(0, n - self.window)
+            self.model_ = self._fit_one(best, p[lo:], y[lo:])
         return self
 
     @staticmethod

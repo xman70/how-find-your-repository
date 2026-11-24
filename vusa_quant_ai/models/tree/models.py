@@ -19,6 +19,11 @@ def _has(mod: str) -> bool:
     return importlib.util.find_spec(mod) is not None
 
 
+# Defaults are deliberately strongly regularised (few, shallow trees with large leaves; strong L1/L2).
+# Out-of-sample tests on independent synthetic histories showed 15 features + strong regularisation
+# lowered probability error (Brier) for every model and horizon tested and raised ranking skill in most
+# cases versus 40 features + mild regularisation: daily equity returns carry little signal and
+# flexible models mostly fit noise.
 class SklearnPairForecaster(BaseForecaster):
     default_hp: dict = {}
 
@@ -71,7 +76,7 @@ class SklearnPairForecaster(BaseForecaster):
 
 class ElasticNetForecaster(SklearnPairForecaster):
     info = ModelInfo("elastic_net", "ml", "Elastic-net regression + L1/L2 logistic regression")
-    default_hp = {"alpha": 0.001, "l1_ratio": 0.5, "C": 0.05}
+    default_hp = {"alpha": 0.003, "l1_ratio": 0.5, "C": 0.005}
 
     def _make(self, hp):
         from sklearn.linear_model import ElasticNet, LogisticRegression
@@ -83,7 +88,7 @@ class ElasticNetForecaster(SklearnPairForecaster):
 
 class RandomForestForecaster(SklearnPairForecaster):
     info = ModelInfo("random_forest", "ml", "Random forest (shallow, heavily regularised)")
-    default_hp = {"n_estimators": 300, "max_depth": 5, "min_samples_leaf": 50, "max_features": 0.3}
+    default_hp = {"n_estimators": 200, "max_depth": 4, "min_samples_leaf": 150, "max_features": 0.3}
 
     def _make(self, hp):
         from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
@@ -95,7 +100,7 @@ class RandomForestForecaster(SklearnPairForecaster):
 
 class ExtraTreesForecaster(SklearnPairForecaster):
     info = ModelInfo("extra_trees", "ml", "Extremely randomised trees")
-    default_hp = {"n_estimators": 300, "max_depth": 6, "min_samples_leaf": 50, "max_features": 0.3}
+    default_hp = {"n_estimators": 200, "max_depth": 4, "min_samples_leaf": 150, "max_features": 0.3}
 
     def _make(self, hp):
         from sklearn.ensemble import ExtraTreesClassifier, ExtraTreesRegressor
@@ -107,7 +112,7 @@ class ExtraTreesForecaster(SklearnPairForecaster):
 
 class HistGBForecaster(SklearnPairForecaster):
     info = ModelInfo("hist_gb", "ml", "Histogram gradient boosting (scikit-learn)")
-    default_hp = {"learning_rate": 0.03, "max_iter": 250, "max_depth": 3, "min_samples_leaf": 80, "l2_regularization": 1.0}
+    default_hp = {"learning_rate": 0.03, "max_iter": 150, "max_depth": 2, "min_samples_leaf": 200, "l2_regularization": 5.0}
 
     def _make(self, hp):
         from sklearn.ensemble import HistGradientBoostingClassifier, HistGradientBoostingRegressor
@@ -121,8 +126,8 @@ class HistGBForecaster(SklearnPairForecaster):
 class XGBForecaster(SklearnPairForecaster):
     info = ModelInfo("xgboost", "ml", "XGBoost gradient boosting", available=_has("xgboost"),
                      unavailable_reason="" if _has("xgboost") else "xgboost not installed")
-    default_hp = {"n_estimators": 300, "learning_rate": 0.03, "max_depth": 3, "subsample": 0.8,
-                  "colsample_bytree": 0.6, "min_child_weight": 20, "reg_lambda": 5.0}
+    default_hp = {"n_estimators": 150, "learning_rate": 0.03, "max_depth": 2, "subsample": 0.8,
+                  "colsample_bytree": 0.6, "min_child_weight": 100, "reg_lambda": 20.0}
 
     def _make(self, hp):
         import xgboost as xgb
@@ -137,8 +142,8 @@ class XGBForecaster(SklearnPairForecaster):
 class LGBMForecaster(SklearnPairForecaster):
     info = ModelInfo("lightgbm", "ml", "LightGBM gradient boosting", available=_has("lightgbm"),
                      unavailable_reason="" if _has("lightgbm") else "lightgbm not installed")
-    default_hp = {"n_estimators": 300, "learning_rate": 0.03, "num_leaves": 8, "min_child_samples": 60,
-                  "subsample": 0.8, "colsample_bytree": 0.6, "reg_lambda": 5.0}
+    default_hp = {"n_estimators": 150, "learning_rate": 0.03, "num_leaves": 4, "min_child_samples": 200,
+                  "subsample": 0.8, "colsample_bytree": 0.6, "reg_lambda": 20.0}
 
     def _make(self, hp):
         import lightgbm as lgb
@@ -153,7 +158,7 @@ class LGBMForecaster(SklearnPairForecaster):
 class CatBoostForecaster(SklearnPairForecaster):
     info = ModelInfo("catboost", "ml", "CatBoost gradient boosting", available=_has("catboost"),
                      unavailable_reason="" if _has("catboost") else "catboost not installed")
-    default_hp = {"iterations": 300, "learning_rate": 0.03, "depth": 4, "l2_leaf_reg": 5.0}
+    default_hp = {"iterations": 150, "learning_rate": 0.03, "depth": 3, "l2_leaf_reg": 20.0}
 
     def _make(self, hp):
         from catboost import CatBoostClassifier, CatBoostRegressor

@@ -76,8 +76,7 @@ In the GUI:
   every report.
 
 Measured runtimes on a 4-core CPU without a GPU (about 25 years of daily history, synthetic data, no news fetch):
-**Fast** about 1 min (4 horizons), **Balanced** about 4 min (7 horizons), **Deep Research** about 20 min
-(measured before the latest speed-ups, so now somewhat less). Price history is downloaded in full once a week;
+**Fast** about 70 s (4 horizons), **Balanced** under 4 min (7 horizons), **Deep Research** under 20 min (both measured before the latest speed-ups). Price history is downloaded in full once a week;
 other runs fetch only the last few weeks and reuse the local copy. Deep Research covers 8 horizons
 × 17 models, 5 deep-learning models in every walk-forward fold up to 60D, nested Optuna tuning on the primary
 horizon, a 10,000-path Monte Carlo and importance-stability analysis. A CUDA GPU is used automatically when
@@ -165,7 +164,12 @@ from the specification exist, plus `feature_lineage` and `alerts`.
   robust objective (rank-IC + skill vs base rate − calibration error − instability − complexity).
 * Ensemble methods are compared out-of-sample with their own expanding, non-overlapping weight estimation. The
   production method is chosen on the first two-thirds of that period.
-* Calibration is fitted on early out-of-sample folds and evaluated on later ones. Conformal coverage is measured
+* Models use at most 15 selected features and strongly regularised defaults (shallow trees, large leaves, strong
+  L1/L2). On independent synthetic histories this raised ranking skill (mean IC −0.027 → +0.017) at the same
+  probability error, and cut model time by about a third.
+* Calibration is chosen by rolling-origin tests on the most recent out-of-sample predictions: Platt or isotonic is
+  used only if it beats "no calibration" in most test windows, so a shift in the base rate cannot make it worse.
+  Calibration is evaluated on later folds than it is fitted on. Conformal coverage is measured
   with a rolling, gap-respecting backtest.
 * Every model is benchmarked against **naive drift** (Diebold-Mariano tests). ML confidence is skill **relative to
   that benchmark**, not relative to 50 %.

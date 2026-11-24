@@ -120,3 +120,30 @@ def test_hpo_nested_runs(xy):
     r = tune("lightgbm", X.iloc[:1500], lab["fwd_ret"].iloc[:1500], lab["direction"].iloc[:1500],
              lab["label_end"].iloc[:1500], 5, n_trials=2)
     assert "num_leaves" in r["params"]
+
+
+def test_calibrator_does_not_hurt_when_base_rate_drifts():
+    """Early history: 55% up; later: 70% up. Raw probabilities track the later rate. Calibrating on the
+    old regime must not pull them back down (it did, before the drift-robust calibrator)."""
+    rng = np.random.default_rng(5)
+    n = 4000
+    rate = np.r_[np.full(2400, 0.55), np.full(1600, 0.70)]
+    y = (rng.random(n) < rate).astype(float)
+    p = np.clip(rate + rng.normal(0, 0.03, n), 0.01, 0.99)
+    p[:2400] = np.clip(0.66 + rng.normal(0, 0.03, 2400), 0.01, 0.99)  # raw model mis-set early, right later
+    cal = ProbabilityCalibrator().fit(p[:3400], y[:3400])
+    from vusa_quant_ai.validation.metrics import brier
+
+    assert brier(y[3400:], cal.transform(p[3400:])) <= brier(y[3400:], p[3400:]) + 0.002
+
+
+def test_hmm_warm_start_failure_falls_back():
+    from vusa_quant_ai.regimes.detector import CausalGaussianHMM
+
+    rng = np.random.default_rng(0)
+    Z = np.c_[rng.normal(0, 1, 800), rng.normal(0, 1, 800)]
+    warm = CausalGaussianHMM(3).fit(Z[:600])
+    warm.covars_ = warm.covars_ * 0 - 1  # corrupt: not positive-definite
+    m = CausalGaussianHMM(3).fit(Z, warm=warm)  # must not raise
+    probs = m.filter(Z)
+    assert np.allclose(probs.sum(axis=1), 1) and np.isfinite(probs).all()

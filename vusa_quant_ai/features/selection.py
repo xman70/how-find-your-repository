@@ -41,10 +41,7 @@ def mutual_info_rank(X: pd.DataFrame, y: pd.Series, seed: int = 0) -> pd.Series:
 
     Z = X.fillna(X.median())
     m = y.notna().values
-    try:  # n_jobs (scikit-learn >= 1.5) parallelises across features; results are identical
-        mi = mutual_info_regression(Z.values[m], y.values[m], random_state=seed, n_neighbors=5, n_jobs=-1)
-    except TypeError:
-        mi = mutual_info_regression(Z.values[m], y.values[m], random_state=seed, n_neighbors=5)
+    mi = mutual_info_regression(Z.values[m], y.values[m], random_state=seed, n_neighbors=5)
     return pd.Series(mi, index=X.columns)
 
 
